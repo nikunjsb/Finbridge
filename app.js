@@ -404,6 +404,74 @@ const newcomerGroups=[
 ['familybenefits','Review Kindergeld and relevant benefits','Benefits depend on personal and residence circumstances, and may have cross-border conditions.'],
 ['familytax','Review family tax options','Tax class, marriage registration and joint filing can affect payroll and annual tax calculations; verify current rules.']
 ]}];
+const returnIndiaGroups=[
+{id:'prepare',name:'Before leaving Germany — 2 to 3 months',items:[
+['decision','Confirm whether your return is permanent or temporary','Taxes, insurance, bank arrangements and German residence permits depend on whether you keep a home or employment in Germany.'],
+['employment','Plan employment resignation or transfer','Check notice period, unused vacation, bonus, employer benefits, payroll records, reference letter (Arbeitszeugnis) and final payslip.'],
+['housing','Give notice on your German rental agreement','Check contractual and statutory notice periods. Arrange final inspection, handover report, deposit return and landlord communication.'],
+['utilities','End or transfer electricity and gas contracts','Notify providers of the actual move-out; capture dated meter photos, readings and final invoices.'],
+['internet','Review internet and mobile contracts','Check cancellation options when moving abroad, SIM number retention, router return, roaming and two-factor authentication dependencies.'],
+['transport','Cancel Deutschlandticket or local subscriptions','Follow the provider’s cancellation deadline. Also review BahnCard, Jobticket and bike/car subscriptions.'],
+['insurance','Inform health and other insurers','Ask TK/AOK/other insurer about the requirements and effective termination when moving abroad; check private insurance, personal liability and car coverage individually.'],
+['broadcast','Notify Rundfunkbeitrag of departure','Use the official deregistration process when leaving the dwelling; retain confirmation and proof of moving abroad.'],
+['bank','Plan German bank account and SEPA access','Consider retaining access for final salary, deposits and refunds; verify provider residency rules, fees and address change. Avoid closing too early.'],
+['documents','Collect digital and physical paperwork','Save German employment contracts, yearly Lohnsteuerbescheinigungen, payslips, insurance and pension history, residence permits, rental handover and education records.'],
+['shipping','Check shipping and customs paperwork','Inventory belongings, use insured movers, check Indian transfer-of-residence concessions and restricted goods, and plan transport of valuables and medicines.'],
+['mail','Arrange a reliable postal/contact address','Update important senders and consider forwarding arrangements for final notices and German tax correspondence.']
+]},
+{id:'departure',name:'Final weeks and departure',items:[
+['abmeldung','Complete Abmeldung if leaving Germany without a new German home','Under §17 Bundesmeldegesetz, deregister within two weeks after moving out; earliest one week before. Obtain and keep the Abmeldebestätigung.'],
+['handover','Document apartment and vehicle handover','Photograph meter readings, check keys, handover condition and outstanding claims; arrange sale/export of car or bicycle where applicable.'],
+['lastsalary','Collect employment exit documents','Request final payroll, annual wage tax certificate, employment reference and relevant social-insurance records.'],
+['residencetitle','Check how departure affects German residence status','Residence permits and permanent residence can lapse after particular periods abroad or when departing for a non-temporary reason. Seek Ausländerbehörde advice before relying on a return entitlement.'],
+['flight','Check passports, entry rights, banking and travel cover','Check transit visas if relevant, baggage allowances, airline restrictions and adequate health cover for travel and arrival.']
+]},
+{id:'after',name:'After arriving in India',items:[
+['indiabank','Inform Indian banks of changed residency','Ask for NRE/NRO redesignation to appropriate resident accounts when status changes, and assess whether RFC accounts are relevant. Do not assume accounts convert automatically.'],
+['indiatax','Determine Indian income-tax residence and RNOR position','Review the applicable Indian financial-year day counts, previous years, RNOR rules and treaty questions with an adviser if necessary.'],
+['germantax','Prepare any German final or later tax filings','Review the departure year, foreign-source income, residency period and outstanding tax assessments/refunds. Keep a reliable contact address.'],
+['investments','Review investments, broker accounts and foreign assets','German brokers, Indian demat/mutual-fund providers and banks may restrict services after residency changes; check asset and tax reporting.'],
+['pension','Review German pension entitlements and records','Download the Versicherungsverlauf and obtain a Deutsche Rentenversicherung assessment; contributions are not automatically refundable on leaving.'],
+['healthindia','Set up health insurance and routine services in India','Review health coverage, local banking, Indian mobile/OTP, utilities, address and employer onboarding if applicable.'],
+['foreignassets','Check foreign asset and currency reporting','Review Indian foreign-asset disclosures, repatriation records and permissible overseas holdings with the tax-year-specific rules.'],
+['security','Keep German accounts secure during transition','Update banking authentication, trusted devices, postal address, password recovery and emergency contact methods.']
+]},
+{id:'employee',name:'Extra tasks — employed or Blue Card / PR holder',items:[
+['employergoodbye','Review employer relocation benefits and tax-free reimbursements','Keep employer-paid flight, shipment or relocation documents separate from amounts you paid personally.'],
+['drvstatus','Ask DRV about pension rights instead of assuming a refund','Nationality, Germany–India social security agreement and eligibility can affect rights. Check with DRV before any application.'],
+['prstatus','Clarify Blue Card / permanent residence travel implications','Check with Ausländerbehörde whether your title persists after leaving, including any special legal provisions and permitted absences.']
+]},
+{id:'student',name:'Extra tasks — returning after studies',items:[
+['university','Complete university deregistration (Exmatrikulation)','Check certificate, semester fees, transcripts, diploma and library returns.'],
+['studentinsurance','Close student insurance and housing arrangements','Check coverage expiry, student residence deposit, semester ticket and blocked account release rules.'],
+['studentloans','Organize education financing and bank account history','Keep scholarship, blocked account, loans, student work payslips and any study-related tax records.']
+]}];
+const returnIndiaSources=[
+['Federal Registration Act §17 — Abmeldung','https://www.gesetze-im-internet.de/bmg/__17.html'],
+['German Pension Insurance','https://www.deutsche-rentenversicherung.de/'],
+['Reserve Bank of India — bank accounts for NRIs and returning residents','https://www.rbi.org.in/commonman/English/Scripts/FAQs.aspx?Id=3'],
+['German Income Tax Act','https://www.gesetze-im-internet.de/estg/'],
+['Indian Income Tax Department','https://www.incometax.gov.in/'],
+['German residence law §51 — expiry of residence titles','https://www.gesetze-im-internet.de/aufenthg_2004/__51.html'],
+['German broadcasting contribution service','https://www.rundfunkbeitrag.de/']
+];
+function returnIndiaJourney(){
+const audience=state.returnAudience||'employee';
+const groups=returnIndiaGroups.filter(x=>['prepare','departure','after',audience].includes(x.id));
+const count=groups.reduce((sum,g)=>sum+g.items.length,0);
+const done=groups.reduce((sum,g)=>sum+g.items.filter(t=>state['return:'+t[0]]).length,0);
+return '<a href="#journeys" class="biglink">← All journeys</a><div style="margin-top:24px">'+title('LIFE JOURNEY / RELOCATION','Moving back to India','A practical checklist for winding down life in Germany and restarting in India. Review requirements based on your residency, employment and financial situation.')+'</div>'+
+'<div class="card"><label class="field">I am returning as<select id="returnAudience"><option value="employee" '+(audience==='employee'?'selected':'')+'>Employee / Blue Card or permanent residence holder</option><option value="student" '+(audience==='student'?'selected':'')+'>Student or recent graduate</option></select></label><div class="row" style="justify-content:flex-start;gap:10px;margin-top:15px"><span class="pill">'+done+' of '+count+' completed</span><span class="muted">Progress stays in this browser</span></div></div>'+privacyNote('saved')+
+groups.map(group=>'<div class="sectionhead"><h2>'+escapeHTML(group.name)+'</h2><span class="pill">'+group.items.filter(t=>state['return:'+t[0]]).length+' / '+group.items.length+'</span></div><div class="card">'+group.items.map(([id,heading,detail])=>'<label class="listrow" style="align-items:flex-start;justify-content:flex-start;cursor:pointer"><input type="checkbox" data-return-task="'+id+'" '+(state['return:'+id]?'checked':'')+' style="margin-top:5px"/><span style="flex:1"><b>'+escapeHTML(heading)+'</b><span class="muted" style="display:block;font-size:13px;margin-top:4px">'+escapeHTML(detail)+'</span></span></label>').join('')+'</div>').join('')+
+'<div class="sectionhead"><h2>Key details people often miss</h2></div><div class="grid two">'+
+'<div class="card"><h3>Leaving Germany does not erase tax obligations</h3><p>During the departure year you may need to review German tax residence, German employment income, foreign income, assessment notices and possible refunds. Keep German bank and postal access until your final refunds and bills are resolved.</p><a href="#tax" class="button secondary">Open tax workspace →</a></div>'+
+'<div class="card"><h3>NRE / NRO accounts and currency</h3><p>Returning to India for a lasting stay can require redesignating NRE/NRO accounts under RBI rules. Depending on eligibility, an RFC account can help hold certain foreign-currency assets. Review Indian tax residence separately from FEMA residence.</p><a href="#guide/accounts" class="button secondary">Read bank account guide →</a></div>'+
+'<div class="card"><h3>German pension and insurance</h3><p>Keep your German pension history even if you move permanently. There is no automatic refund of all contributions; rights and refund rules depend on the individual and applicable agreements.</p><a href="#guide/pension" class="button secondary">Read pension guide →</a></div>'+
+'<div class="card"><h3>Abmeldung and immigration status</h3><p>Abmeldung of a German dwelling is required when moving abroad without another domestic dwelling. German residence permits can have separate expiry rules, which Abmeldung does not determine on its own.</p><a href="https://www.gesetze-im-internet.de/bmg/__17.html" target="_blank" rel="noopener noreferrer" class="biglink">Registration law §17 ↗</a></div></div>'+
+'<div class="sectionhead"><h2>Official resources</h2></div><div class="card">'+returnIndiaSources.map(([label,url])=>'<div class="listrow"><span>'+escapeHTML(label)+'</span><a href="'+escapeHTML(url)+'" class="biglink" target="_blank" rel="noopener noreferrer">Official link ↗</a></div>').join('')+'</div>'+
+'<div class="note">Checklist items are planning prompts, not legal determinations. Requirements and cancellation terms vary by provider, tax year, citizenship and immigration status. Verify important decisions before your actual departure.</div>';
+}
+
 const legacyJourneyData=[['support','Supporting family in India',['Identify support versus gift.','Check recipient income and evidence.','Keep bank records and verify the relevant tax rules.','Prepare the tax-return evidence pack.']],['return','Moving back to India',['Check German tax residence and final filing.','Review pension rights with DRV.','Plan bank, insurance and contract changes.','Check Indian residency transition and account updates.']],['invest','Starting to invest',['Set an emergency fund and debt priorities.','Define goal and time horizon.','Understand ETF costs and risk.','Review Germany–India tax reporting if applicable.']]];
 const newcomerLinks=[
 ['Make it in Germany — working and living','https://www.make-it-in-germany.com/en/'],
@@ -429,7 +497,7 @@ function newcomerJourney(){
  '<div class="sectionhead"><h2>Related FinBridge guides</h2></div>'+cards(articles.filter(x=>['newcomer','salary','commute','accounts'].includes(x.id)));
 }
 function journeys(){return title('GUIDED PATHS','Choose a life moment','Practical checklists for major stages of living between Germany and India.')+privacyNote('saved')+'<div class="grid two"><a class="card link" href="#journey/newcomer"><span class="icon">◇</span><h3>Just arrived in Germany</h3><p>Detailed first-90-days plan for employees, students and families: banking, internet, registration, D-ticket, tax and more.</p><span class="arrow">Open journey →</span></a>'+legacyJourneyData.map(([id,label,steps])=>'<a class="card link" href="#journey/'+id+'"><span class="icon">◇</span><h3>'+label+'</h3><p>'+steps.length+' steps and related guides.</p><span class="arrow">Open journey →</span></a>').join('')+'</div>';}
-function journey(id){if(id==='newcomer')return newcomerJourney();const d=legacyJourneyData.find(x=>x[0]===id);if(!d)return journeys();const [_,label,steps]=d;return privacyNote('saved')+'<a href="#journeys" class="biglink">← All journeys</a><div style="margin-top:24px">'+title('LIFE JOURNEY',label,'Your checklist is a general starting point; legal requirements may differ by situation.')+'</div><div class="card">'+steps.map((s,i)=>'<div class="listrow"><label style="display:flex;gap:12px;align-items:center"><input type="checkbox" data-journey="'+id+':'+i+'" '+(state['j:'+id+':'+i]?'checked':'')+'/> '+escapeHTML(s)+'</label></div>').join('')+'</div><div class="sectionhead"><h2>Continue researching</h2></div>'+cards(articles.filter(x=>id==='support'?['support','gift'].includes(x.id):id==='return'?['pension','residency'].includes(x.id):['etf','salary'].includes(x.id)));}
+function journey(id){if(id==='newcomer')return newcomerJourney();if(id==='return')return returnIndiaJourney();const d=legacyJourneyData.find(x=>x[0]===id);if(!d)return journeys();const [_,label,steps]=d;return privacyNote('saved')+'<a href="#journeys" class="biglink">← All journeys</a><div style="margin-top:24px">'+title('LIFE JOURNEY',label,'Your checklist is a general starting point; legal requirements may differ by situation.')+'</div><div class="card">'+steps.map((s,i)=>'<div class="listrow"><label style="display:flex;gap:12px;align-items:center"><input type="checkbox" data-journey="'+id+':'+i+'" '+(state['j:'+id+':'+i]?'checked':'')+'/> '+escapeHTML(s)+'</label></div>').join('')+'</div><div class="sectionhead"><h2>Continue researching</h2></div>'+cards(articles.filter(x=>id==='support'?['support','gift'].includes(x.id):id==='return'?['pension','residency'].includes(x.id):['etf','salary'].includes(x.id)));}
 function feedback(){
 return title('BUILD FINBRIDGE TOGETHER','What is missing from FinBridge?','Suggest a new guide, flag a confusing explanation, or report a broken feature. We review proposals before adding them.')+privacyNote('public')+
 '<div class="split"><div class="card"><h3>Share an idea</h3><p>We currently collect submitted suggestions as <b>public GitHub Issues</b>, which requires a GitHub account. Do not include names, tax IDs, amounts linked to individuals, account details or private documents.</p>'+
@@ -519,6 +587,8 @@ if(e.target.id==='goldScenario'){const x={bar:'Investment bars and coins: verify
 if(e.target.matches('[data-parentstask]')){state['parents:'+e.target.dataset.parentstask]=e.target.checked;save()}
 if(e.target.matches('[data-journey]')){state['j:'+e.target.dataset.journey]=e.target.checked;save()}
 if(e.target.id==='newcomerAudience'){state.newcomerAudience=e.target.value;save();render()}
+if(e.target.id==='returnAudience'){state.returnAudience=e.target.value;save();render()}
+if(e.target.matches('[data-return-task]')){state['return:'+e.target.dataset.returnTask]=e.target.checked;save();render()}
 if(e.target.matches('[data-newcomer-task]')){state['newcomer:'+e.target.dataset.newcomerTask]=e.target.checked;save();render()}
 if(e.target.id==='importData'){try{const t=await e.target.files[0].text(),obj=JSON.parse(t);if(obj.version!==1||!obj.data||!Array.isArray(obj.data.expenses)||!Array.isArray(obj.data.questions))throw Error('Invalid backup');if(!confirm('Replace local FinBridge data with this backup?'))return;state=obj.data;save();render();alert('Backup restored')}catch(err){alert('Could not import backup: '+err.message)}}});
 nav();render();setupNoticeRotation();

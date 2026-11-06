@@ -1,0 +1,47 @@
+name: Suggest a FinBridge improvement
+description: Request a missing guide, form, calculator, or correction. Public submission; do not include personal data.
+title: "[Feedback] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve FinBridge. **Issues are public and show your GitHub username.**
+        Never include salary slips, bank or tax IDs, addresses, or other personal financial details.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Area
+      options:
+        - German income tax
+        - Germany ↔ India transfers and NRI finances
+        - Investments and savings
+        - Forms and document instructions
+        - Retirement and pension
+        - Family and life events
+        - Site functionality
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: What is missing or unclear?
+      description: Describe the question you could not answer.
+      placeholder: I want a step-by-step guide on requesting a German certificate of tax residence.
+    validations:
+      required: true
+  - type: textarea
+    id: desired
+    attributes:
+      label: What would a helpful answer or tool include?
+      placeholder: Eligibility, official form, document checklist, steps, and links.
+    validations:
+      required: false
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: I have not included personal financial data or private documents.
+          required: true

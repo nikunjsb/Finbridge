@@ -2,4 +2,22 @@
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#202020"/><title>FinBridge — Germany × India</title><link rel="stylesheet" href="./styles.css?v=20261106news1"/></head>
 <body><div class="shell"><aside class="sidebar"><a href="#overview" class="brand"><span class="mark">F</span><span>FinBridge<small>GERMANY × INDIA</small></span></a><nav id="navigation" aria-label="Main navigation"></nav><div class="sidefoot"><span class="dot"></span> Local-first pilot<br><small>Information, not financial advice</small></div></aside>
 <main class="main"><header class="top"><div class="breadcrumb" id="breadcrumb">Overview</div><div class="tools"><label class="sr" for="search">Search guides</label><input id="search" placeholder="Search topics… (e.g. parents, ETF)" autocomplete="off"/><button id="resetSearch" class="quiet" type="button" hidden>Clear</button></div></header><div class="notice-strip" role="region" aria-label="Rotating financial insights" aria-live="off"><span class="notice-label">GOOD TO KNOW</span><div class="notice-body"><span id="noticeText">Buying gold in Germany? Know the tax and customs rules before travelling to India.</span><a id="noticeLink" href="#gold">Read guide →</a></div><div class="notice-controls"><button id="noticePrev" type="button" aria-label="Previous insight">‹</button><span id="noticeCount">1 / 12</span><button id="noticeNext" type="button" aria-label="Next insight">›</button><button id="noticePause" type="button" aria-label="Pause automatic rotation" aria-pressed="false" title="Pause automatic rotation">Ⅱ</button></div></div>
-<div class="content" id="content"></div><footer>FinBridge pilot · Financial entries stay on your device unless you choose to share feedback · <a href="#privacy">Privacy information</a> · Check current official rules before acting.</footer></main></div><script type="module" src="./app.js?v=20261106active1"></script></body></html>
+<div class="content" id="content"></div><footer>FinBridge pilot · Financial entries stay on your device unless you choose to share feedback · <a href="#privacy">Privacy information</a> · Check current official rules before acting.<div class="footer-updated" id="footerUpdated" aria-live="polite">Latest code update: checking…</div></footer></main></div><script type="module" src="./app.js?v=20261106active1"></script><script>
+(async function(){
+  const element=document.getElementById('footerUpdated');
+  if(!element)return;
+  try{
+    const response=await fetch('https://api.github.com/repos/nikunjsb/Finbridge/commits/main',{headers:{'Accept':'application/vnd.github+json'}});
+    if(!response.ok)throw new Error('GitHub unavailable');
+    const commit=await response.json();
+    const dateString=commit?.commit?.committer?.date;
+    if(!dateString||!Number.isFinite(Date.parse(dateString)))throw new Error('Invalid date');
+    const date=new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Europe/Berlin',timeZoneName:'short'}).format(new Date(dateString));
+    element.textContent='Latest code update: '+date+' · ';
+    const link=document.createElement('a');
+    link.href='https://github.com/nikunjsb/Finbridge/commits/main/';
+    link.target='_blank';link.rel='noopener noreferrer';link.textContent='View changes';
+    element.appendChild(link);
+  }catch{element.textContent='Latest code update: temporarily unavailable';}
+})();
+</script></body></html>

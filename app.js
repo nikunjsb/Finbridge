@@ -563,7 +563,7 @@ const config={
 temporary:['Processed on this device','The information you type here is processed in your browser and is not sent to a FinBridge account or application server. It is not saved in FinBridge question history. Avoid entering sensitive identifiers.'],
 saved:['Saved in this browser','These entries are stored on this device using browser storage. They are not uploaded to FinBridge or synchronized with other users. Anyone using this browser profile may be able to access them; clear local data in Privacy & backup.'],
 optional:['Optional local question history','Your question is searched in your browser. It is saved in local history only if you select the checkbox. FinBridge does not centrally collect these questions.'],
-feedback:['Feedback sent through FormSubmit','When you submit feedback, it goes to FormSubmit through a standard web form and is forwarded to FinBridge’s email inbox after owner activation. FormSubmit may show a verification page. Do not include sensitive information.'],
+feedback:['Private feedback — under setup','The upcoming service will send submissions through Cloudflare to a private GitHub repository after spam verification. The form is disabled until deployment and testing are complete. Do not submit sensitive information.'],
 public:['Public GitHub feedback','Public GitHub Issues may expose submissions; avoid sharing private information.'],
 localupload:['Local backup import','Your selected JSON backup is read in this browser and replaces local FinBridge data only after your confirmation. The file is not uploaded to FinBridge.']
 };

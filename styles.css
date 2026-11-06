@@ -32,3 +32,15 @@
 #letterExplanation p{line-height:1.65}
 #letterExplanation .biglink{font-size:13px}
 @media(max-width:700px){.language-search{display:block}.language-search .button{margin-top:12px;width:100%;justify-content:center}}
+
+/* Sticky, auto-rotating insight bar inside the main header */
+.top{position:sticky;top:0;z-index:30;box-shadow:0 1px 0 #00000007}
+.notice-strip{position:sticky;top:80px;z-index:29;max-width:none;margin:0;padding:9px 30px;border-radius:0;border-width:0 0 1px;min-height:52px;background:#eaeaea;box-shadow:0 3px 12px #00000008}
+.notice-body{font-size:12px}
+.notice-body #noticeText{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notice-controls button{width:27px;height:27px}
+.notice-controls button[aria-pressed="true"]{background:#3a3a3a;color:white;border-color:#3a3a3a}
+.notice-strip:focus-within{outline-offset:-2px}
+@media(max-width:1050px){.notice-strip{margin:0;padding:9px 22px}}
+@media(max-width:700px){.top{position:relative;top:auto;z-index:31}.notice-strip{position:sticky;top:0;margin:0;padding:9px 12px;gap:8px;min-height:54px;flex-wrap:nowrap}.notice-label{font-size:9px;padding:7px}.notice-body{order:initial;flex:1;flex-basis:auto;min-width:0;display:block}.notice-body #noticeText{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.notice-body a{font-size:11px}.notice-controls{margin-left:0;gap:3px}.notice-controls button{width:25px;height:25px}.notice-controls #noticeCount{display:none}}
+@media(prefers-reduced-motion:reduce){.notice-strip *{transition:none!important}}

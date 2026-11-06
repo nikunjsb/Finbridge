@@ -118,6 +118,24 @@ function guide(id){if(id==='support')return parentsGuide();const a=articles.find
 const expenseCategoryGuides={"Commuting":{"heading":"Commuting to your first workplace","text":"Enter your one-way distance and qualifying office days in the commuting calculator below. Keep train, bus and taxi spending separately for your personal budget. Ordinary travel spending is not automatically added to the distance-based tax allowance.","proof":"Office attendance log; distance; tickets; employer subsidies."},"Home office":{"heading":"Days worked mainly from home","text":"Track eligible home-working days, not just electricity or internet costs. The statutory daily allowance has an annual cap and special conditions; check the selected tax year.","proof":"Home-office dates; work arrangements; employer reimbursements."},"Work equipment":{"heading":"Items needed for your job","text":"Examples: laptop, monitor, keyboard, desk, office chair, headset, professional software and tools. Only the work-related share may count, and expensive assets can require different treatment.","proof":"Purchase invoice; purchase date; work-use percentage."},"Professional education":{"heading":"Learning related to your work","text":"Examples: professional courses, seminars, exams, specialist books, and eligible travel for training. Distinguish continuing professional education from initial education.","proof":"Course invoices; exam receipts; employer reimbursements."},"Business travel":{"heading":"Trips away from your usual workplace","text":"Examples: eligible business-trip train fares, mileage, hotels, parking and meal allowances. These use different rules from ordinary home-to-first-workplace commuting.","proof":"Trip purpose; dates; tickets; receipts; reimbursement amounts."},"Insurance":{"heading":"Potentially relevant insurance contributions","text":"Examples: qualifying health, long-term-care and liability insurance contributions. Some are special expenses (Sonderausgaben), not employee work expenses, and limits differ.","proof":"Annual provider certificates; contribution amounts; tax year."},"Support to family":{"heading":"Financial support to eligible relatives","text":"Examples: qualifying support to dependent relatives, including possible cross-border family support. Eligibility, income and asset checks, proof of payments and country-specific limits may apply. Not every family transfer is deductible.","proof":"Bank transfer evidence; relationship; recipient finances; required declarations."},"Other":{"heading":"Other expenses to review","text":"Examples: eligible job applications, union dues or professional memberships. Specify the expense and check its legal category before claiming; general personal spending is not automatically deductible.","proof":"Receipt; date; purpose; relevant tax year."}};
 function expenseCategoryHelp(category){const g=expenseCategoryGuides[category]||expenseCategoryGuides.Other;return '<h3>'+escapeHTML(g.heading)+'</h3><p>'+escapeHTML(g.text)+'</p><p><b>Keep as evidence:</b> '+escapeHTML(g.proof)+'</p><p class="muted">Educational guidance only. Eligibility and thresholds depend on the tax year and your circumstances.</p>'}
 
+const expenseItemChoices={
+'Work equipment':['Laptop or computer','Monitor or screen','Office chair or desk','Keyboard / mouse / headset','Professional software','Tools / protective equipment','Mobile phone or tablet','Something else'],
+'Professional education':['Professional course or seminar','Certification or exam fee','Specialist books / learning material','Conference or industry event','Course-related travel','Online learning subscription','Something else'],
+'Business travel':['Train / bus / flight ticket','Hotel or accommodation','Business trip mileage','Parking / tolls','Taxi / local business transport','Meal allowance (eligibility review needed)','Other trip expenses','Something else'],
+'Insurance':['Health insurance contribution','Long-term care insurance','Pension or retirement contribution','Personal liability insurance','Work-related professional insurance','Other insurance','Something else'],
+'Support to family':['Financial support to parent','Financial support to other eligible relative','Direct rent support for dependent relative','Other family payment (not automatically deductible)','Something else'],
+'Other':['Job applications','Union dues / professional association','Telephone or internet for work','Job-related relocation','Tax preparation or professional advice','Household-related services','Craftsmen labour','Donations','Something else']
+};
+const itemSelector=category=>{
+const arr=expenseItemChoices[category];if(!arr)return '';
+return '<div class="expense-item-select"><label class="field">What did you spend the money on?<select name="expenseItem">'+arr.map(x=>'<option value="'+escapeHTML(x)+'">'+escapeHTML(x)+'</option>').join('')+'</select></label><label class="field" id="expenseCustomLabel" style="display:none">Describe this expense<input name="customItem" maxlength="100" placeholder="Name the expense"/></label><p class="muted">Select the item to categorize your records. Selection is not proof of tax deductibility.</p></div>';
+};
+function showCustomExpenseItem(){
+const form=document.getElementById('expenseForm');if(!form)return;
+const selected=form.querySelector('[name=expenseItem]'),other=form.querySelector('#expenseCustomLabel');
+if(other)other.style.display=selected?.value==='Something else'?'block':'none';
+}
+
 const expenseNumbers=(fd,key)=>Math.max(0,Number(fd.get(key))||0);
 const expenseField=(label,name,placeholder='0',extra='')=>'<label class="field">'+label+'<input type="number" name="'+name+'" min="0" step="any" placeholder="'+placeholder+'" '+extra+' /></label>';
 function expenseFields(category){
@@ -132,11 +150,14 @@ expenseField('Actual taxi / cab costs (€)','taxiCost','0')+
 expenseField('Other actual commuting costs (€)','otherCost','0')+
 expenseField('Employer tax-free commuting reimbursements (€)','reimbursement','0')+'</div><div class="note">Do not add bus or taxi costs to the mileage allowance automatically. For eligible public transport, higher annual actual costs may be considered instead of the distance allowance; car, mixed journeys and employer benefits need individual review. Home-office days must be eligible and generally separate from office days.</div></div>';
  if(category==='Home office')return '<div class="tax-calc-fields"><h3>Home-office day calculator</h3><p>The daily allowance is normally €6 per qualifying day, limited to 210 days per year. Do not claim the same days again in a commuting calculator entry.</p><div class="formgrid">'+expenseField('Eligible home-office days','homeDays','50','required')+'</div></div>';
- if(category==='Work equipment')return '<div class="tax-calc-fields"><h3>Work equipment calculation</h3><p>Enter the purchase price and estimated professional-use share. The resulting amount is a preliminary candidate; depreciation, reimbursement and tax-year rules may change it.</p><div class="formgrid">'+expenseField('Actual purchase price (€)','amount','400','required')+expenseField('Work-related use (%)','workShare','80','required')+'</div></div>';
- return '<div class="tax-calc-fields"><h3>Record this expense</h3><p>This category may need individual tax eligibility checks, so FinBridge records the amount but does not automatically treat it as deductible.</p><div class="formgrid">'+expenseField('Amount spent / paid (€)','amount','120','required')+'</div></div>';
+ if(category==='Work equipment')return '<div class="tax-calc-fields">'+itemSelector(category)+'<h3>Work equipment calculation</h3><p>Enter the purchase price and estimated professional-use share. The resulting amount is a preliminary candidate; depreciation, reimbursement and tax-year rules may change it.</p><div class="formgrid">'+expenseField('Actual purchase price (€)','amount','400','required')+expenseField('Work-related use (%)','workShare','80','required')+'</div></div>';
+ return '<div class="tax-calc-fields">'+itemSelector(category)+'<h3>Record this expense</h3><p>This category may need individual tax eligibility checks, so FinBridge records the amount but does not automatically treat it as deductible.</p><div class="formgrid">'+expenseField('Amount spent / paid (€)','amount','120','required')+'</div></div>';
 }
 function calculateExpense(fd){
 const category=String(fd.get('category')||'Other'), year=Number(fd.get('year')||2026);
+const selectedItem=String(fd.get('expenseItem')||'').trim();
+const item=selectedItem==='Something else'?String(fd.get('customItem')||'').trim():selectedItem;
+if(selectedItem==='Something else'&&!item)throw Error('Please describe the expense selected as Something else.');
 if(category==='Commuting'){
  const distance=Math.floor(expenseNumbers(fd,'distance')),officeDays=Math.floor(expenseNumbers(fd,'officeDays')),homeDays=Math.floor(expenseNumbers(fd,'homeDays'));
  if(distance>1000||officeDays>366||homeDays>366||officeDays+homeDays>366)throw Error('Check distance and attendance days. Office days and home-office days must not overlap in this simplified calculator.');
@@ -158,9 +179,9 @@ if(category==='Home office'){
 }
 if(category==='Work equipment'){
  const actual=expenseNumbers(fd,'amount'),share=expenseNumbers(fd,'workShare');if(share>100)throw Error('Work-related use must be between 0% and 100%.');
- return {category,actual,estimated:actual*share/100,year:null,note:String(fd.get('note')||''),details:'Work use '+share+'%',breakdown:'Purchase price × work-use share',warning:'This is only a proportional candidate before depreciation, tax-year rules and reimbursements.'};
+ return {category,item,actual,estimated:actual*share/100,year:null,note:String(fd.get('note')||''),details:'Work use '+share+'%',breakdown:'Purchase price × work-use share',warning:'This is only a proportional candidate before depreciation, tax-year rules and reimbursements.'};
 }
-return {category,actual:expenseNumbers(fd,'amount'),estimated:null,year:null,note:String(fd.get('note')||''),details:'Manual amount',breakdown:'Needs individual deduction review',warning:'The amount spent has not been assessed as a deductible tax expense.'};
+return {category,item,actual:expenseNumbers(fd,'amount'),estimated:null,year:null,note:String(fd.get('note')||''),details:'Manual amount',breakdown:'Needs individual deduction review',warning:'The amount spent has not been assessed as a deductible tax expense.'};
 }
 function expensePreview(data){
 const deduction=data.estimated===null?'Not assessed':money(data.estimated);
@@ -175,7 +196,7 @@ const form=document.getElementById('expenseForm');if(!form)return;
 const category=form.querySelector('[name=category]').value;
 document.getElementById('categoryHelp').innerHTML=expenseCategoryHelp(category);
 document.getElementById('expenseDynamic').innerHTML=expenseFields(category);
-updateExpensePreview();
+showCustomExpenseItem();updateExpensePreview();
 }
 
 function tax(){
@@ -404,7 +425,7 @@ document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav==
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});
 $('#search').addEventListener('input',e=>{if(!location.hash.startsWith('#discover'))location.hash='#discover';else render();$('#resetSearch').hidden=!e.target.value});
 $('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetSearch').hidden=true;render()});
-document.addEventListener('change',e=>{if(e.target.matches('#expenseForm select[name="category"]'))updateExpenseFields();else if(e.target.closest('#expenseForm'))updateExpensePreview()});
+document.addEventListener('change',e=>{if(e.target.matches('#expenseForm select[name="category"]'))updateExpenseFields();else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('submit',e=>{
 if(e.target.id==='feedbackForm'){e.preventDefault();const f=new FormData(e.target);const title=String(f.get('title')||'').trim();const details=String(f.get('details')||'').trim();if(!title||!details)return;const kind=String(f.get('kind')),area=String(f.get('area')),benefit=String(f.get('benefit')||'').trim();const textBody='### Type\n'+kind+'\n\n### Area\n'+area+'\n\n### What is missing or confusing?\n'+details+'\n\n### Why it would help\n'+(benefit||'Not specified')+'\n\n---\nPlease do not share personal or financial data in this public issue.';const url='https://github.com/nikunjsb/Finbridge/issues/new?title='+encodeURIComponent('[Feedback] '+title)+'&body='+encodeURIComponent(textBody);$('#feedbackResult').innerHTML='<p><b>Ready to submit.</b> GitHub requires sign-in and a final submission click.</p><a class="button" id="feedbackIssueLink" href="'+escapeHTML(url)+'" target="_blank" rel="noopener noreferrer">Continue to GitHub ↗</a> <button type="button" class="button secondary" id="copyFeedback">Copy prepared text</button>';window.__feedbackDraft='[Feedback] '+title+'\n\n'+textBody;}

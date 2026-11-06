@@ -167,16 +167,54 @@ return title('PRACTICAL TAX GUIDE / GERMANY ↔ INDIA','How to claim support sen
 
 
 const notices=[
-{title:'Buying gold in Germany? Know the tax and customs rules before carrying it to India.',href:'#gold'},
-{title:'Sending money to parents in India? Check the Unterhaltserklärung and your bank evidence.',href:'#parentsguide'},
-{title:'Missing a financial guide? Suggest a topic for the next FinBridge update.',href:'#feedback'},
-{title:'Indian bank interest can still be relevant to your German tax return.',href:'#guide/indianinterest'}
+{title:'Buying gold in Germany? Know the customs and tax rules before taking it to India.',href:'#gold'},
+{title:'Supporting parents in India? Prepare your Unterhaltserklärung and bank evidence.',href:'#parentsguide'},
+{title:'Your Nebenkostenabrechnung may contain household tax reductions.',href:'#guide/household'},
+{title:'Keeping Indian savings accounts after moving to Germany? Review your NRI status.',href:'#guide/accounts'},
+{title:'Receiving a gift or inheritance from India? Check German reporting rules.',href:'#guide/gift'},
+{title:'Indian bank interest may still matter for German income tax.',href:'#guide/indianinterest'},
+{title:'Check your German pension record for missing contribution periods.',href:'#guide/pension'},
+{title:'Work equipment and professional training may qualify as tax expenses.',href:'#taxguide'},
+{title:'Moving back to India? Check your German pension and tax status first.',href:'#guide/returnindia'},
+{title:'Do you know what Werbungskosten or Steuerbescheid mean? Use Language Bridge.',href:'#language'},
+{title:'Unknown tax-refund email? Verify the sender before opening links.',href:'#guide/fraud'},
+{title:'Missing something from FinBridge? Suggest a feature for review.',href:'#feedback'}
 ];
 let currentNotice=0;
+let noticePaused=false;
+let noticeTimer=null;
+const NOTICE_INTERVAL_MS=9000;
 function showNotice(){
 const t=document.getElementById('noticeText'),a=document.getElementById('noticeLink'),c=document.getElementById('noticeCount');
 if(!t||!a||!c)return;
 const n=notices[currentNotice];t.textContent=n.title;a.href=n.href;c.textContent=(currentNotice+1)+' / '+notices.length;
+}
+function advanceNotice(direction=1){currentNotice=(currentNotice+direction+notices.length)%notices.length;showNotice()}
+function stopNoticeTimer(){if(noticeTimer!==null){clearInterval(noticeTimer);noticeTimer=null}}
+function startNoticeTimer(){
+stopNoticeTimer();
+if(noticePaused||document.hidden||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+noticeTimer=setInterval(()=>advanceNotice(1),NOTICE_INTERVAL_MS);
+}
+function setupNoticeRotation(){
+const strip=document.querySelector('.notice-strip'),pause=document.getElementById('noticePause');
+document.getElementById('noticePrev')?.addEventListener('click',()=>{advanceNotice(-1);startNoticeTimer()});
+document.getElementById('noticeNext')?.addEventListener('click',()=>{advanceNotice(1);startNoticeTimer()});
+pause?.addEventListener('click',()=>{
+noticePaused=!noticePaused;
+pause.setAttribute('aria-pressed',String(noticePaused));
+pause.setAttribute('aria-label',noticePaused?'Resume automatic rotation':'Pause automatic rotation');
+pause.setAttribute('title',noticePaused?'Resume automatic rotation':'Pause automatic rotation');
+pause.textContent=noticePaused?'▶':'Ⅱ';
+startNoticeTimer();
+});
+strip?.addEventListener('mouseenter',stopNoticeTimer);
+strip?.addEventListener('mouseleave',startNoticeTimer);
+strip?.addEventListener('focusin',stopNoticeTimer);
+strip?.addEventListener('focusout',e=>{if(!strip.contains(e.relatedTarget))startNoticeTimer()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopNoticeTimer();else startNoticeTimer()});
+window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change',startNoticeTimer);
+showNotice();startNoticeTimer();
 }
 const goldSources=[
 ['German VAT law: investment gold, §25c UStG','https://www.gesetze-im-internet.de/ustg_1980/__25c.html','Which gold bars and coins may qualify for the German VAT exemption.'],
@@ -286,6 +324,4 @@ if(e.target.id==='goldScenario'){const x={bar:'Investment bars and coins: verify
 if(e.target.matches('[data-parentstask]')){state['parents:'+e.target.dataset.parentstask]=e.target.checked;save()}
 if(e.target.matches('[data-journey]')){state['j:'+e.target.dataset.journey]=e.target.checked;save()}
 if(e.target.id==='importData'){try{const t=await e.target.files[0].text(),obj=JSON.parse(t);if(obj.version!==1||!obj.data||!Array.isArray(obj.data.expenses)||!Array.isArray(obj.data.questions))throw Error('Invalid backup');if(!confirm('Replace local FinBridge data with this backup?'))return;state=obj.data;save();render();alert('Backup restored')}catch(err){alert('Could not import backup: '+err.message)}}});
-document.getElementById('noticePrev')?.addEventListener('click',()=>{currentNotice=(currentNotice+notices.length-1)%notices.length;showNotice()});
-document.getElementById('noticeNext')?.addEventListener('click',()=>{currentNotice=(currentNotice+1)%notices.length;showNotice()});
-nav();render();showNotice();
+nav();render();setupNoticeRotation();

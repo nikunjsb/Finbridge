@@ -67,3 +67,7 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 .expat-news-links{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;margin-top:auto;padding-top:11px}
 .expat-news-links .biglink{font-size:12px}
 @media(max-width:700px){.expat-news-card{padding:16px}.expat-news-card h3{font-size:15px}.expat-news-heading{align-items:center}}
+
+/* Live repository update timestamp in footer */
+.footer-updated{margin-top:10px;font-size:11px;color:#777;line-height:1.5}
+.footer-updated a{color:inherit;text-decoration:underline;text-underline-offset:2px}

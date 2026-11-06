@@ -44,3 +44,13 @@
 @media(max-width:1050px){.notice-strip{margin:0;padding:9px 22px}}
 @media(max-width:700px){.top{position:relative;top:auto;z-index:31}.notice-strip{position:sticky;top:0;margin:0;padding:9px 12px;gap:8px;min-height:54px;flex-wrap:nowrap}.notice-label{font-size:9px;padding:7px}.notice-body{order:initial;flex:1;flex-basis:auto;min-width:0;display:block}.notice-body #noticeText{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.notice-body a{font-size:11px}.notice-controls{margin-left:0;gap:3px}.notice-controls button{width:25px;height:25px}.notice-controls #noticeCount{display:none}}
 @media(prefers-reduced-motion:reduce){.notice-strip *{transition:none!important}}
+
+/* Privacy notices accompanying each input area */
+.privacy-inline{display:flex;align-items:flex-start;gap:11px;border:1px solid #d5d5d5;background:#f0f0f0;border-radius:11px;padding:13px 16px;margin:14px 0 18px;color:#404040}
+.privacy-inline .privacy-icon{font-size:18px;line-height:1.2;color:#555}
+.privacy-inline div{display:flex;flex-direction:column;gap:3px}
+.privacy-inline b{font-size:13px;font-weight:750}
+.privacy-inline span:not(.privacy-icon){font-size:12px;line-height:1.65;color:#626262}
+.privacy-inline a{color:#333;text-decoration:underline;text-underline-offset:2px;font-weight:700;white-space:nowrap}
+footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
+@media(max-width:700px){.privacy-inline{padding:11px 13px;gap:9px}.privacy-inline span:not(.privacy-icon){font-size:11px}}

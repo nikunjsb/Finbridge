@@ -1,3 +1,4 @@
+import { extraArticles } from './content.js';
 
 const $=(s)=>document.querySelector(s);
 const money=(v)=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(Number(v)||0);
@@ -25,6 +26,7 @@ const articles=[
 {id:'rsu',name:'RSUs and employee stock plans',cat:'Work',summary:'Track vesting, sales, withholding and work-country allocation.',overview:'Employee share plans can involve employment income when shares vest or are exercised, and separate capital gains on sale. Cross-border workdays may complicate taxation.',checks:['Obtain employer plan statements and award documents.','Record grant, vest, exercise and sale dates with currency conversions.','Identify countries where employment duties were performed.','Review foreign withholding and tax filing in each relevant jurisdiction.'],caution:'Cross-border equity compensation warrants specialist review.'},
 {id:'scams',name:'Scams and financial sales pitches',cat:'Protection',summary:'Recognize fake tax refunds, investment scams and commission incentives.',overview:'Newcomers may face fake tax messages, fraudulent housing offers, high-fee insurance contracts and misleading investment pitches.',checks:['Verify senders through official websites, never links in unexpected messages.','Ask whether an adviser is paid by commission or an explicit fee.','Compare cancellation terms, product costs and downside risks.','Use BaFin, Verbraucherzentrale and official complaint channels.'],caution:'Do not send identity or banking details based on unsolicited messages.'}
 ];
+articles.push(...extraArticles);
 const sourceLinks=[['German Income Tax Act','https://www.gesetze-im-internet.de/estg/'],['ELSTER','https://www.elster.de/'],['Federal Ministry of Finance','https://www.bundesfinanzministerium.de/'],['German Pension Insurance','https://www.deutsche-rentenversicherung.de/'],['Indian Income Tax Department','https://www.incometax.gov.in/'],['Reserve Bank of India','https://www.rbi.org.in/'],['SEBI','https://www.sebi.gov.in/'],['BaFin','https://www.bafin.de/']];
 const title=(k,h,d)=>'<div class="eyebrow">'+escapeHTML(k)+'</div><h1 class="h1">'+escapeHTML(h)+'</h1><p class="lead">'+escapeHTML(d)+'</p>';
 function nav(){

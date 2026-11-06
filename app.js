@@ -1,5 +1,6 @@
 import { extraArticles } from './content.js';
 import { glossary, conceptBridge } from './language-data.js';
+import { feedbackEndpoint, turnstileSiteKey } from './feedback-config.js';
 
 const $=(s)=>document.querySelector(s);
 const money=(v)=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(Number(v)||0);
@@ -512,19 +513,47 @@ function newcomerJourney(){
 }
 function journeys(){return title('GUIDED PATHS','Choose a life moment','Practical checklists for major stages of living between Germany and India.')+privacyNote('saved')+'<div class="grid two"><a class="card link" href="#journey/newcomer"><span class="icon">◇</span><h3>Just arrived in Germany</h3><p>Detailed first-90-days plan for employees, students and families: banking, internet, registration, D-ticket, tax and more.</p><span class="arrow">Open journey →</span></a>'+legacyJourneyData.map(([id,label,steps])=>'<a class="card link" href="#journey/'+id+'"><span class="icon">◇</span><h3>'+label+'</h3><p>'+steps.length+' steps and related guides.</p><span class="arrow">Open journey →</span></a>').join('')+'</div>';}
 function journey(id){if(id==='newcomer')return newcomerJourney();if(id==='return')return returnIndiaJourney();const d=legacyJourneyData.find(x=>x[0]===id);if(!d)return journeys();const [_,label,steps]=d;return privacyNote('saved')+'<a href="#journeys" class="biglink">← All journeys</a><div style="margin-top:24px">'+title('LIFE JOURNEY',label,'Your checklist is a general starting point; legal requirements may differ by situation.')+'</div><div class="card">'+steps.map((s,i)=>'<div class="listrow"><label style="display:flex;gap:12px;align-items:center"><input type="checkbox" data-journey="'+id+':'+i+'" '+(state['j:'+id+':'+i]?'checked':'')+'/> '+escapeHTML(s)+'</label></div>').join('')+'</div><div class="sectionhead"><h2>Continue researching</h2></div>'+cards(articles.filter(x=>id==='support'?['support','gift'].includes(x.id):id==='return'?['pension','residency'].includes(x.id):['etf','salary'].includes(x.id)));}
-function feedback(){return title('BUILD FINBRIDGE TOGETHER','Share private feedback','Report bugs, request guides and suggest improvements without needing GitHub.')+privacyNote('feedback')+
-'<div class="split"><div class="card"><h3>Send feedback to FinBridge</h3><p>Submissions are sent via the third-party FormSubmit service to the FinBridge email inbox; they are not published as GitHub Issues. Please do not include personal finance records, IDs or passwords.</p>'+
-'<form id="feedbackForm" class="formgrid" method="POST" action="https://formsubmit.co/expect.finbridge@gmail.com"><input type="hidden" name="_subject" value="FinBridge feedback submission"><input type="hidden" name="_template" value="table"><input type="hidden" name="_url" value="https://nikunjsb.github.io/Finbridge/#feedback"><label class="field">Feedback type<select name="kind"><option>Missing guide</option><option>Feature request</option><option>Incorrect or unclear information</option><option>Bug / technical issue</option></select></label>'+
+function feedback(){
+const ready=Boolean(feedbackEndpoint&&turnstileSiteKey);
+return title('BUILD FINBRIDGE TOGETHER','Share private feedback','Report a bug, suggest a guide or request an improvement without a GitHub account.')+privacyNote('feedback')+
+(!ready?'<div class="note"><b>Feedback submissions are temporarily unavailable.</b> We are replacing the previous email service with a secure system that stores reports as private GitHub Issues. No messages are being accepted until setup and testing are complete.</div>':'')+
+'<div class="split"><div class="card"><h3>Send your suggestion</h3><p>When enabled, your feedback will go through a Cloudflare Worker to FinBridge’s private GitHub feedback repository. Please avoid names, addresses, account numbers, tax IDs or confidential documents.</p>'+
+'<form id="feedbackForm" class="formgrid">'+
+'<label class="field">Type<select name="kind"><option>Missing guide</option><option>Feature request</option><option>Incorrect or unclear information</option><option>Bug / technical issue</option></select></label>'+
 '<label class="field">Area<select name="area"><option>German tax</option><option>Germany–India</option><option>Investments and savings</option><option>Personal finances</option><option>Family and life events</option><option>Forms and documents</option><option>Other</option></select></label>'+
-'<label class="field" style="grid-column:1/-1">Short title<input name="title" maxlength="100" required placeholder="What should we improve?"></label>'+
-'<label class="field" style="grid-column:1/-1">Describe the issue or suggestion<textarea name="details" maxlength="1800" required placeholder="What happened, or what would you like to see? Avoid private financial information."></textarea></label>'+
+'<label class="field" style="grid-column:1/-1">Short title<input name="title" maxlength="100" minlength="4" required placeholder="What should we improve?"></label>'+
+'<label class="field" style="grid-column:1/-1">Details<textarea name="details" maxlength="1800" minlength="10" required placeholder="What happened, or what would you like to see? Please avoid personal and financial information."></textarea></label>'+
 '<label class="field" style="grid-column:1/-1">Why would it help? (optional)<textarea name="benefit" maxlength="800"></textarea></label>'+
-'<label class="field" style="grid-column:1/-1">Reply email (optional)<input name="email" type="email" maxlength="180" placeholder="you@example.com"></label>'+
-'<label style="display:none" aria-hidden="true">Do not fill<input name="_honey" tabindex="-1" autocomplete="off"></label>'+
-'<label style="grid-column:1/-1;display:flex;gap:9px;align-items:flex-start;font-size:13px"><input type="checkbox" name="privacyConsent" required style="margin-top:4px"><span>I agree to send my feedback through FormSubmit to FinBridge’s email inbox. I understand the service and email provider process and may retain my submission. <a href="#privacy">Privacy details</a>.</span></label>'+
-'<div style="grid-column:1/-1"><button type="submit" class="button" id="submitFeedback">Send feedback</button><p class="muted" style="font-size:12px;margin-top:10px">No GitHub account required. Submitting may open a FormSubmit verification / confirmation screen. The inbox owner must activate FormSubmit before emails can be delivered.</p></div></form>'+
-'<div id="feedbackResult" class="result" role="status" aria-live="polite">Submitting sends your form to FormSubmit for delivery. You may need to complete a verification step on its website.</div></div>'+
-'<div class="card"><h3>How feedback is handled</h3><p><b>1.</b> Messages are delivered to the FinBridge feedback mailbox after email activation.</p><p><b>2.</b> We group duplicate requests and investigate bugs.</p><p><b>3.</b> We prioritize improvements by user value, relevance and verification risk.</p><p><b>4.</b> Verified updates can be published to FinBridge.</p><div class="note">These private submissions do not automatically appear in public GitHub Issues, so the separate GitHub feedback-review task cannot read them unless a separate integration is added.</div><a href="https://formsubmit.co/" target="_blank" rel="noopener noreferrer" class="biglink">About the feedback service ↗</a></div></div>'}
+'<label style="display:none" aria-hidden="true">Leave this blank<input name="_honey" tabindex="-1" autocomplete="off"></label>'+
+'<label style="grid-column:1/-1;display:flex;align-items:flex-start;gap:9px;font-size:13px"><input type="checkbox" name="privacyConsent" required style="margin-top:4px"><span>I agree to send my feedback to Cloudflare for validation and storage as a private GitHub Issue accessible to the FinBridge team. <a href="#privacy">Read privacy information</a>.</span></label>'+
+(ready?'<div id="feedbackTurnstile" style="grid-column:1/-1"></div>':'')+
+'<div style="grid-column:1/-1"><button type="submit" id="submitFeedback" class="button" '+(ready?'':'disabled')+'>Send feedback</button><p class="muted" style="font-size:12px;margin-top:10px">'+(ready?'Complete the spam check, then send. No GitHub account is required.':'The form will open after secure storage and anti-spam protection are configured.')+'</p></div>'+
+'</form><div class="result" id="feedbackResult" role="status" aria-live="polite">'+(ready?'Nothing is sent until you click Send feedback.':'Feedback submission is not active yet; please do not enter sensitive information.')+'</div></div>'+
+'<div class="card"><h3>How suggestions are handled</h3><p><b>1.</b> Validate the submission and verify it is not spam.</p><p><b>2.</b> Store it privately in a dedicated GitHub feedback repository.</p><p><b>3.</b> Group duplicates and prioritize useful requests.</p><p><b>4.</b> Verify and publish updates on FinBridge where appropriate.</p><div class="note">This system is not yet live. Once active, submissions will not appear as public GitHub Issues. They will only be visible to authorized repository collaborators.</div></div></div>';
+}
+let feedbackWidgetId=null;
+function setupFeedbackWidget(){
+ if(!feedbackEndpoint||!turnstileSiteKey)return;
+ const el=document.getElementById('feedbackTurnstile');
+ if(!el)return;
+ feedbackWidgetId=null;
+ function mount(){
+  const target=document.getElementById('feedbackTurnstile');
+  if(!target||!window.turnstile||feedbackWidgetId!==null)return;
+  feedbackWidgetId=window.turnstile.render(target,{sitekey:turnstileSiteKey,theme:'auto'});
+ }
+ if(window.turnstile){mount();return}
+ if(!document.getElementById('feedbackTurnstileScript')){
+  const script=document.createElement('script');
+  script.id='feedbackTurnstileScript';
+  script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  script.async=true;script.defer=true;script.onload=mount;
+  document.head.appendChild(script);
+ }else{
+  const script=document.getElementById('feedbackTurnstileScript');
+  script.addEventListener('load',mount,{once:true});
+ }
+}
 
 function ask(){return title('QUESTIONS & INSIGHTS','Ask better questions','Search published guides, or save a question locally for later research. No live AI service is connected yet.')+privacyNote('optional')+'<div class="split"><div class="card"><h3>Find guidance</h3><form id="questionForm"><label class="field">Your question<textarea name="question" maxlength="1000" required placeholder="Can I deduct the money I send to my parents in India?"></textarea></label><label class="field" style="margin:12px 0"><input type="checkbox" name="store" '+(state.consent?'checked':'')+'/> Also save this question to my local history</label><button class="button">Find matching guides</button></form><div id="questionResult" class="result">Enter a question to match related educational guides.</div></div><div class="card"><h3>Local question history</h3><p>Opt-in only. Questions remain on this device unless you explicitly export them.</p><div id="questionHistory">'+(state.questions.length?state.questions.slice(-8).reverse().map(x=>'<div class="listrow"><span>'+escapeHTML(x.q)+'</span><small>'+escapeHTML(x.date)+'</small></div>').join(''):'<div class="empty">No saved questions.</div>')+'</div></div></div>'}
 function sources(){return title('TRANSPARENCY','Official sources and update status','Use these primary sources to verify relevant rules. The prototype does not automatically search or check for changes.')+'<div class="note"><b>Rule status:</b> guidance is draft educational content; no live compliance checks, tax adviser approvals or automatic updating are currently active. Check the effective year and official publications.</div><div class="card">'+sourceLinks.map(([name,url])=>'<div class="listrow"><div><b>'+escapeHTML(name)+'</b><div class="muted">'+escapeHTML(new URL(url).host)+'</div></div><a class="button secondary" href="'+url+'" target="_blank" rel="noopener noreferrer">Open source ↗</a></div>').join('')+'</div><div class="sectionhead"><h2>Maintenance policy</h2></div><div class="card"><p>Future backend releases should store each verified claim with its official source, applicability, effective date, last checked date and human review status, retaining historical years separately.</p><p>Regulatory changes should enter a review queue, not directly overwrite published calculators.</p></div>'}
@@ -547,13 +576,13 @@ return title('YOUR PRIVACY','How FinBridge handles information','A transparent e
 '<div class="grid two">'+
 '<div class="card"><h3>Information saved on your device</h3><p>Budget amounts, recorded tax-expense candidates, checklist selections, saved insights and questions you explicitly choose to record use your browser’s localStorage. They are not automatically shared between devices or uploaded to a FinBridge database.</p><p>Browser storage is not an encrypted vault: other people using the same browser profile may see these entries. Avoid storing bank credentials, tax identifiers or highly sensitive documents.</p></div>'+
 '<div class="card"><h3>Information processed but not saved</h3><p>Search text, the letter-phrase explainer and temporary form entries are processed in browser code. Letter text is not saved in FinBridge history unless you separately choose to enter it into a saved question.</p><p>This pilot does not use an external AI service for these inputs.</p></div>'+
-'<div class="card"><h3>Feedback submitted by email</h3><p>If you send feedback, the text, category, and any optional reply address go to <a href="https://formsubmit.co/" target="_blank" rel="noopener noreferrer">FormSubmit</a>, which forwards it to the FinBridge feedback inbox after owner activation. Unlike other local-only forms, this feedback leaves your device. FormSubmit states it retains submissions for 30 days; the email provider may retain delivered copies. Submission does not require your name or email. Never include tax IDs, bank details or sensitive files. <a href="https://formsubmit.co/" target="_blank" rel="noopener noreferrer">Service information ↗</a></p><a class="biglink" href="#feedback">Send feedback →</a></div>'+
+'<div class="card"><h3>Private feedback (under setup)</h3><p>When this feature is enabled, submitting feedback will send the text, chosen category, and anti-spam token to a Cloudflare Worker, which will verify the request and create an issue in a private FinBridge GitHub repository. Only authorized collaborators should have access to those issues. No reply email address is collected by the form. Cloudflare and GitHub may process the submitted data according to their policies, including technical security data; avoid including sensitive documents or identifying details. Until the service is deployed, the Send button stays disabled.</p><a class="biglink" href="#feedback">Open feedback form →</a></div>'+
 '<div class="card"><h3>Hosting and links to outside sites</h3><p>GitHub Pages serves FinBridge. As with other hosted sites, GitHub may process access data such as IP address, request information and technical logs according to its policies. Opening third-party sites transfers you to their respective privacy practices.</p><a class="biglink" href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub privacy statement ↗</a></div>'+
 '<div class="card"><h3>Your local controls</h3><p>You can export a backup as JSON, restore it or clear all FinBridge local records using the Privacy & backup page. Clearing your browser’s site data may also remove them, and the records do not automatically reappear on another device.</p><a class="button secondary" href="#settings">Open local data controls →</a></div>'+
 '<div class="card"><h3>GDPR and pilot limitations</h3><p>A public website may need a full operator-specific privacy notice, responsible-party contact details and other legal disclosures under German/EU law. This educational pilot overview is not a substitute for a completed Datenschutzerklärung or Impressum. These require review before a broader public launch.</p><p>No claim of certified GDPR compliance is made.</p></div></div>'
 }
 
-function settings(){return title('PRIVACY FIRST','Your data and backups','All workspace entries currently live only in your browser. Keep a backup if you rely on them.')+privacyNote('saved')+'<div class="grid two"><div class="card"><h3>Export local data</h3><p>Download your local budget, candidate expenses, voluntary question history and checklist status as JSON.</p><button class="button" id="exportData">Export backup</button></div><div class="card"><h3>Import a backup</h3><p>Restore a previously exported JSON file. Existing local entries will be replaced.</p>'+privacyNote('localupload')+'<label class="field">Choose JSON file<input type="file" id="importData" accept=".json,application/json"/></label></div><div class="card"><h3>Clear personal information</h3><p>Delete FinBridge local entries from this browser only.</p><button class="button secondary" id="clearData">Clear local data</button></div><div class="card"><h3>What stays online?</h3><p>The website files can be served from GitHub-backed hosting. FinBridge does not upload financial form entries to a FinBridge backend. GitHub Pages can process standard technical access logs, and emailed feedback passes through FormSubmit when submitted.</p></div></div>'}
+function settings(){return title('PRIVACY FIRST','Your data and backups','All workspace entries currently live only in your browser. Keep a backup if you rely on them.')+privacyNote('saved')+'<div class="grid two"><div class="card"><h3>Export local data</h3><p>Download your local budget, candidate expenses, voluntary question history and checklist status as JSON.</p><button class="button" id="exportData">Export backup</button></div><div class="card"><h3>Import a backup</h3><p>Restore a previously exported JSON file. Existing local entries will be replaced.</p>'+privacyNote('localupload')+'<label class="field">Choose JSON file<input type="file" id="importData" accept=".json,application/json"/></label></div><div class="card"><h3>Clear personal information</h3><p>Delete FinBridge local entries from this browser only.</p><button class="button secondary" id="clearData">Clear local data</button></div><div class="card"><h3>What stays online?</h3><p>The website files can be served from GitHub-backed hosting. FinBridge does not upload financial form entries to a FinBridge backend. GitHub Pages can process standard technical access logs, and feedback will use Cloudflare and private GitHub storage once the new service is enabled.</p></div></div>'}
 function render(){
 const hash=decodeURIComponent(location.hash.replace(/^#\/?/,'')||'overview');
 const [page,id]=hash.split('/');
@@ -566,6 +595,7 @@ case 'journeys':content=journeys();break;case 'journey':content=journey(id);brea
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }
 $('#content').innerHTML=content;
+if(page==='feedback')setupFeedbackWidget();
 if(page==='tax')updateExpensePreview();
 $('#breadcrumb').textContent=page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
 document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
@@ -575,12 +605,25 @@ $('#search').addEventListener('input',e=>{if(!location.hash.startsWith('#discove
 $('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetSearch').hidden=true;render()});
 document.addEventListener('change',e=>{if(e.target.matches('#expenseForm select[name="category"]'))updateExpenseFields();else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview()});
-document.addEventListener('submit',e=>{
+document.addEventListener('submit',async e=>{
 if(e.target.id==='feedbackForm'){
- const fd=new FormData(e.target);
- if(String(fd.get('_honey')||'').trim()){e.preventDefault();$('#feedbackResult').textContent='Thank you.';return}
- if(!fd.get('privacyConsent')){e.preventDefault();$('#feedbackResult').textContent='Please agree to the privacy notice first.';return}
- $('#feedbackResult').textContent='Opening FormSubmit verification / confirmation. Only the service can confirm receipt.';
+ e.preventDefault();
+ const form=e.target,result=$('#feedbackResult'),button=$('#submitFeedback'),fd=new FormData(form);
+ if(!feedbackEndpoint||!turnstileSiteKey){result.textContent='Feedback is not enabled yet.';return}
+ if(String(fd.get('_honey')||'').trim()){result.textContent='Thank you.';return}
+ if(!fd.get('privacyConsent')){result.textContent='Please agree to the privacy notice.';return}
+ const token=window.turnstile?.getResponse(feedbackWidgetId)||'';
+ if(!token){result.textContent='Please complete the anti-spam check before sending.';return}
+ const payload={kind:String(fd.get('kind')||''),area:String(fd.get('area')||''),title:String(fd.get('title')||'').trim(),details:String(fd.get('details')||'').trim(),benefit:String(fd.get('benefit')||'').trim(),_honey:String(fd.get('_honey')||''),consent:true,turnstileToken:token};
+ button.disabled=true;button.textContent='Sending…';result.textContent='Sending your feedback…';
+ try{
+  const response=await fetch(feedbackEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  const reply=await response.json().catch(()=>({message:'Unexpected server response'}));
+  if(!response.ok||reply.ok!==true)throw Error(reply.message||'The server did not accept the feedback');
+  result.textContent='Feedback received and stored privately. Thank you!';
+  form.reset();
+ }catch(error){result.textContent='Feedback not submitted: '+String(error.message||error)+'. Please try again later.'}
+ finally{button.disabled=false;button.textContent='Send feedback';if(window.turnstile&&feedbackWidgetId!==null)window.turnstile.reset(feedbackWidgetId)}
 }
 if(e.target.id==='languageSearchForm'){e.preventDefault();const q=String(new FormData(e.target).get('query')||'').trim();document.getElementById('languageResults').innerHTML=glossaryMatches(q)}
 if(e.target.id==='letterExplainForm'){e.preventDefault();const x=String(new FormData(e.target).get('letter')||'').trim();document.getElementById('letterExplanation').innerHTML=explainLetter(x)}

@@ -31,11 +31,51 @@ const articles=[
 articles.push(...extraArticles);
 const sourceLinks=[['German Income Tax Act','https://www.gesetze-im-internet.de/estg/'],['ELSTER','https://www.elster.de/'],['Federal Ministry of Finance','https://www.bundesfinanzministerium.de/'],['German Pension Insurance','https://www.deutsche-rentenversicherung.de/'],['Indian Income Tax Department','https://www.incometax.gov.in/'],['Reserve Bank of India','https://www.rbi.org.in/'],['SEBI','https://www.sebi.gov.in/'],['BaFin','https://www.bafin.de/']];
 const title=(k,h,d)=>'<div class="eyebrow">'+escapeHTML(k)+'</div><h1 class="h1">'+escapeHTML(h)+'</h1><p class="lead">'+escapeHTML(d)+'</p>';
+
+const fbIconShapes={
+home:'<path d="m3 10 9-7 9 7v10H3zM9 20v-7h6v7"/>',
+news:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+search:'<circle cx="10" cy="10" r="7"/><path d="m16 16 5 5"/>',
+language:'<path d="M3 5h12M9 3v2M5 9c2 5 5 7 9 9M13 9c-1 4-4 7-8 9M14 21l4-11 4 11m-6-4h4"/>',
+receipt:'<path d="M5 3h14v18l-3-2-4 2-4-2-3 2zM8 8h8M8 12h8M8 16h5"/>',
+wallet:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M15 15h3"/>',
+chart:'<path d="M3 20h18M5 17l5-6 4 3 6-9M16 5h4v4"/>',
+globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+coins:'<circle cx="9" cy="10" r="6"/><path d="M15 7a6 6 0 1 1-9 9M9 7v6"/>',
+family:'<circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20v-2a6 6 0 0 1 12 0v2M14 16a5 5 0 0 1 8 4"/>',
+calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/>',
+suitcase:'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M9 7V4h6v3M3 13h18"/>',
+plane:'<path d="m21 3-6 18-4-8-8-4zM11 13 21 3"/>',
+bulb:'<path d="M9 18h6M10 21h4M8 15a7 7 0 1 1 8 0l-1 3H9z"/>',
+message:'<path d="M4 4h16v13H9l-5 4zM8 9h8M8 13h5"/>',
+shield:'<path d="m12 2 9 4v6c0 5-4 9-9 10-5-1-9-5-9-10V6zM8 12l3 3 5-6"/>',
+settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+train:'<rect x="5" y="2" width="14" height="17" rx="4"/><path d="M5 10h14M9 19l-3 3M15 19l3 3M8 15h1M15 15h1"/>',
+laptop:'<rect x="5" y="3" width="14" height="13" rx="1"/><path d="M2 20h20l-2-4H4z"/>',
+monitor:'<rect x="3" y="3" width="18" height="14" rx="2"/><path d="M12 17v4M8 21h8"/>',
+book:'<path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1zM12 5v15"/>',
+folder:'<path d="M3 6h7l2 3h9v11H3z"/>',
+checklist:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 9 2 2 4-4M8 16h8"/>',
+bank:'<path d="m2 9 10-6 10 6zM4 21h16M6 10v8M12 10v8M18 10v8"/>',
+wifi:'<path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M9 17a5 5 0 0 1 6 0"/><circle cx="12" cy="21" r="1"/>',
+heart:'<path d="M20 5a5 5 0 0 0-8 1 5 5 0 0 0-8-1c-3 4 0 8 8 15 8-7 11-11 8-15z"/>',
+file:'<path d="M6 2h8l5 5v15H6zM14 2v6h5M9 13h7M9 17h7"/>',
+building:'<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-5h4v5"/>',
+key:'<circle cx="8" cy="9" r="5"/><path d="m12 13 9 9m-4-4 2-2"/>',
+arrow:'<path d="M4 12h16m-7-7 7 7-7 7"/>'
+};
+function fbIcon(name,cls=''){return '<svg class="fb-icon '+cls+'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+(fbIconShapes[name]||fbIconShapes.file)+'</svg>'}
+const fbNavIcons={overview:'home',news:'news',discover:'search',language:'language',tax:'receipt',taxguide:'checklist',budget:'wallet',invest:'chart',cross:'globe',gold:'coins',parentsguide:'family',residency:'calendar',journeys:'suitcase',insights:'bulb',ask:'message',feedback:'message',sources:'book',privacy:'shield',settings:'settings'};
+const fbTaxIcons={'Commuting':['train','Travel to work','Office days and distance'],'Home office':['laptop','Home office','Eligible work-from-home days'],'Work equipment':['monitor','Work equipment','Laptop, monitor and tools'],'Professional education':['book','Training & learning','Courses, exams and books'],'Business travel':['suitcase','Business travel','Work trips and transport'],'Insurance':['shield','Insurance','Qualifying contributions'],'Support to family':['family','Family support','Payments and required proof'],'Other':['folder','Other expenses','Additional costs to review']};
+const fbNewcomerIcons={housing:'home',confirmation:'file',anmeldung:'building',bank:'bank',sim:'wifi',internet:'wifi',transport:'train',insurance:'shield',residence:'file',broadcast:'news',electric:'bulb',taxid:'receipt',budget:'wallet',workcontract:'file',payslip:'receipt',bluecard:'shield',jobticket:'train',movejob:'suitcase',worktax:'receipt',enroll:'book',studenthealth:'heart',blocked:'bank',semesterticket:'train',studentpermit:'file',uniaccess:'book',studentwork:'wallet',studenthousing:'home',familypermit:'family',familyinsurance:'shield',childcare:'family',familybenefits:'wallet',familytax:'receipt'};
+const fbReturnIcons={decision:'globe',employment:'file',housing:'home',utilities:'bulb',internet:'wifi',transport:'train',insurance:'shield',broadcast:'news',bank:'bank',documents:'folder',shipping:'suitcase',mail:'message',abmeldung:'building',handover:'key',lastsalary:'receipt',residencetitle:'file',flight:'plane',indiabank:'bank',indiatax:'receipt',germantax:'receipt',investments:'chart',pension:'wallet',healthindia:'heart',foreignassets:'globe',security:'shield',employergoodbye:'file',drvstatus:'calendar',prstatus:'shield',university:'book',studentinsurance:'heart',studentloans:'bank'};
+function fbSteps(items,prefix,icons){return '<div class="fb-steps">'+items.map(([id,name,description])=>'<label class="fb-step"><input type="checkbox" data-'+prefix+'-task="'+id+'" '+(state[prefix+':'+id]?'checked':'')+'/><span class="fb-step-icon">'+fbIcon(icons[id]||'checklist')+'</span><span class="fb-step-copy"><b>'+escapeHTML(name)+'</b><small>'+escapeHTML(description)+'</small></span></label>').join('')+'</div>'}
+
 function nav(){
 let previous='';
 $('#navigation').innerHTML=sections.map(([id,label,sym,group])=>{
 const header=group!==previous?'<div class="navgroup">'+group+'</div>':'';previous=group;
-return header+'<a class="navitem" data-nav="'+id+'" href="#'+id+'"><span class="sym">'+sym+'</span>'+label+'</a>'
+return header+'<a class="navitem" data-nav="'+id+'" href="#'+id+'"><span class="sym">'+fbIcon(fbNavIcons[id]||'file')+'</span><span class="fb-nav-text">'+label+'</span></a>'
 }).join('');
 }
 function cards(list){return '<div class="grid">'+list.map(a=>'<a href="#guide/'+a.id+'" class="card link"><span class="icon">↗</span><div class="tag">'+escapeHTML(a.cat)+'</div><h3>'+escapeHTML(a.name)+'</h3><p>'+escapeHTML(a.summary)+'</p><span class="arrow">Read guide →</span></a>').join('')+'</div>'}

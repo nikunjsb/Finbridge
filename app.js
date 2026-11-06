@@ -571,8 +571,22 @@ function newcomerJourney(){
  '<div class="sectionhead"><h2>Official starting points</h2></div><div class="card">'+newcomerLinks.map(([label,url])=>'<div class="listrow"><span>'+escapeHTML(label)+'</span><a class="biglink" target="_blank" rel="noopener noreferrer" href="'+escapeHTML(url)+'">Open ↗</a></div>').join('')+'</div>'+
  '<div class="sectionhead"><h2>Related FinBridge guides</h2></div>'+cards(articles.filter(x=>['newcomer','salary','commute','accounts'].includes(x.id)));
 }
-function journeys(){return title('GUIDED PATHS','Choose a life moment','Practical checklists for major stages of living between Germany and India.')+privacyNote('saved')+'<div class="grid two"><a class="card link" href="#journey/newcomer"><span class="icon">◇</span><h3>Just arrived in Germany</h3><p>Detailed first-90-days plan for employees, students and families: banking, internet, registration, D-ticket, tax and more.</p><span class="arrow">Open journey →</span></a>'+legacyJourneyData.map(([id,label,steps])=>'<a class="card link" href="#journey/'+id+'"><span class="icon">◇</span><h3>'+label+'</h3><p>'+steps.length+' steps and related guides.</p><span class="arrow">Open journey →</span></a>').join('')+'</div>';}
-function journey(id){if(id==='newcomer')return newcomerJourney();if(id==='return')return returnIndiaJourney();const d=legacyJourneyData.find(x=>x[0]===id);if(!d)return journeys();const [_,label,steps]=d;return privacyNote('saved')+'<a href="#journeys" class="biglink">← All journeys</a><div style="margin-top:24px">'+title('LIFE JOURNEY',label,'Your checklist is a general starting point; legal requirements may differ by situation.')+'</div><div class="card">'+steps.map((s,i)=>'<div class="listrow"><label style="display:flex;gap:12px;align-items:center"><input type="checkbox" data-journey="'+id+':'+i+'" '+(state['j:'+id+':'+i]?'checked':'')+'/> '+escapeHTML(s)+'</label></div>').join('')+'</div><div class="sectionhead"><h2>Continue researching</h2></div>'+cards(articles.filter(x=>id==='support'?['support','gift'].includes(x.id):id==='return'?['pension','residency'].includes(x.id):['etf','salary'].includes(x.id)));}
+function journeys(){
+return title('GUIDED PATHS','Choose a life moment','Get a clear step-by-step plan for important moments between Germany and India.')+privacyNote('saved')+
+'<div class="fb-feature-grid"><a class="card link fb-feature-card" href="#journey/newcomer"><span class="fb-card-symbol">'+fbIcon('suitcase')+'</span><h3>Just arrived in Germany</h3><p>Set up housing, registration, banking, internet and more with a simple checklist.</p><span class="arrow">Start arrival guide '+fbIcon('arrow','fb-arrow')+'</span></a>'+
+legacyJourneyData.map(([id,label,steps])=>'<a class="card link fb-feature-card" href="#journey/'+id+'"><span class="fb-card-symbol">'+fbIcon(id==='return'?'plane':id==='support'?'family':'chart')+'</span><h3>'+escapeHTML(label)+'</h3><p>'+steps.length+' practical steps to help you plan and track progress.</p><span class="arrow">Open journey '+fbIcon('arrow','fb-arrow')+'</span></a>').join('')+'</div>';
+}
+function journey(id){
+if(id==='newcomer')return newcomerJourney();
+if(id==='return')return returnIndiaJourney();
+const data=legacyJourneyData.find(item=>item[0]===id);
+if(!data)return journeys();
+const [_,label,steps]=data;
+return privacyNote('saved')+'<a href="#journeys" class="biglink">← All journeys</a><div style="margin-top:24px">'+title('LIFE JOURNEY',label,'Follow the steps at your own pace. The checklist is general guidance.')+'</div>'+
+'<div class="card fb-journey-card"><div class="fb-steps">'+steps.map((step,i)=>'<label class="fb-step"><input type="checkbox" data-journey="'+id+':'+i+'" '+(state['j:'+id+':'+i]?'checked':'')+'/><span class="fb-step-icon">'+fbIcon(id==='support'?'family':'checklist')+'</span><span class="fb-step-copy"><b>'+escapeHTML(step)+'</b></span></label>').join('')+'</div></div>'+
+'<div class="sectionhead"><h2>Continue researching</h2></div>'+cards(articles.filter(item=>id==='support'?['support','gift'].includes(item.id):['etf','salary'].includes(item.id)));
+}
+
 function feedback(){
 const ready=Boolean(feedbackEndpoint&&turnstileSiteKey);
 return title('BUILD FINBRIDGE TOGETHER','Share private feedback','Report a bug, suggest a guide or request an improvement without a GitHub account.')+privacyNote('feedback')+

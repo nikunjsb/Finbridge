@@ -320,8 +320,8 @@ return title('WORK & SALARY / GERMANY','Tax-class guide for couples and families
 '<label class="field">Federal state (employment)<select name="state">'+taxClassStates.map(x=>'<option '+(x==='Hesse (Hessen)'?'selected':'')+'>'+escapeHTML(x)+'</option>').join('')+'</select></label>'+
 '<label class="field">Church tax liability<select name="church"><option value="no">Neither partner pays church tax</option><option value="yes">Both partners pay church tax</option><option value="mixed">Only one pays / different circumstances (manual review)</option></select></label>'+
 '<label class="field">Children / long-term-care insurance<select name="child"><option value="none">No children (both age 23+)</option><option value="one">At least one child (basic rate only)</option><option value="other">Multiple children under 25 / different ages (manual review)</option></select></label>'+
-'<label class="field">Statutory health insurance additional contribution (%)<input type="number" name="extra" min="0" max="6" step="0.1" value="2.9" required></label>'+
-'</div><p class="muted">Assumptions: both are employees, paid evenly over twelve months, in statutory health/pension/unemployment/care insurance with the same listed health contribution. No private insurance, salary-sacrifice, allowances, one-off bonuses or special deductions. Inputs are processed locally and not saved.</p></form>'+
+'<label class="field">Health insurance (both partners)<select name="healthOption" id="healthOption"><option value="average">Public / statutory — I do not know the provider (2026 reference 2.9%)</option><option value="tk">Techniker Krankenkasse (TK) — 2.69%</option><option value="barmer">Barmer — 3.29%</option><option value="dak">DAK — 3.20%</option><option value="custom">Other public insurer — enter its additional contribution</option><option value="private">Private health insurance (PKV) — calculation needs individual details</option></select></label>'+'<label class="field" id="healthExtraWrap" hidden>Insurer additional contribution (Zusatzbeitrag) in %<input type="number" name="extra" min="0" max="6" step="0.01" value="2.9"><small>Only the additional rate, not the total 14.6% + additional rate. Find it on your payslip or insurer’s website.</small></label>'+
+'</div><p class="muted">Assumptions: both are employees, paid evenly over twelve months. The statutory health-insurance selection is applied to both partners. If they have different insurers, calculate their social contributions separately. Private insurance requires an individual calculation. No private insurance, salary-sacrifice, allowances, one-off bonuses or special deductions. Inputs are processed locally and not saved.</p></form>'+
 '<div id="taxClassResults" class="result" role="status" aria-live="polite"></div></div>'+
 '<div class="sectionhead"><h2>Understand your options</h2></div>'+
 '<div class="grid two"><div class="card"><h3>IV / IV — equal treatment</h3><p>Generally the default after marriage. Good for similar incomes and simple payroll. It can withhold more than the expected joint tax where incomes differ; a tax return can reconcile that.</p></div>'+
@@ -350,9 +350,19 @@ if(x<=69878){const z=(x-17799)/10000;return Math.floor((173.10*z+2397)*z+1034.87
 if(x<=277825)return Math.floor(.42*x-11135.63);
 return Math.floor(.45*x-19470.38);
 }
+function updateTaxHealthOption(){
+const f=document.getElementById('taxClassForm');if(!f)return;
+const option=f.elements.namedItem('healthOption')?.value;
+const wrap=document.getElementById('healthExtraWrap');
+if(wrap)wrap.hidden=option!=='custom';
+}
 function renderTaxClassResults(){
 const f=document.getElementById('taxClassForm'),out=document.getElementById('taxClassResults');if(!f||!out)return;
-const value=n=>Number(f.elements.namedItem(n)?.value),a=value('grossA'),b=value('grossB'),extra=value('extra');
+const value=n=>Number(f.elements.namedItem(n)?.value),a=value('grossA'),b=value('grossB');
+const healthOption=f.elements.namedItem('healthOption')?.value||'average';
+const healthRates={average:2.9,tk:2.69,barmer:3.29,dak:3.20};
+const extra=healthOption==='custom'?value('extra'):(healthRates[healthOption]??2.9);
+if(healthOption==='private'){out.innerHTML='<div class="note"><b>Private health insurance (PKV) selected.</b> This version does not calculate private-insurance net pay, because premiums and employer subsidies vary by person and contract. You can still read the tax-class explanations above. For exact withholding use the <a href="https://www.bmf-steuerrechner.de/" target="_blank" rel="noopener noreferrer" class="biglink">official BMF calculator ↗</a> and your payslip.</div>';return;}
 if([a,b,extra].some(x=>!Number.isFinite(x)||x<0)||a>1e6||b>1e6||extra>6){out.textContent='Enter valid annual salaries and an additional health insurance contribution from 0–6%.';return}
 const state=f.elements.namedItem('state').value,church=f.elements.namedItem('church').value,child=f.elements.namedItem('child').value;
 const socialA=taxClassEstimateSocial(a,state,extra,child),socialB=taxClassEstimateSocial(b,state,extra,child);
@@ -367,7 +377,7 @@ out.innerHTML='<div class="grid two"><div><div class="kicker">Your gross income 
 '<div class="note"><b>Suggested comparison:</b> '+(total===0?'Enter salaries to compare tax classes.':Math.min(a,b)===0?'IV/IV is the usual married-couple default, but investigate III/V eligibility and IV/IV with factor if one spouse has no salary.':share<=55?'IV/IV is a natural starting point for similar incomes. IV/IV with factor is another option if you want withholding closer to the annual outcome.':share<=65?'Compare IV/IV with factor first for a more balanced payroll. III/V is designed around a 60/40 split, but the lower earner faces higher withholding in V.':'IV/IV with factor is often worth reviewing. III/V can shift more monthly net to the high earner but might produce an annual payment.')+'</div>'+
 '<h3>Illustrative combined household amount — not an official net-payslip calculation</h3>'+
 '<p><b>About '+euro(averageNet)+' per month</b> after simplified 2026 social contributions and an <b>approximate annual joint income-tax tariff</b>. For transparency, the illustrative annual tax amount is '+euro(joint)+' (compared with '+euro(individual)+' when the same simplified tax bases are taxed individually). This does <b>not</b> forecast the monthly net under III/V, IV/IV or factor: the exact class-specific Lohnsteuer must be calculated under the 2026 BMF payroll algorithm.</p>'+
-'<p class="muted">'+notes+' This rough illustration estimates taxable income by subtracting employee contributions and a €1,230 work-expense allowance; real tax calculations have different deductible insurance components, solidarity surcharge, child allowances, church tax, other income and benefits. Consequently these amounts may materially differ from actual take-home pay or assessment. Check the BMF calculator and payslip before making a tax-class decision.</p>';
+'<p class="muted"><b>Health insurance:</b> '+(healthOption==='average'?'2026 reference average (not necessarily your insurer’s rate)':healthOption==='custom'?'your manually entered insurer rate':healthOption==='tk'?'TK':healthOption==='barmer'?'Barmer':'DAK')+' Zusatzbeitrag '+extra.toFixed(2)+'%, with the usual 14.6% general contribution and employee/employer sharing. '+notes+' This rough illustration estimates taxable income by subtracting employee contributions and a €1,230 work-expense allowance; real tax calculations have different deductible insurance components, solidarity surcharge, child allowances, church tax, other income and benefits. Consequently these amounts may materially differ from actual take-home pay or assessment. Check the BMF calculator and payslip before making a tax-class decision.</p>';
 }
 
 function doubleHousehold(){
@@ -773,14 +783,14 @@ case 'sources':content=sources();break;case 'privacy':content=privacyPage();brea
 }
 $('#content').innerHTML=content;
 if(page==='feedback')setupFeedbackWidget();
-if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleHousehold();if(page==='taxclasses')renderTaxClassResults();
+if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleHousehold();if(page==='taxclasses'){updateTaxHealthOption();renderTaxClassResults();}
 $('#breadcrumb').textContent=page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
 document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
 }
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});
 $('#search').addEventListener('input',e=>{if(!location.hash.startsWith('#discover'))location.hash='#discover';else render();$('#resetSearch').hidden=!e.target.value});
 $('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetSearch').hidden=true;render()});
-document.addEventListener('change',e=>{if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
+document.addEventListener('change',e=>{if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold();if(e.target.closest('#taxClassForm'))renderTaxClassResults()});
 document.addEventListener('submit',async e=>{
 if(e.target.id==='doubleHouseholdForm'){e.preventDefault();updateDoubleHousehold();return;}if(e.target.id==='taxClassForm'){e.preventDefault();renderTaxClassResults();return;}

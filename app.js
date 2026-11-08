@@ -719,6 +719,7 @@ $('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetS
 document.addEventListener('change',e=>{if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold()});
 document.addEventListener('submit',async e=>{
+if(e.target.id==='doubleHouseholdForm'){e.preventDefault();updateDoubleHousehold();return;}
 if(e.target.id==='feedbackForm'){
  e.preventDefault();
  const form=e.target,result=$('#feedbackResult'),button=$('#submitFeedback'),fd=new FormData(form);

@@ -9,7 +9,9 @@ async fetch(request,env){
  if(request.headers.get('Origin')!==allowedOrigin)return reply(403,{ok:false,error:'origin'});
  if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{'access-control-allow-origin':allowedOrigin,'access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type','vary':'Origin'}});
  if(request.method!=='POST')return reply(405,{ok:false,error:'method'});
- if(!env.DB)return reply(503,{ok:false,error:'database_unavailable'});
+ if(!env.DB||!env.RATE_LIMITER)return reply(503,{ok:false,error:'service_not_configured'});
+ const key=request.headers.get('CF-Connecting-IP')||'unknown';
+ const rate=await env.RATE_LIMITER.limit({key});if(!rate.success)return reply(429,{ok:false,error:'rate_limited'});
  if(Number(request.headers.get('content-length')||0)>2048)return reply(413,{ok:false,error:'too_large'});
  let body;try{body=await request.json()}catch{return reply(400,{ok:false,error:'json'})}
  if(!body||typeof body!=='object'||Array.isArray(body)||!validId(body.visitorId))return reply(400,{ok:false,error:'input'});
@@ -24,6 +26,9 @@ async fetch(request,env){
  const country=typeof body.country==='string'?body.country.slice(0,48):'';
  const state=typeof body.state==='string'?body.state.slice(0,80):'';
  if(!['Germany','India','Other',''].includes(country))return reply(400,{ok:false,error:'country'});
+ // Deduplicate repeat sends from the same consenting browser within 24 hours.
+ const repeat=await env.DB.prepare('SELECT id FROM location_events WHERE visitor_id=? AND created_at >= unixepoch()-86400 LIMIT 1').bind(body.visitorId).first();
+ if(repeat)return reply(200,{ok:true,already_recorded_today:true,retention_days:14});
  const id=crypto.randomUUID();
  // Intentionally no IP, user-agent, fingerprint, page URL, or name stored.
  await env.DB.prepare('INSERT INTO location_events(id,visitor_id,lat,lon,accuracy_m,country,state,created_at,expires_at) VALUES (?,?,?,?,?,?,?,unixepoch(),unixepoch()+1209600)')

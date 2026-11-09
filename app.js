@@ -197,7 +197,7 @@ const searchableTools=[
 {id:'language',title:'Language Bridge',summary:'German financial terms, taxes, insurance, letters and explanations.',keywords:'german translation glossary steuerklasse lohnabrechnung'}
 ];
 function searchToolMatches(term){
-const stop=new Set(['how','do','does','my','me','i','we','you','what','which','is','the','a','an','of','in','to','for','with','if','or','and','on','get','can','should','would','about','please','tell','much','salary','help','want']);
+const stop=new Set(['how','do','does','my','me','i','we','you','what','which','is','the','a','an','of','in','to','for','with','if','or','and','on','get','can','should','would','about','please','tell','much','help','want']);
 const words=normalizeTerm(term).split(' ').filter(w=>w.length>=2&&!stop.has(w)&&! /^\d+$/.test(w));
 if(!words.length)return [];
 return searchableTools.map(x=>{

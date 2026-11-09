@@ -112,3 +112,16 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 @media(max-width:1100px){.fb-tax-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.fb-feature-grid{grid-template-columns:1fr;gap:12px}.fb-feature-card{min-height:166px;padding:19px}.fb-hero{padding:25px 22px}.fb-tax-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.fb-tax-choice{padding:12px;min-height:131px}.fb-journey-card{padding:4px 14px}.fb-step{gap:10px;padding:14px 0}.fb-step-icon{height:38px;width:38px;flex-basis:38px}.fb-step-icon .fb-icon{width:19px;height:19px}.fb-step-copy b{font-size:13px}.fb-step input[type=checkbox]{margin-top:12px}.sectionhead .muted{font-size:11px;text-align:right}}
 @media(prefers-reduced-motion:reduce){.fb-feature-card .fb-arrow{transition:none}}
+
+/* Spouse-specific salary estimator and payslip comparison */
+#taxClassForm .field{margin-bottom:12px}
+#taxClassForm .field[hidden]{display:none!important}
+.tax-payroll-scroll{width:100%;overflow-x:auto;margin:16px 0 22px;border:1px solid #e3e7e5;border-radius:12px}
+.tax-payroll-table{width:100%;border-collapse:collapse;min-width:620px;font-size:13px;background:#fff}
+.tax-payroll-table th,.tax-payroll-table td{padding:13px 14px;text-align:left;border-bottom:1px solid #eaeaea;vertical-align:top}
+.tax-payroll-table thead th{background:#f3f5f4;font-size:11px;color:#52615c;font-weight:750;white-space:nowrap}
+.tax-payroll-table tbody tr:last-child td,.tax-payroll-table tbody tr:last-child th{border-bottom:0}
+.tax-payroll-table tbody th{font-weight:700;max-width:210px}
+.tax-payroll-table small{display:block;margin-top:5px;color:#737373;font-weight:400;font-size:11px;line-height:1.4}
+.tax-payroll-table td{font-variant-numeric:tabular-nums}
+@media(max-width:700px){#taxClassForm .grid.two{grid-template-columns:1fr}.tax-payroll-table{min-width:610px}}

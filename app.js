@@ -10,7 +10,7 @@ let state;
 try{state={budget:{income:3500,housing:950,food:350,transport:180,other:400,india:250},expenses:[],questions:[],consent:false,...JSON.parse(localStorage.getItem(storageKey)||'{}')}}catch{state={budget:{income:3500,housing:950,food:350,transport:180,other:400,india:250},expenses:[],questions:[],consent:false}}
 const save=()=>localStorage.setItem(storageKey,JSON.stringify(state));
 const sections=[
-['overview','Overview','◧','MAIN'],['news','Expat updates','▤','MAIN'],['discover','Explore topics','⌕','MAIN'],['language','Language Bridge','文','MAIN'],['tax','Tax return workspace','▤','FINANCES'],['taxguide','What can I claim?','☷','FINANCES'],
+['overview','Overview','◧','MAIN'],['location','My location & guidance','◎','MAIN'],['news','Expat updates','▤','MAIN'],['discover','Explore topics','⌕','MAIN'],['language','Language Bridge','文','MAIN'],['tax','Tax return workspace','▤','FINANCES'],['taxguide','What can I claim?','☷','FINANCES'],
 ['healthcompare','Health insurance comparison','♡','FINANCES'],['taxclasses','Tax classes & salary','€','FINANCES'],['doublehousehold','Double household costs','⌂','FINANCES'],['budget','Budget & goals','◴','FINANCES'],['invest','Investment planner','↗','FINANCES'],
 ['cross','Germany ↔ India','⇄','CROSS-BORDER'],['gold','Gold: Germany ↔ India','◈','CROSS-BORDER'],['parentsguide','Parents: tax filing guide','▣','CROSS-BORDER'],['residency','Residency & pension','◎','CROSS-BORDER'],
 ['journeys','Life journeys','◇','EXPLORE'],['insights','Did you know?','✦','EXPLORE'],['ask','Ask & feedback','?','EXPLORE'],['feedback','Suggest a feature','✎','EXPLORE'],['sources','Sources & updates','☑','EXPLORE'],['privacy','Privacy & data','♙','EXPLORE'],['settings','Privacy & backup','⚙','EXPLORE']];
@@ -65,7 +65,7 @@ key:'<circle cx="8" cy="9" r="5"/><path d="m12 13 9 9m-4-4 2-2"/>',
 arrow:'<path d="M4 12h16m-7-7 7 7-7 7"/>'
 };
 function fbIcon(name,cls=''){return '<svg class="fb-icon '+cls+'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+(fbIconShapes[name]||fbIconShapes.file)+'</svg>'}
-const fbNavIcons={overview:'home',news:'news',discover:'search',language:'language',tax:'receipt',taxguide:'checklist',taxclasses:'family',healthcompare:'heart',doublehousehold:'home',budget:'wallet',invest:'chart',cross:'globe',gold:'coins',parentsguide:'family',residency:'calendar',journeys:'suitcase',insights:'bulb',ask:'message',feedback:'message',sources:'book',privacy:'shield',settings:'settings'};
+const fbNavIcons={overview:'home',location:'globe',news:'news',discover:'search',language:'language',tax:'receipt',taxguide:'checklist',taxclasses:'family',healthcompare:'heart',doublehousehold:'home',budget:'wallet',invest:'chart',cross:'globe',gold:'coins',parentsguide:'family',residency:'calendar',journeys:'suitcase',insights:'bulb',ask:'message',feedback:'message',sources:'book',privacy:'shield',settings:'settings'};
 const fbTaxIcons={'Commuting':['train','Travel to work','Office days and distance'],'Home office':['laptop','Home office','Eligible work-from-home days'],'Work equipment':['monitor','Work equipment','Laptop, monitor and tools'],'Professional education':['book','Training & learning','Courses, exams and books'],'Business travel':['suitcase','Business travel','Work trips and transport'],'Insurance':['shield','Insurance','Qualifying contributions'],'Support to family':['family','Family support','Payments and required proof'],'Other':['folder','Other expenses','Additional costs to review']};
 const fbNewcomerIcons={housing:'home',confirmation:'file',anmeldung:'building',bank:'bank',sim:'wifi',internet:'wifi',transport:'train',insurance:'shield',residence:'file',broadcast:'news',electric:'bulb',taxid:'receipt',budget:'wallet',workcontract:'file',payslip:'receipt',bluecard:'shield',jobticket:'train',movejob:'suitcase',worktax:'receipt',enroll:'book',studenthealth:'heart',blocked:'bank',semesterticket:'train',studentpermit:'file',uniaccess:'book',studentwork:'wallet',studenthousing:'home',familypermit:'family',familyinsurance:'shield',childcare:'family',familybenefits:'wallet',familytax:'receipt'};
 const fbReturnIcons={decision:'globe',employment:'file',housing:'home',utilities:'bulb',internet:'wifi',transport:'train',insurance:'shield',broadcast:'news',bank:'bank',documents:'folder',shipping:'suitcase',mail:'message',abmeldung:'building',handover:'key',lastsalary:'receipt',residencetitle:'file',flight:'plane',indiabank:'bank',indiatax:'receipt',germantax:'receipt',investments:'chart',pension:'wallet',healthindia:'heart',foreignassets:'globe',security:'shield',employergoodbye:'file',drvstatus:'calendar',prstatus:'shield',university:'book',studentinsurance:'heart',studentloans:'bank'};
@@ -162,6 +162,97 @@ return '<article class="card expat-news-card"><div class="expat-news-meta"><span
 function expatNewsPreview(){return '<div class="sectionhead expat-news-heading"><h2>Germany Expat Updates</h2><a class="biglink" href="#news">View all updates →</a></div><p class="muted expat-news-caption">Verified against official sources on '+expatNewsReviewed+'. Curated updates, not a live news feed.</p><div class="grid">'+expatNews.map(x=>expatNewsCard(x,true)).join('')+'</div>'}
 function newsPage(){return title('GERMANY / EXPAT NEWS','Germany Expat Updates','Practical rule changes and announcements that may matter for foreign residents, students, employees and families.')+'<div class="note"><b>Editorial status:</b> These are manually reviewed updates checked on '+expatNewsReviewed+'. This page does not pull live headlines or automatically detect new laws. Check the effective date and original official source before acting. “Announced” does not mean a rule is already in effect.</div><div class="grid">'+expatNews.map(x=>expatNewsCard(x)).join('')+'</div><div class="sectionhead"><h2>What we monitor</h2></div><div class="card"><p>Immigration and citizenship; income tax, salary and insurance; transport, rent and banking; student and family rules; and Germany–India cross-border developments. Only sufficiently sourced changes should be published as news.</p><a class="button secondary" href="#feedback">Suggest a news topic →</a></div>'}
 
+
+// Browser-side, permission-gated geolocation. Never save/share raw coordinates.
+const fbGeoKey='finbridge-coarse-location-v1';
+let fbGeoState={country:'',state:'',source:''};
+try{const stored=JSON.parse(localStorage.getItem(fbGeoKey)||'{}');if(['Germany','India','Other'].includes(stored.country)){fbGeoState={country:stored.country,state:String(stored.state||''),source:String(stored.source||'manual')}}}catch{}
+const fbStates=[
+['Baden-Württemberg','Baden-Württemberg'],['Bavaria (Bayern)','Bayern'],['Berlin','Berlin'],['Brandenburg','Brandenburg'],['Bremen','Bremen'],['Hamburg','Hamburg'],['Hesse (Hessen)','Hessen'],['Lower Saxony (Niedersachsen)','Niedersachsen'],['Mecklenburg-Vorpommern','Mecklenburg-Vorpommern'],['North Rhine-Westphalia','Nordrhein-Westfalen'],['Rhineland-Palatinate','Rheinland-Pfalz'],['Saarland','Saarland'],['Saxony (Sachsen)','Sachsen'],['Saxony-Anhalt','Sachsen-Anhalt'],['Schleswig-Holstein','Schleswig-Holstein'],['Thuringia (Thüringen)','Thüringen']];
+const fbStateCode={'DE-BW':'Baden-Württemberg','DE-BY':'Bavaria (Bayern)','DE-BE':'Berlin','DE-BB':'Brandenburg','DE-HB':'Bremen','DE-HH':'Hamburg','DE-HE':'Hesse (Hessen)','DE-NI':'Lower Saxony (Niedersachsen)','DE-MV':'Mecklenburg-Vorpommern','DE-NW':'North Rhine-Westphalia','DE-RP':'Rhineland-Palatinate','DE-SL':'Saarland','DE-SN':'Saxony (Sachsen)','DE-ST':'Saxony-Anhalt','DE-SH':'Schleswig-Holstein','DE-TH':'Thuringia (Thüringen)'};
+let fbGeoRequestActive=false;
+function fbLocationLabel(){return fbGeoState.country==='Germany'?(fbGeoState.state||'Germany'):fbGeoState.country||'Choose location'}
+function fbSaveLocation(country,state,source){
+fbGeoState={country,state:country==='Germany'?state:'',source};
+try{localStorage.setItem(fbGeoKey,JSON.stringify(fbGeoState))}catch{}
+}
+function fbPointInRing(lon,lat,ring){
+let inside=false;for(let i=0,j=ring.length-1;i<ring.length;j=i++){
+const x1=ring[i][0],y1=ring[i][1],x2=ring[j][0],y2=ring[j][1];
+if((y1>lat)!==(y2>lat)&&lon<(x2-x1)*(lat-y1)/(y2-y1)+x1)inside=!inside;
+}return inside;
+}
+function fbPointInPolygon(lon,lat,polygon){if(!polygon.length||!fbPointInRing(lon,lat,polygon[0]))return false;return !polygon.slice(1).some(r=>fbPointInRing(lon,lat,r))}
+function fbPointInGeometry(lon,lat,geometry){
+if(geometry.type==='Polygon')return fbPointInPolygon(lon,lat,geometry.coordinates);
+if(geometry.type==='MultiPolygon')return geometry.coordinates.some(p=>fbPointInPolygon(lon,lat,p));
+return false;
+}
+async function fbDetectGermanState(lat,lon){
+const response=await fetch('./data/germany-states.geojson');
+if(!response.ok)throw Error('German state boundary map is unavailable');
+const geo=await response.json();
+const match=geo.features.find(f=>fbPointInGeometry(lon,lat,f.geometry));
+return match?fbStateCode[match.properties.id]||'':null;
+}
+function fbLocationStatus(message){
+const target=document.getElementById('fbLocationStatus');
+if(target)target.textContent=message;
+}
+function fbGoToLocationGuide(){
+if(fbGeoState.country==='Germany'&&fbGeoState.state){
+location.hash='#taxclasses';
+}else if(fbGeoState.country==='India'){location.hash='#cross'}
+else location.hash='#location';
+}
+function fbUpdateLocationHeader(){
+const target=document.getElementById('fbLocationButton');
+if(target)target.textContent='Location: '+fbLocationLabel();
+}
+async function fbUseDeviceLocation(){
+if(fbGeoRequestActive)return;
+if(!navigator.geolocation){fbLocationStatus('Your browser does not support device location. Select a country and state manually.');return}
+fbGeoRequestActive=true;fbLocationStatus('Waiting for your browser location permission…');
+navigator.geolocation.getCurrentPosition(async position=>{
+try{
+const lat=position.coords.latitude,lon=position.coords.longitude;
+const state=await fbDetectGermanState(lat,lon);
+if(state){
+fbSaveLocation('Germany',state,'device');fbLocationStatus('Detected '+state+'. You can correct this location manually.');
+fbUpdateLocationHeader();fbGoToLocationGuide();
+}else{
+fbLocationStatus('We could not identify a German federal state. Choose your country manually below. Precise coordinates were not stored.');
+}
+}catch(err){fbLocationStatus('Location was permitted, but state detection failed. Choose manually.')}
+finally{fbGeoRequestActive=false}
+},err=>{
+fbGeoRequestActive=false;
+fbLocationStatus(err.code===1?'Location permission was declined or blocked. You can choose manually or change browser site permissions.':err.code===3?'Location timed out. Try again or choose manually.':'Device location is unavailable. Choose manually.');
+},{enableHighAccuracy:false,timeout:12000,maximumAge:600000});
+}
+function fbLocationPage(){
+return title('LOCATION & TAX GUIDANCE','Guidance based on your location','Detect your current German federal state with browser permission, or choose your location manually. Your current location is not necessarily your tax residence.')+
+'<div class="card"><h3>Use device location</h3><p>On your first homepage visit, FinBridge can ask your browser for location permission. This page lets you try again if the popup was blocked. We check German federal-state boundaries locally and do not send GPS coordinates to any map provider.</p><button class="button" type="button" id="fbLocateNow">Detect my location</button><div class="note" role="status" id="fbLocationStatus">Current setting: '+escapeHTML(fbLocationLabel())+'.</div></div>'+
+'<div class="card"><h3>Choose or correct manually</h3><form id="fbLocationForm"><div class="formgrid"><label class="field">Country<select name="country"><option value="Germany" '+(fbGeoState.country==='Germany'?'selected':'')+'>Germany</option><option value="India" '+(fbGeoState.country==='India'?'selected':'')+'>India</option><option value="Other" '+(fbGeoState.country==='Other'?'selected':'')+'>Other / visiting another country</option></select></label>'+
+'<label class="field">German federal state<select name="state"><option value="">Choose federal state…</option>'+fbStates.map(([name])=>'<option value="'+escapeHTML(name)+'" '+(name===fbGeoState.state?'selected':'')+'>'+escapeHTML(name)+'</option>').join('')+'</select></label></div>'+
+'<button type="submit" class="button secondary">Save and open relevant guides →</button></form></div>'+
+'<div class="note"><b>Important:</b> Your tax liabilities depend on residence, income, employment and treaty rules—not simply your phone location. We save only your selected country and federal state in this browser. Nothing precise is added to Web Analytics.</div>'+
+'<div class="grid two"><div class="card"><h3>Germany</h3><p>Preselect a state for salary calculations and explain state-specific church tax and, where relevant, care-insurance contributions.</p><a href="#taxclasses" class="biglink">Tax classes & salary →</a></div><div class="card"><h3>India / cross-border</h3><p>Explore Indian tax residency, NRE/NRO banking and German–Indian income and pension questions separately.</p><a href="#cross" class="biglink">Cross-border guides →</a></div></div>';
+}
+let fbLocationAutoStarted=false;
+async function fbMaybeAutoRequestLocation(){
+if(fbLocationAutoStarted||fbGeoState.country||location.hash&&location.hash!=='#overview')return;
+fbLocationAutoStarted=true;
+if(!navigator.geolocation)return;
+try{
+if(sessionStorage.getItem('finbridge-geolocation-prompted'))return;
+sessionStorage.setItem('finbridge-geolocation-prompted','1');
+const permission=await navigator.permissions?.query({name:'geolocation'}).catch(()=>null);
+if(permission?.state==='denied')return;
+fbUseDeviceLocation();
+}catch{/* Manual location selector remains available. */}
+}
+
 function overview(){
 const starts=[
 ['journey/newcomer','suitcase','New to Germany?','A step-by-step plan for housing, registration, banking and daily life.','Start arrival guide'],
@@ -188,6 +279,7 @@ expatNewsPreview()+
 '<div class="sectionhead"><h2>Popular guides</h2><a class="biglink" href="#discover">All guides →</a></div>'+cards(articles.slice(0,3))
 }
 const searchableTools=[
+{id:'location',title:'Location-aware Germany and India guides',summary:'Choose your country and German federal state or allow the browser to detect your state.',keywords:'location geolocation bundesland federal state place nearby current location germany india state steuer kirchensteuer tax geography'},
 {id:'healthcompare',title:'Health insurance comparison (GKV)',summary:'Compare TK, Barmer, DAK, hkk, HEK or Audi BKK by contribution, salary, verified benefits, travel vaccines and 2027 scenarios.',keywords:'krankenkasse krankenversicherung gesundheitsversicherung wechsel zusatzbeitrag beitragssatz 2027 2026 insurance health benefits tk barmer dak hkk hek audi bkk osteopathie zahnreinigung reiseimpfung versicherung wechseln'},
 {id:'taxclasses',title:'Tax classes & salary comparison',summary:'Steuerklasse I II III IV V VI, married salary calculator, gross to net, children, income tax, payroll and IV/IV with factor.',keywords:'tax class steuerklasse steuerklassen taxclasses salary net salary payslip lohnsteuer brutto netto married single single parent divorced separated widow faktorverfahren iii v iv factor kirchensteuer pflegeversicherung krankenversicherung zusatzbeitrag elstam single parent splitting'},
 {id:'tax',title:'Tax return workspace',summary:'Record work expenses, home office, commuting, education and potential deductions by tax year.',keywords:'tax deduction werbungskosten income tax employment expense work from home'},
@@ -956,13 +1048,15 @@ const hash=decodeURIComponent(location.hash.replace(/^#\/?/,'')||'overview');
 const [page,id]=hash.split('/');
 let content='';
 switch(page){
-case 'overview':content=overview();break;case 'news':content=newsPage();break;case 'discover':content=discover($('#search')?.value||'');break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
+case 'overview':content=overview();break;case 'location':content=fbLocationPage();break;case 'news':content=newsPage();break;case 'discover':content=discover($('#search')?.value||'');break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
 case 'guide':content=guide(id);break;case 'term':content=termPage(id);break;case 'parentsguide':content=parentsGuide();break;case 'tax':content=tax();break;case 'taxguide':content=taxguide();break;case 'taxclasses':content=taxClasses();break;case 'healthcompare':content=healthCompare();break;case 'doublehousehold':content=doubleHousehold();break;case 'budget':content=budget();break;
 case 'invest':content=invest();break;case 'cross':content=cross();break;case 'gold':content=goldGuide();break;case 'residency':content=residency();break;
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }
 $('#content').innerHTML=content;
+fbUpdateLocationHeader();
+if(page==='taxclasses'&&fbGeoState.country==='Germany'&&fbGeoState.state){const field=document.querySelector('#taxClassForm [name=state]');if(field)field.value=fbGeoState.state;}
 if(page==='feedback')setupFeedbackWidget();
 if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleHousehold();if(page==='taxclasses'){updateTaxHealthOption();renderTaxClassResults();}if(page==='healthcompare')renderHealthCompare();
 $('#breadcrumb').textContent=page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
@@ -974,6 +1068,7 @@ $('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetS
 document.addEventListener('change',e=>{if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold();if(e.target.closest('#taxClassForm'))renderTaxClassResults();if(e.target.closest('#healthCompareForm'))renderHealthCompare()});
 document.addEventListener('submit',async e=>{
+if(e.target.id==='fbLocationForm'){e.preventDefault();const values=new FormData(e.target),country=String(values.get('country')),state=String(values.get('state'));if(country==='Germany'&&!state){fbLocationStatus('Choose a federal state before saving.');return}fbSaveLocation(country,state,'manual');fbUpdateLocationHeader();fbGoToLocationGuide();return}
 if(e.target.id==='doubleHouseholdForm'){e.preventDefault();updateDoubleHousehold();return;}if(e.target.id==='taxClassForm'){e.preventDefault();renderTaxClassResults();return;}if(e.target.id==='healthCompareForm'){e.preventDefault();renderHealthCompare();return;}
 if(e.target.id==='feedbackForm'){
  e.preventDefault();
@@ -1003,6 +1098,7 @@ if(e.target.id==='daysForm'){e.preventDefault();const f=new FormData(e.target),d
 if(e.target.id==='questionForm'){e.preventDefault();const f=new FormData(e.target),q=String(f.get('question')||'').trim();if(!q)return;const terms=q.toLowerCase().match(/[a-zäöüß]{4,}/g)||[];let ranked=articles.map(a=>({a,n:terms.filter(t=>(a.name+' '+a.summary+' '+a.overview).toLowerCase().includes(t)).length})).sort((a,b)=>b.n-a.n).filter(x=>x.n);const found=ranked.slice(0,3);const toolMatches=searchToolMatches(q).slice(0,3);$('#questionResult').innerHTML=(found.length||toolMatches.length)?'<b>Related guides and tools (not an AI answer):</b>'+toolMatches.map(x=>'<div class="listrow"><a href="#'+x.id+'">'+escapeHTML(x.title)+' →</a><span class="muted">'+escapeHTML(x.summary)+'</span></div>').join('')+found.map(x=>'<div class="listrow"><a href="#guide/'+x.a.id+'">'+escapeHTML(x.a.name)+' →</a></div>').join(''):'No reliable matching guide or tool found. Try a shorter query, official sources or professional advice for time-sensitive decisions.';if(f.get('store')){state.questions.push({q,date:new Date().toISOString().slice(0,10)});state.consent=true;save();$('#questionHistory').innerHTML=state.questions.slice(-8).reverse().map(x=>'<div class="listrow"><span>'+escapeHTML(x.q)+'</span><small>'+x.date+'</small></div>').join('')}}
 });
 document.addEventListener('click',e=>{
+if(e.target.id==='fbLocateNow'){fbUseDeviceLocation();return}
 const taxPick=e.target.closest('[data-tax-category]');if(taxPick){const select=document.querySelector('#expenseForm select[name="category"]');if(select){select.value=taxPick.dataset.taxCategory;updateExpenseFields();updateExpensePreview();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===select.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});select.scrollIntoView({behavior:'smooth',block:'center'});}return;}
 const rm=e.target.closest('[data-delete-expense]');if(rm){state.expenses.splice(Number(rm.dataset.deleteExpense),1);save();render()}
 if(e.target.dataset.saveinsight!==undefined){const i=Number(e.target.dataset.saveinsight);state.savedInsights=state.savedInsights||[];state.savedInsights=state.savedInsights.includes(i)?state.savedInsights.filter(x=>x!==i):[...state.savedInsights,i];save();render()}
@@ -1013,7 +1109,7 @@ if(e.target.id==='resetInsights'){state.dismissedInsights=[];save();render()}
 if(e.target.id==='pensionCheck'){const m=Number($('#pensionMonths').value);$('#pensionResult').textContent=m>=60?'60 or more German contribution months: pension rights and voluntary insurance eligibility may affect refund possibilities. Obtain an individual DRV assessment.':'Fewer than 60 months: a refund may be possible in some circumstances after waiting periods, but nationality, residence, insurance rights and agreements must be assessed by DRV.'}
 if(e.target.id==='copyFeedback'&&window.__feedbackDraft){navigator.clipboard?.writeText(window.__feedbackDraft).then(()=>{e.target.textContent='Copied';}).catch(()=>{alert('Select and copy your feedback manually if clipboard permission is blocked.');})}
 if(e.target.id==='exportData'){const b=new Blob([JSON.stringify({version:1,data:state},null,2)],{type:'application/json'});const url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download='finbridge-local-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-if(e.target.id==='clearData'&&confirm('Delete all local FinBridge data from this browser?')){localStorage.removeItem(storageKey);location.reload()}
+if(e.target.id==='clearData'&&confirm('Delete all local FinBridge data from this browser?')){localStorage.removeItem(storageKey);localStorage.removeItem(fbGeoKey);sessionStorage.removeItem('finbridge-geolocation-prompted');location.reload()}
 });
 document.addEventListener('change',async e=>{
 if(e.target.matches('[data-golddoc]')){state['gold:'+e.target.dataset.golddoc]=e.target.checked;save()}
@@ -1026,4 +1122,4 @@ if(e.target.id==='returnAudience'){state.returnAudience=e.target.value;save();re
 if(e.target.matches('[data-return-task]')){state['return:'+e.target.dataset.returnTask]=e.target.checked;save();render()}
 if(e.target.matches('[data-newcomer-task]')){state['newcomer:'+e.target.dataset.newcomerTask]=e.target.checked;save();render()}
 if(e.target.id==='importData'){try{const t=await e.target.files[0].text(),obj=JSON.parse(t);if(obj.version!==1||!obj.data||!Array.isArray(obj.data.expenses)||!Array.isArray(obj.data.questions))throw Error('Invalid backup');if(!confirm('Replace local FinBridge data with this backup?'))return;state=obj.data;save();render();alert('Backup restored')}catch(err){alert('Could not import backup: '+err.message)}}});
-nav();render();setupNoticeRotation();
+nav();render();setupNoticeRotation();fbUpdateLocationHeader();fbMaybeAutoRequestLocation();

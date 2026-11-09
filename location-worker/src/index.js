@@ -30,9 +30,13 @@ async fetch(request,env){
  const repeat=await env.DB.prepare('SELECT id FROM location_events WHERE visitor_id=? AND created_at >= unixepoch()-86400 LIMIT 1').bind(body.visitorId).first();
  if(repeat)return reply(200,{ok:true,already_recorded_today:true,retention_days:14});
  const id=crypto.randomUUID();
+ // Cloudflare city comes from approximate network/IP geolocation, NOT GPS reverse geocoding.
+ const city=typeof request.cf?.city==='string'?request.cf.city.slice(0,100):'';
+ const cfCountry=typeof request.cf?.country==='string'?request.cf.country.slice(0,2):'';
+ const cfRegion=typeof request.cf?.region==='string'?request.cf.region.slice(0,100):'';
  // Intentionally no IP, user-agent, fingerprint, page URL, or name stored.
- await env.DB.prepare('INSERT INTO location_events(id,visitor_id,lat,lon,accuracy_m,country,state,created_at,expires_at) VALUES (?,?,?,?,?,?,?,unixepoch(),unixepoch()+1209600)')
- .bind(id,body.visitorId,lat,lon,accuracy,country,state).run();
+ await env.DB.prepare('INSERT INTO location_events(id,visitor_id,lat,lon,accuracy_m,country,state,approx_city,approx_cf_country,approx_cf_region,created_at,expires_at) VALUES (?,?,?,?,?,?,?,?,?,?,unixepoch(),unixepoch()+1209600)')
+ .bind(id,body.visitorId,lat,lon,accuracy,country,state,city,cfCountry,cfRegion).run();
  return reply(201,{ok:true,retention_days:14});
 },
 async scheduled(_event,env,ctx){

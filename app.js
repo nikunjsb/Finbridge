@@ -11,7 +11,7 @@ try{state={budget:{income:3500,housing:950,food:350,transport:180,other:400,indi
 const save=()=>localStorage.setItem(storageKey,JSON.stringify(state));
 const sections=[
 ['overview','Overview','◧','MAIN'],['news','Expat updates','▤','MAIN'],['discover','Explore topics','⌕','MAIN'],['language','Language Bridge','文','MAIN'],['tax','Tax return workspace','▤','FINANCES'],['taxguide','What can I claim?','☷','FINANCES'],
-['taxclasses','Tax classes & salary','€','FINANCES'],['doublehousehold','Double household costs','⌂','FINANCES'],['budget','Budget & goals','◴','FINANCES'],['invest','Investment planner','↗','FINANCES'],
+['healthcompare','Health insurance comparison','♡','FINANCES'],['taxclasses','Tax classes & salary','€','FINANCES'],['doublehousehold','Double household costs','⌂','FINANCES'],['budget','Budget & goals','◴','FINANCES'],['invest','Investment planner','↗','FINANCES'],
 ['cross','Germany ↔ India','⇄','CROSS-BORDER'],['gold','Gold: Germany ↔ India','◈','CROSS-BORDER'],['parentsguide','Parents: tax filing guide','▣','CROSS-BORDER'],['residency','Residency & pension','◎','CROSS-BORDER'],
 ['journeys','Life journeys','◇','EXPLORE'],['insights','Did you know?','✦','EXPLORE'],['ask','Ask & feedback','?','EXPLORE'],['feedback','Suggest a feature','✎','EXPLORE'],['sources','Sources & updates','☑','EXPLORE'],['privacy','Privacy & data','♙','EXPLORE'],['settings','Privacy & backup','⚙','EXPLORE']];
 const articles=[
@@ -65,7 +65,7 @@ key:'<circle cx="8" cy="9" r="5"/><path d="m12 13 9 9m-4-4 2-2"/>',
 arrow:'<path d="M4 12h16m-7-7 7 7-7 7"/>'
 };
 function fbIcon(name,cls=''){return '<svg class="fb-icon '+cls+'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+(fbIconShapes[name]||fbIconShapes.file)+'</svg>'}
-const fbNavIcons={overview:'home',news:'news',discover:'search',language:'language',tax:'receipt',taxguide:'checklist',taxclasses:'family',doublehousehold:'home',budget:'wallet',invest:'chart',cross:'globe',gold:'coins',parentsguide:'family',residency:'calendar',journeys:'suitcase',insights:'bulb',ask:'message',feedback:'message',sources:'book',privacy:'shield',settings:'settings'};
+const fbNavIcons={overview:'home',news:'news',discover:'search',language:'language',tax:'receipt',taxguide:'checklist',taxclasses:'family',healthcompare:'heart',doublehousehold:'home',budget:'wallet',invest:'chart',cross:'globe',gold:'coins',parentsguide:'family',residency:'calendar',journeys:'suitcase',insights:'bulb',ask:'message',feedback:'message',sources:'book',privacy:'shield',settings:'settings'};
 const fbTaxIcons={'Commuting':['train','Travel to work','Office days and distance'],'Home office':['laptop','Home office','Eligible work-from-home days'],'Work equipment':['monitor','Work equipment','Laptop, monitor and tools'],'Professional education':['book','Training & learning','Courses, exams and books'],'Business travel':['suitcase','Business travel','Work trips and transport'],'Insurance':['shield','Insurance','Qualifying contributions'],'Support to family':['family','Family support','Payments and required proof'],'Other':['folder','Other expenses','Additional costs to review']};
 const fbNewcomerIcons={housing:'home',confirmation:'file',anmeldung:'building',bank:'bank',sim:'wifi',internet:'wifi',transport:'train',insurance:'shield',residence:'file',broadcast:'news',electric:'bulb',taxid:'receipt',budget:'wallet',workcontract:'file',payslip:'receipt',bluecard:'shield',jobticket:'train',movejob:'suitcase',worktax:'receipt',enroll:'book',studenthealth:'heart',blocked:'bank',semesterticket:'train',studentpermit:'file',uniaccess:'book',studentwork:'wallet',studenthousing:'home',familypermit:'family',familyinsurance:'shield',childcare:'family',familybenefits:'wallet',familytax:'receipt'};
 const fbReturnIcons={decision:'globe',employment:'file',housing:'home',utilities:'bulb',internet:'wifi',transport:'train',insurance:'shield',broadcast:'news',bank:'bank',documents:'folder',shipping:'suitcase',mail:'message',abmeldung:'building',handover:'key',lastsalary:'receipt',residencetitle:'file',flight:'plane',indiabank:'bank',indiatax:'receipt',germantax:'receipt',investments:'chart',pension:'wallet',healthindia:'heart',foreignassets:'globe',security:'shield',employergoodbye:'file',drvstatus:'calendar',prstatus:'shield',university:'book',studentinsurance:'heart',studentloans:'bank'};
@@ -174,7 +174,7 @@ const everyday=[
 ['budget','wallet','Plan your monthly money','Build a clearer picture of spending and savings.','Open money planner'],
 ['invest','chart','Explore investments','Learn about growth scenarios and financial risks.','Explore investing'],
 ['news','news','Keep up with changes','Curated expat updates with links to official sources.','See expat updates'],
-['feedback','message','Help improve FinBridge','Tell us what needs explaining or fixing.','Share feedback'],
+['healthcompare','heart','Compare health insurers','See verified 2026 rates, benefits and 2027 scenarios.','Compare insurance'],['feedback','message','Help improve FinBridge','Tell us what needs explaining or fixing.','Share feedback'],
 ['sources','shield','Verify information','Check primary sources and guidance limitations.','Check sources']
 ];
 const tile=([id,icon,name,description,cta])=>'<a href="#'+id+'" class="card link fb-feature-card"><span class="fb-card-symbol">'+fbIcon(icon)+'</span><h3>'+escapeHTML(name)+'</h3><p>'+escapeHTML(description)+'</p><span class="arrow">'+escapeHTML(cta)+' '+fbIcon('arrow','fb-arrow')+'</span></a>';
@@ -188,6 +188,7 @@ expatNewsPreview()+
 '<div class="sectionhead"><h2>Popular guides</h2><a class="biglink" href="#discover">All guides →</a></div>'+cards(articles.slice(0,3))
 }
 const searchableTools=[
+{id:'healthcompare',title:'Health insurance comparison (GKV)',summary:'Compare TK, Barmer, DAK, hkk, HEK or Audi BKK by contribution, salary, verified benefits, travel vaccines and 2027 scenarios.',keywords:'krankenkasse krankenversicherung gesundheitsversicherung wechsel zusatzbeitrag beitragssatz 2027 2026 insurance health benefits tk barmer dak hkk hek audi bkk osteopathie zahnreinigung reiseimpfung versicherung wechseln'},
 {id:'taxclasses',title:'Tax classes & salary comparison',summary:'Steuerklasse I II III IV V VI, married salary calculator, gross to net, children, income tax, payroll and IV/IV with factor.',keywords:'tax class steuerklasse steuerklassen taxclasses salary net salary payslip lohnsteuer brutto netto married single single parent divorced separated widow faktorverfahren iii v iv factor kirchensteuer pflegeversicherung krankenversicherung zusatzbeitrag elstam single parent splitting'},
 {id:'tax',title:'Tax return workspace',summary:'Record work expenses, home office, commuting, education and potential deductions by tax year.',keywords:'tax deduction werbungskosten income tax employment expense work from home'},
 {id:'doublehousehold',title:'Double-household expenses',summary:'Doppelte Haushaltsführung: second accommodation and trips home for work.',keywords:'doppelte haushaltsführung zweitwohnung hotel second home travel'},
@@ -340,6 +341,84 @@ const taxItems=[
 /* 2026: double-household screening tool. Estimates never modify the tax records. */
 
 const taxClassStates=['Baden-Württemberg','Bavaria (Bayern)','Berlin','Brandenburg','Bremen','Hamburg','Hesse (Hessen)','Lower Saxony (Niedersachsen)','Mecklenburg-Vorpommern','North Rhine-Westphalia','Rhineland-Palatinate','Saarland','Saxony (Sachsen)','Saxony-Anhalt','Schleswig-Holstein','Thuringia (Thüringen)'];
+
+// GKV rate and benefit data: insurer-specific 2026 rates checked 2026-11-09.
+// A missing benefit is NEVER displayed as proof that the insurer does not offer it.
+// 2027 insurer-specific rates are unverified as of review date.
+const gkvOptions=[
+{id:'tk',name:'Techniker Krankenkasse (TK)',rate:2.69,scope:'Germany-wide',benefits:{
+dental:{text:'€40 once/year for insured adults aged 18+',url:'https://www.tk.de/techniker/versicherung/tk-leistungen/zaehne/zahnvorsorge-und-bonusheft/zahlt-tk-professionelle-zahnreinigung-2002368'},
+osteopathy:{text:'Up to three sessions × €40 (max €120/year), advance doctor certificate and qualified therapist required',url:'https://www.tk.de/techniker/versicherung/tk-leistungen/weitere-leistungen/alternative-medizin/osteopathie/zuzahlung-osteopathie-2001882'},
+travel:{text:'Eligible STIKO-recommended private-travel vaccinations; statutory vaccine copayment normally €5–€10',url:'https://www.tk.de/techniker/versicherung/tk-leistungen/weitere-leistungen/praevention/impfungen/voraussetzungen-kostenuebernahme-reiseschutzimpfung-2007720'}}},
+{id:'barmer',name:'Barmer',rate:3.29,scope:'Germany-wide',benefits:{
+dental:{text:'Bonus-program reimbursement, or special pregnancy benefit; no universal fixed PZR cash amount confirmed',url:'https://www.barmer.de/unsere-leistungen/leistungen-a-z/zahngesundheit/professionelle-zahnreinigung-1055474'},
+osteopathy:{text:'Bonus-program reimbursement or eligible pregnancy/newborn extras; no general fixed osteopathy amount confirmed',url:'https://www.barmer.de/unsere-leistungen/leistungen-a-z/alternative-medizin/osteopathie-1055466'},
+travel:{text:'100% for qualifying private travel vaccinations; STIKO/medical rules and claims process apply',url:'https://www.barmer.de/unsere-leistungen/leistungen-a-z/vorsorge/reiseschutzimpfungen'}}},
+{id:'dak',name:'DAK-Gesundheit',rate:3.20,scope:'Germany-wide',benefits:{
+dental:{text:'Up to €60/year for professional dental cleaning',url:'https://www.dak.de/dak/ihr-anliegen/zaehne/professionelle-zahnreinigung/hoehe-zuschuss-pzr-dak_15030'},
+osteopathy:{text:'Up to 3 × €40 (€120/year), subject to conditions',url:'https://www.dak.de/dak/ihr-anliegen/osteopathie/wieviel-zahlt-die-dak_22794'},
+travel:{text:'100% of qualifying private-travel vaccination costs, subject to eligibility',url:'https://www.dak.de/dak/leistungen/praevention-und-vorsorge/impfungen/reiseimpfungen_20802'}}},
+{id:'hkk',name:'hkk',rate:2.59,scope:'Germany-wide',benefits:{}},
+{id:'hek',name:'HEK',rate:2.89,scope:'Germany-wide',benefits:{}},
+{id:'audi',name:'Audi BKK',rate:2.60,scope:'Germany-wide',benefits:{}}
+];
+const gkvRateSource='https://www.gkv-spitzenverband.de/service/krankenkassenliste/krankenkassen.jsp?filter=17&pageNo=2';
+function healthCompare(){
+const options=gkvOptions.map(x=>'<option value="'+x.id+'">'+escapeHTML(x.name)+' (2026: '+x.rate.toFixed(2)+'%)</option>').join('');
+return title('INSURANCE / GERMANY','Compare statutory health insurers','Calculate employee health-insurance contributions and compare insurer benefits using their official published pages.')+
+'<div class="note"><b>Important for January 2027:</b> The German Ministry of Health has set the <b>average additional rate at 2.9% for 2027</b>, unchanged from 2026. This is <b>not</b> the rate each insurer will charge: each fund decides separately. As of 9 November 2026, the comparison does not mark any insurer-specific 2027 rate as confirmed. The government has proposed raising the income ceiling from €69,750 (2026) to €76,500 (2027); the regulation is not yet fully finalized.</div>'+
+'<div class="card"><h3>Compare your current provider and a possible switch</h3><form id="healthCompareForm" class="formgrid">'+
+'<label class="field">Annual gross employee salary (€)<input name="salary" type="number" min="0" max="1000000" step="100" value="80000" required></label>'+
+'<label class="field">Year / scenario<select name="year"><option value="2026">2026 actual published contribution rates</option><option value="2027">2027 projection (individual rates not yet confirmed)</option></select></label>'+
+'<label class="field">My current insurer<select name="current">'+options+'</select></label>'+
+'<label class="field">Insurer to compare<select name="next">'+options+'</select></label>'+
+'<label class="field">Optional 2027 rate for CURRENT insurer (%)<input name="rateCurrent27" type="number" min="0" max="10" step="0.01" placeholder="Leave blank for 2026 rate scenario"></label>'+
+'<label class="field">Optional 2027 rate for NEW insurer (%)<input name="rateNext27" type="number" min="0" max="10" step="0.01" placeholder="Leave blank for 2026 rate scenario"></label>'+
+'</form><div id="healthCompareOutput" class="result" role="status" aria-live="polite"></div></div>'+
+'<div class="sectionhead"><h2>Side-by-side benefits from insurer websites</h2></div>'+
+'<div id="healthBenefitsOutput"></div>'+
+'<div class="sectionhead"><h2>How should I choose?</h2></div>'+
+'<div class="grid two"><div class="card"><h3>Price and savings</h3><p>The mandatory statutory core benefits are broadly standardized. A lower Zusatzbeitrag saves employee premiums, but extra benefits may have value to you. Estimate your usage instead of automatically choosing the cheapest insurer.</p></div>'+
+'<div class="card"><h3>Service and extra benefits</h3><p>Compare travel vaccinations, dental-cleaning assistance, osteopathy rules, reimbursement procedure, app and English-language support. We label unverified extra benefits as <b>Not verified</b>, not as unavailable.</p></div></div>'+
+'<div class="sectionhead"><h2>Changing insurer: know the deadlines</h2></div>'+
+'<div class="card guidebody"><p>Generally, there is a <b>12-month minimum membership period</b> and a <b>two-full-month switch notice period</b>. A higher insurer-specific Zusatzbeitrag creates a special switching right even during the ordinary binding period, but deadline and exceptional Wahl­tarif rules still matter. Normally, apply with the <b>new insurer</b>; it informs the old insurer electronically. A 2027 average-rate announcement alone does <b>not</b> trigger a special switching right for every insured person.</p>'+
+'<p><a href="https://www.bundesgesundheitsministerium.de/themen/krankenversicherung/online-ratgeber-krankenversicherung/krankenversicherung/wahl-und-wechsel-der-krankenkasse" target="_blank" rel="noopener noreferrer" class="biglink">BMG official insurer-switching rules ↗</a></p></div>'+
+'<div class="sectionhead"><h2>Sources & update policy</h2></div>'+
+'<div class="card guidebody"><p><a href="'+gkvRateSource+'" target="_blank" rel="noopener noreferrer" class="biglink">GKV-Spitzenverband: current insurer-specific Zusatzbeiträge ↗</a></p>'+
+'<p><a href="https://www.bundesgesundheitsministerium.de/presse/pressemitteilungen/zusatzbeitragssatz-gkv-2027-festgelegt" target="_blank" rel="noopener noreferrer" class="biglink">BMG: 2027 average contribution stays at 2.9% ↗</a></p>'+
+'<p><a href="https://www.bmas.de/DE/Service/Gesetze-und-Gesetzesvorhaben/sozialversicherungsrechengroessenverordnung-2027.html" target="_blank" rel="noopener noreferrer" class="biglink">BMAS: 2027 contribution-ceiling regulation and status ↗</a></p>'+
+'<p><b>Rate snapshot:</b> 9 November 2026. <b>Benefits:</b> insurer-owned pages checked 9 November 2026. Only the benefits linked directly below were reviewed; no insurer receives an overall quality ranking. Rates, reimbursements, policy conditions and legal limits can change.</p></div>'+
+'<div class="note"><b>Scope:</b> Model assumes a regular German employee with general statutory health-insurance entitlement and an employer paying half the health contribution, over 12 equal monthly salaries. Care insurance (Pflegeversicherung), pension and income tax are <b>excluded</b>. Self-employed people, pensioners, students, private-insurance members and those with special payroll rules need a different calculation. The page does not send salary information to a server or save it.</div>';
+}
+function healthCompareCost(salary,rate,year){
+const ceiling=year===2027?76500:69750;
+return Math.min(salary,ceiling)*(14.6+rate)/200;
+}
+function renderHealthCompare(){
+const form=document.getElementById('healthCompareForm'),output=document.getElementById('healthCompareOutput'),benefits=document.getElementById('healthBenefitsOutput');
+if(!form||!output||!benefits)return;
+const read=k=>form.elements.namedItem(k)?.value||'';
+const salary=Number(read('salary')),year=Number(read('year'));
+const current=gkvOptions.find(x=>x.id===read('current'))||gkvOptions[0],next=gkvOptions.find(x=>x.id===read('next'))||gkvOptions[1];
+const optional=k=>read(k).trim()===''?null:Number(read(k));
+const v1=optional('rateCurrent27'),v2=optional('rateNext27');
+if(!Number.isFinite(salary)||salary<0||salary>1e6||[v1,v2].some(v=>v!==null&&(!Number.isFinite(v)||v<0||v>10))){output.textContent='Please enter an annual gross salary and optional additional rates between 0 and 10%.';return;}
+const r1=year===2027?(v1??current.rate):current.rate,r2=year===2027?(v2??next.rate):next.rate;
+const eur=n=>new Intl.NumberFormat('en-DE',{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+const a=healthCompareCost(salary,r1,year),b=healthCompareCost(salary,r2,year),difference=a-b,cap=year===2027?76500:69750;
+const scenarioLabel=year===2027?'<div class="note"><b>2027 projections, not published insurer premiums:</b> '+(v1===null?'Current insurer uses its 2026 rate as an assumption. ':'Current insurer uses your entered hypothetical 2027 rate. ')+(v2===null?'New insurer uses its 2026 rate as an assumption.':'New insurer uses your entered hypothetical 2027 rate.')+' The 2027 €76,500 ceiling remains subject to the final regulation. No insurer-specific 2027 rate is certified here.</div>':'<p class="muted">2026 published insurer rates; contribution ceiling €69,750/year.</p>';
+output.innerHTML=scenarioLabel+
+'<div class="grid two"><div><div class="kicker">Current: '+escapeHTML(current.name)+'</div><div class="stat">'+eur(a/12)+'</div><p>Employee health contribution per month<br>Additional rate used: '+r1.toFixed(2)+'% · Annual: '+eur(a)+'</p></div><div><div class="kicker">Compare: '+escapeHTML(next.name)+'</div><div class="stat">'+eur(b/12)+'</div><p>Employee health contribution per month<br>Additional rate used: '+r2.toFixed(2)+'% · Annual: '+eur(b)+'</p></div></div>'+
+'<div class="note"><b>'+ (difference>=0?'Potential employee saving':'Potential employee extra cost')+': '+eur(Math.abs(difference)/12)+' per month / '+eur(Math.abs(difference))+' per year.</b> This is health-insurance premium only, not total net-salary or tax savings. Your employer separately pays its share. Calculation: min(annual salary, '+eur(cap)+') × (14.6% + insurer additional rate) ÷ 2.</div>';
+const keys=[['dental','Professional dental cleaning (PZR)'],['osteopathy','Osteopathy'],['travel','Private travel vaccinations']];
+function itemCell(provider,key){const x=provider.benefits[key];return x?escapeHTML(x.text)+' <a target="_blank" rel="noopener noreferrer" class="biglink" href="'+x.url+'">Insurer source ↗</a>':'<span class="muted">Not yet verified from insurer website — check directly</span>'}
+benefits.innerHTML='<div class="tax-payroll-scroll"><table class="tax-payroll-table"><thead><tr><th>Item</th><th>'+escapeHTML(current.name)+'</th><th>'+escapeHTML(next.name)+'</th></tr></thead><tbody>'+
+'<tr><th>Additional rate (2026 verified)</th><td>'+current.rate.toFixed(2)+'%</td><td>'+next.rate.toFixed(2)+'%</td></tr>'+
+'<tr><th>Availability</th><td>'+current.scope+'</td><td>'+next.scope+'</td></tr>'+
+keys.map(([key,label])=>'<tr><th>'+label+'</th><td>'+itemCell(current,key)+'</td><td>'+itemCell(next,key)+'</td></tr>').join('')+
+'</tbody></table></div><p class="muted">Core statutory benefits are broadly the same. The compared extras are only those directly substantiated by the linked insurers’ pages; missing confirmation is not a negative finding. Benefits may carry medical requirements, age restrictions, bonus conditions and reimbursement caps.</p>';
+}
+
 function taxClasses(){
 return title('WORK & SALARY / GERMANY','Tax-class guide for couples and families','Choose your circumstances, explore III/V and IV/IV with factor, and understand the difference between monthly take-home pay and final annual tax.')+
 '<div class="note"><b>2026 guidance.</b> Tax class changes how much wage tax an employer withholds; it generally does not by itself change the final income tax owed after joint assessment. This page is a learning tool, not an official tax-class determination.</div>'+
@@ -359,7 +438,7 @@ return title('WORK & SALARY / GERMANY','Tax-class guide for couples and families
 '</div>'+
 '<div class="note">The tool uses the BMF 2026 wage-tax algorithm for supported standard payroll scenarios when the verified third-party calculator loads successfully. A pinned third-party code library loads on demand; salary values stay in your browser. No salary data is sent to a calculation service. With private insurance or unsupported arrangements, we show a limitation rather than an invented number.</div>'+
 '</form>'+'<div id="taxClassResults" class="result" role="status" aria-live="polite"></div></div>'+
-'<div class="sectionhead"><h2>Understand your options</h2></div>'+
+'<div class="card" style="margin-top:18px"><h3>Which public health insurer should you choose?</h3><p>Compare TK, Barmer, DAK and other statutory insurers by cost, current benefits and possible 2027 changes. Verify before switching.</p><a href="#healthcompare" class="button secondary">Compare health insurers →</a></div>'+'<div class="sectionhead"><h2>Understand your options</h2></div>'+
 '<div class="grid two"><div class="card"><h3>IV / IV — equal treatment</h3><p>Generally the default after marriage. Good for similar incomes and simple payroll. It can withhold more than the expected joint tax where incomes differ; a tax return can reconcile that.</p></div>'+
 '<div class="card"><h3>III / V — unequal monthly withholding</h3><p>Designed around approximately a 60/40 income division. Usually the higher earner takes III. The person in V often has substantially lower take-home pay, and there can be a year-end tax payment. A joint tax return is normally required.</p></div>'+
 '<div class="card"><h3>IV / IV with factor — closer to joint tax</h3><p>The tax office determines a factor from forecast earnings, applies it to IV-class withholding, and reduces the risk of uneven payroll burden. Applying for the factor and filing an annual tax return are generally required.</p></div>'+
@@ -875,24 +954,24 @@ const [page,id]=hash.split('/');
 let content='';
 switch(page){
 case 'overview':content=overview();break;case 'news':content=newsPage();break;case 'discover':content=discover($('#search')?.value||'');break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
-case 'guide':content=guide(id);break;case 'term':content=termPage(id);break;case 'parentsguide':content=parentsGuide();break;case 'tax':content=tax();break;case 'taxguide':content=taxguide();break;case 'taxclasses':content=taxClasses();break;case 'doublehousehold':content=doubleHousehold();break;case 'budget':content=budget();break;
+case 'guide':content=guide(id);break;case 'term':content=termPage(id);break;case 'parentsguide':content=parentsGuide();break;case 'tax':content=tax();break;case 'taxguide':content=taxguide();break;case 'taxclasses':content=taxClasses();break;case 'healthcompare':content=healthCompare();break;case 'doublehousehold':content=doubleHousehold();break;case 'budget':content=budget();break;
 case 'invest':content=invest();break;case 'cross':content=cross();break;case 'gold':content=goldGuide();break;case 'residency':content=residency();break;
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }
 $('#content').innerHTML=content;
 if(page==='feedback')setupFeedbackWidget();
-if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleHousehold();if(page==='taxclasses'){updateTaxHealthOption();renderTaxClassResults();}
+if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleHousehold();if(page==='taxclasses'){updateTaxHealthOption();renderTaxClassResults();}if(page==='healthcompare')renderHealthCompare();
 $('#breadcrumb').textContent=page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
 document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
 }
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});
 $('#search').addEventListener('input',e=>{if(!location.hash.startsWith('#discover'))location.hash='#discover';else render();$('#resetSearch').hidden=!e.target.value});
 $('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetSearch').hidden=true;render()});
-document.addEventListener('change',e=>{if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
-document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold();if(e.target.closest('#taxClassForm'))renderTaxClassResults()});
+document.addEventListener('change',e=>{if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
+document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold();if(e.target.closest('#taxClassForm'))renderTaxClassResults();if(e.target.closest('#healthCompareForm'))renderHealthCompare()});
 document.addEventListener('submit',async e=>{
-if(e.target.id==='doubleHouseholdForm'){e.preventDefault();updateDoubleHousehold();return;}if(e.target.id==='taxClassForm'){e.preventDefault();renderTaxClassResults();return;}
+if(e.target.id==='doubleHouseholdForm'){e.preventDefault();updateDoubleHousehold();return;}if(e.target.id==='taxClassForm'){e.preventDefault();renderTaxClassResults();return;}if(e.target.id==='healthCompareForm'){e.preventDefault();renderHealthCompare();return;}
 if(e.target.id==='feedbackForm'){
  e.preventDefault();
  const form=e.target,result=$('#feedbackResult'),button=$('#submitFeedback'),fd=new FormData(form);

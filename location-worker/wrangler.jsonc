@@ -4,7 +4,7 @@
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
   "d1_databases": [
-    {"binding": "DB", "database_name": "finbridge-location-trial", "database_id": "REPLACE_WITH_YOUR_CLOUDFLARE_D1_DATABASE_ID"}
+    {"binding": "DB", "database_name": "finbridge-location-trial", "database_id": "3a888df0-e9ab-4bb6-8478-d42c246f5333"}
   ],
   "triggers": {"crons": ["0 3 * * *"]},
   "unsafe": {"bindings": [{"name":"RATE_LIMITER","type":"ratelimit","namespace_id":"1002","simple":{"limit":3,"period":60}}]}

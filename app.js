@@ -197,9 +197,15 @@ const searchableTools=[
 {id:'language',title:'Language Bridge',summary:'German financial terms, taxes, insurance, letters and explanations.',keywords:'german translation glossary steuerklasse lohnabrechnung'}
 ];
 function searchToolMatches(term){
-const words=normalizeTerm(term).split(' ').filter(Boolean);
+const stop=new Set(['how','do','does','my','me','i','we','you','what','which','is','the','a','an','of','in','to','for','with','if','or','and','on','get','can','should','would','about','please','tell','much','salary','help','want']);
+const words=normalizeTerm(term).split(' ').filter(w=>w.length>=2&&!stop.has(w)&&! /^\d+$/.test(w));
 if(!words.length)return [];
-return searchableTools.filter(x=>{const hay=normalizeTerm(x.title+' '+x.summary+' '+x.keywords);return words.every(w=>hay.includes(w))});
+return searchableTools.map(x=>{
+const title=normalizeTerm(x.title),hay=normalizeTerm(x.title+' '+x.summary+' '+x.keywords);
+let score=0;
+for(const w of words){if(title.includes(w))score+=4;else if(hay.includes(w))score+=2;}
+return {x,score};
+}).filter(o=>o.score>0).sort((a,b)=>b.score-a.score).map(o=>o.x).slice(0,8);
 }
 function discover(filter=''){
 const q=normalizeTerm(filter);

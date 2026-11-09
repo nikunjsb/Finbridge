@@ -365,51 +365,114 @@ return title('WORK & SALARY / GERMANY','Tax-class guide for couples and families
 '<p><a class="biglink" href="https://www.bmas.de/DE/Service/Gesetze-und-Gesetzesvorhaben/sozialversicherungs-rechengroessenverordnung-2026.html" target="_blank" rel="noopener noreferrer">Official 2026 social insurance ceilings ↗</a></p>'+
 '<p><a class="biglink" href="https://www.elster.de/eportal/" target="_blank" rel="noopener noreferrer">ELSTER: request a tax-class change ↗</a></p><p><b>Figures and explanation checked:</b> November 2026 for the 2026 tax year.</p></div>';
 }
-function taxClassEstimateSocial(gross,state,extra,child){
+
+const taxClassHealthRates={average:2.9,tk:2.69,barmer:3.29,dak:3.20};
+const taxClassCareRates={none:.024,one:.018,two:.0155,three:.013,four:.0105,five:.008,under23:.018};
+const taxClassEur=n=>new Intl.NumberFormat('en-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
+function taxClassSocial2026(gross,state,healthRate,careCode){
 const pension=Math.min(gross,101400)*.093,unemployment=Math.min(gross,101400)*.013;
-const health=Math.min(gross,69750)*(.073+extra/200);
-const carePct=(state==='Saxony (Sachsen)'?.023:.018)+(child==='none'?.006:0);
-const care=Math.min(gross,69750)*carePct;
-return pension+unemployment+health+care;
+const health=Math.min(gross,69750)*(.073+healthRate/200);
+const careRate=(taxClassCareRates[careCode]??.024)+(state==='Saxony (Sachsen)'?.005:0);
+const care=Math.min(gross,69750)*careRate;
+return {pension,unemployment,health,care,total:pension+unemployment+health+care};
 }
 function taxClassESt2026(z){
 const x=Math.floor(Math.max(z,0));
 if(x<=12348)return 0;
 if(x<=17799){const y=(x-12348)/10000;return Math.floor((914.51*y+1400)*y)}
-if(x<=69878){const z=(x-17799)/10000;return Math.floor((173.10*z+2397)*z+1034.87)}
+if(x<=69878){const t=(x-17799)/10000;return Math.floor((173.10*t+2397)*t+1034.87)}
 if(x<=277825)return Math.floor(.42*x-11135.63);
 return Math.floor(.45*x-19470.38);
 }
+function taxClassInput(f,p){
+const number=name=>Number(f.elements.namedItem(name)?.value),healthOption=f.elements.namedItem('health'+p)?.value||'average';
+return {name:p,gross:number('gross'+p),healthOption,rate:healthOption==='custom'?number('extra'+p):(taxClassHealthRates[healthOption]??2.9),church:f.elements.namedItem('church'+p)?.value==='yes',care:f.elements.namedItem('care'+p)?.value||'none'};
+}
 function updateTaxHealthOption(){
 const f=document.getElementById('taxClassForm');if(!f)return;
-const option=f.elements.namedItem('healthOption')?.value;
-const wrap=document.getElementById('healthExtraWrap');
+for(const p of ['A','B']){
+const option=f.elements.namedItem('health'+p)?.value;
+const wrap=f.querySelector('[data-health-custom="'+p+'"]');
 if(wrap)wrap.hidden=option!=='custom';
 }
-function renderTaxClassResults(){
-const f=document.getElementById('taxClassForm'),out=document.getElementById('taxClassResults');if(!f||!out)return;
-const value=n=>Number(f.elements.namedItem(n)?.value),a=value('grossA'),b=value('grossB');
-const healthOption=f.elements.namedItem('healthOption')?.value||'average';
-const healthRates={average:2.9,tk:2.69,barmer:3.29,dak:3.20};
-const extra=healthOption==='custom'?value('extra'):(healthRates[healthOption]??2.9);
-if(healthOption==='private'){out.innerHTML='<div class="note"><b>Private health insurance (PKV) selected.</b> This version does not calculate private-insurance net pay, because premiums and employer subsidies vary by person and contract. You can still read the tax-class explanations above. For exact withholding use the <a href="https://www.bmf-steuerrechner.de/" target="_blank" rel="noopener noreferrer" class="biglink">official BMF calculator ↗</a> and your payslip.</div>';return;}
-if([a,b,extra].some(x=>!Number.isFinite(x)||x<0)||a>1e6||b>1e6||extra>6){out.textContent='Enter valid annual salaries and an additional health insurance contribution from 0–6%.';return}
-const state=f.elements.namedItem('state').value,church=f.elements.namedItem('church').value,child=f.elements.namedItem('child').value;
-const socialA=taxClassEstimateSocial(a,state,extra,child),socialB=taxClassEstimateSocial(b,state,extra,child);
-const total=a+b,share=total>0?Math.round(100*Math.max(a,b)/total):0,high=a>=b?'A':'B',low=a>=b?'B':'A';
-const euro=n=>new Intl.NumberFormat('en-IE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
-const taxableA=Math.max(0,a-socialA-1230),taxableB=Math.max(0,b-socialB-1230);
-const individual=taxClassESt2026(taxableA)+taxClassESt2026(taxableB),joint=2*taxClassESt2026((taxableA+taxableB)/2);
-const averageNet=(total-socialA-socialB-joint)/12;
-const churchRate=state==='Bavaria (Bayern)'||state==='Baden-Württemberg'?8:9;
-const notes=church==='no'?'Church tax: none selected.':church==='yes'?'Church tax selected: '+churchRate+'% of applicable wage/income tax, not '+churchRate+'% of gross salary. It is excluded from the rough annual illustration because church-tax rules and deductions need an individual calculation.':'Church tax: one partner/other case selected — manual verification needed.';
-out.innerHTML='<div class="grid two"><div><div class="kicker">Your gross income split</div><div class="stat">'+share+'% / '+(100-share)+'%</div><p>Higher-paid: partner '+high+' ('+euro(Math.max(a,b))+'); lower-paid: partner '+low+' ('+euro(Math.min(a,b))+').</p></div><div><div class="kicker">2026 employee social contributions (approx.)</div><div class="stat">'+euro(socialA+socialB)+'</div><p>A: '+euro(socialA)+' / year · B: '+euro(socialB)+' / year.</p></div></div>'+
-'<div class="note"><b>Suggested comparison:</b> '+(total===0?'Enter salaries to compare tax classes.':Math.min(a,b)===0?'IV/IV is the usual married-couple default, but investigate III/V eligibility and IV/IV with factor if one spouse has no salary.':share<=55?'IV/IV is a natural starting point for similar incomes. IV/IV with factor is another option if you want withholding closer to the annual outcome.':share<=65?'Compare IV/IV with factor first for a more balanced payroll. III/V is designed around a 60/40 split, but the lower earner faces higher withholding in V.':'IV/IV with factor is often worth reviewing. III/V can shift more monthly net to the high earner but might produce an annual payment.')+'</div>'+
-'<h3>Illustrative combined household amount — not an official net-payslip calculation</h3>'+
-'<p><b>About '+euro(averageNet)+' per month</b> after simplified 2026 social contributions and an <b>approximate annual joint income-tax tariff</b>. For transparency, the illustrative annual tax amount is '+euro(joint)+' (compared with '+euro(individual)+' when the same simplified tax bases are taxed individually). This does <b>not</b> forecast the monthly net under III/V, IV/IV or factor: the exact class-specific Lohnsteuer must be calculated under the 2026 BMF payroll algorithm.</p>'+
-'<p class="muted"><b>Health insurance:</b> '+(healthOption==='average'?'2026 reference average (not necessarily your insurer’s rate)':healthOption==='custom'?'your manually entered insurer rate':healthOption==='tk'?'TK':healthOption==='barmer'?'Barmer':'DAK')+' Zusatzbeitrag '+extra.toFixed(2)+'%, with the usual 14.6% general contribution and employee/employer sharing. '+notes+' This rough illustration estimates taxable income by subtracting employee contributions and a €1,230 work-expense allowance; real tax calculations have different deductible insurance components, solidarity surcharge, child allowances, church tax, other income and benefits. Consequently these amounts may materially differ from actual take-home pay or assessment. Check the BMF calculator and payslip before making a tax-class decision.</p>';
 }
-
+let taxClassPayrollPromise;
+async function loadTaxClassPayroll(){
+if(!taxClassPayrollPromise)taxClassPayrollPromise=import('https://cdn.jsdelivr.net/npm/lohnsteuerrechner@1.0.7/+esm').then(mod=>{
+if(typeof mod.calculate!=='function')throw Error('Payroll module missing calculator');
+const sample=mod.calculate(2026,{LZZ:2,RE4:500000,STKL:1,KVZ:2.5,PVZ:1});
+if(Number(sample.LSTLZZ)!==78583||Number(sample.SOLZLZZ)!==0)throw Error('Payroll module failed published 2026 validation sample');
+return mod.calculate;
+}).catch(e=>{taxClassPayrollPromise=null;throw e});
+return taxClassPayrollPromise;
+}
+function taxClassPAPInputs(person,state,stkl){
+return {LZZ:1,RE4:Math.round(person.gross*100),STKL:stkl,KVZ:person.rate,
+PVZ:person.care==='none'?1:0,PVS:state==='Saxony (Sachsen)'?1:0,
+PVA:({two:1,three:2,four:3,five:4})[person.care]||0,
+PKV:0,KRV:0,ALV:0,R:person.church?1:0,ZKF:0};
+}
+function taxClassWithholding(calc,person,state,stkl,optionalFactor){
+const params=taxClassPAPInputs(person,state,stkl);
+if(optionalFactor!==undefined){params.af=1;params.f=optionalFactor}
+const output=calc(2026,params);
+const wage=Number(output.LSTLZZ)/100,solz=Number(output.SOLZLZZ)/100;
+const churchRate=(state==='Bavaria (Bayern)'||state==='Baden-Württemberg')?.08:.09;
+const church=person.church?Math.max(0,Number(output.BK)/100)*churchRate:0;
+if(![wage,solz,church].every(Number.isFinite))throw Error('The payroll calculator returned an invalid amount');
+return {wage,solz,church,all:wage+solz+church};
+}
+let taxClassRenderSeq=0;
+async function renderTaxClassResults(){
+const f=document.getElementById('taxClassForm'),out=document.getElementById('taxClassResults');if(!f||!out)return;
+const seq=++taxClassRenderSeq,state=f.elements.namedItem('state')?.value||'Hesse (Hessen)',people=['A','B'].map(p=>taxClassInput(f,p));
+const [a,b]=people;
+if(people.some(p=>!Number.isFinite(p.gross)||p.gross<0||p.gross>1000000||!Number.isFinite(p.rate)||p.rate<0||p.rate>6)){
+out.textContent='Please enter valid annual gross salaries and insurer additional rates (0–6%).';return;
+}
+if(people.some(p=>p.healthOption==='private')){
+out.innerHTML='<div class="note"><b>Private health insurance selected.</b> Individual premiums and employer subsidies are required for a reliable payroll calculation. We will not substitute public-insurance figures. The tax-class guide above still applies; compare your actual payslip with the official BMF calculator.</div>';return;
+}
+if(f.elements.namedItem('employment')?.value!=='regular'){
+out.textContent='This model is currently for regular employees paid steadily over twelve months. Changing jobs, bonuses, mini-jobs, pension income and special benefits need separate payroll calculations.';return;
+}
+const contributions=people.map(p=>taxClassSocial2026(p.gross,state,p.rate,p.care)),sumGross=a.gross+b.gross,totalSocial=contributions[0].total+contributions[1].total;
+const split=sumGross?Math.round(Math.max(a.gross,b.gross)/sumGross*100):0;
+const taxable=people.map((p,i)=>Math.max(0,p.gross-contributions[i].total-1230));
+const joint=2*taxClassESt2026((taxable[0]+taxable[1])/2);
+const euro=taxClassEur;
+const breakdown='<div class="grid two">'+people.map((p,i)=>'<div><h3>Partner '+p.name+' deductions (approx. annual)</h3><p>Gross: <b>'+euro(p.gross)+'</b><br>Pension: '+euro(contributions[i].pension)+'<br>Unemployment: '+euro(contributions[i].unemployment)+'<br>Health: '+euro(contributions[i].health)+'<br>Care: '+euro(contributions[i].care)+'<br><b>Total social contributions: '+euro(contributions[i].total)+'</b></p></div>').join('')+'</div>';
+out.innerHTML='<p>Income split: <b>'+split+'% / '+(100-split)+'%</b>. Calculating 2026 payroll withholding…</p>';
+try{
+const calc=await loadTaxClassPayroll();
+if(seq!==taxClassRenderSeq||!document.getElementById('taxClassForm'))return;
+const iv=people.map(p=>taxClassWithholding(calc,p,state,4));
+const iii=people.map((p,i)=>taxClassWithholding(calc,p,state,(i===(a.gross>=b.gross?0:1))?3:5));
+const ivSum=iv[0].wage+iv[1].wage;
+const factor=ivSum>0?Math.max(0.001,Math.min(1,Math.floor((joint/ivSum)*1000)/1000)):1;
+const factorWithhold=people.map(p=>taxClassWithholding(calc,p,state,4,factor));
+const scenarios=[{name:'IV / IV',values:iv,status:'Default for eligible spouses'}, {name:'III / V',values:iii,status:'Higher earner uses III; lower earner V'}, {name:'IV / IV with factor',values:factorWithhold,status:'Illustrative factor '+factor.toFixed(3)+' (must be set by Finanzamt)'}];
+const cols=scenarios.map(scenario=>{
+const v=scenario.values;const monthly=people.map((p,i)=>(p.gross-contributions[i].total-v[i].all)/12);
+const withheld=v[0].all+v[1].all;
+const difference=withheld-joint;
+return {...scenario,monthly,withheld,difference};
+});
+let html='<h3>2026 estimated monthly take-home pay</h3><p class="muted">Uses a third-party implementation of the official BMF 2026 payroll algorithm for the class-specific wage-tax and solidarity-surcharge amounts, combined with simplified statutory social contributions. The factor is <b>illustrative</b>, not assigned by the Finanzamt.</p>';
+html+='<div class="tax-payroll-scroll"><table class="tax-payroll-table"><thead><tr><th>Choice</th><th>Partner A/month</th><th>Partner B/month</th><th>Household/month</th></tr></thead><tbody>'+
+cols.map(x=>'<tr><th scope="row">'+x.name+'<small>'+x.status+'</small></th><td>'+euro(x.monthly[0])+'</td><td>'+euro(x.monthly[1])+'</td><td><b>'+euro(x.monthly[0]+x.monthly[1])+'</b></td></tr>').join('')+'</tbody></table></div>';
+html+='<h3>Possible annual reconciliation — broad illustration only</h3><p>The amounts below compare estimated annual payroll deductions with a <b>simplified joint income-tax tariff</b> based on rough taxable-income assumptions. They are <b>not a prediction</b> of your tax assessment or guaranteed refund: deductions, taxable benefits, church tax, solidarity surcharge, allowances and foreign income can change the result materially.</p>';
+html+='<div class="tax-payroll-scroll"><table class="tax-payroll-table"><thead><tr><th>Combination</th><th>Annual withheld (incl. estimated church tax / Soli)</th><th>Difference from illustrative annual tax</th></tr></thead><tbody>'+
+cols.map(x=>'<tr><td>'+x.name+'</td><td>'+euro(x.withheld)+'</td><td>'+(x.difference>=0?'Potential over-withholding: ':'Potential shortfall: ')+euro(Math.abs(x.difference))+'*</td></tr>').join('')+'</tbody></table></div>';
+html+='<p class="muted">*Comparison uses an approximate annual income-tax benchmark of '+euro(joint)+', not an actual joint assessment; it mixes estimated church/Soli payroll amounts with an income-tax-only benchmark. Consequently the difference must <b>not</b> be treated as a tax refund or amount payable. It is shown only to illustrate how withholding choices can diverge.</p>';
+html+='<div class="note"><b>Decision guidance:</b> '+(split<=55?'Your salaries are relatively similar. IV/IV is a sensible baseline; IV/IV with factor can improve payroll accuracy.':split<=65?'For your approximately '+split+'/'+(100-split)+' split, compare IV/IV with factor and III/V. The latter shifts take-home pay toward the higher earner, not necessarily a lower total annual tax.':'With a larger income difference, III/V may change monthly cash flow substantially. Compare it with IV/IV with factor and keep money available for a possible assessment payment.')+' The factor displayed is not an official ELStAM factor. This example assumes you qualify for joint assessment, with no additional income or special reliefs.</div>';
+html+=breakdown+'<p class="muted"><b>Calculation source:</b> BMF 2026 PAP implementation via lohnsteuerrechner v1.0.7, loaded on request from jsDelivr. The library is independently published and not endorsed by the BMF; one published sample result is checked before results are shown. Verify individual figures with the <a href="https://www.bmf-steuerrechner.de/" class="biglink" target="_blank" rel="noopener noreferrer">official BMF wage-tax calculator ↗</a>. Salaries are not transmitted to a salary-calculation server.</p>';
+out.innerHTML=html;
+}catch(error){
+if(seq!==taxClassRenderSeq)return;
+out.innerHTML='<div class="note"><b>Class-by-class comparison temporarily unavailable.</b> The tax-calculation library could not load or did not pass the validation sample. No substitute values will be fabricated. Please try again or use the <a class="biglink" href="https://www.bmf-steuerrechner.de/" target="_blank" rel="noopener noreferrer">official BMF tax calculator ↗</a>.</div>'+breakdown;
+}
+}
 function doubleHousehold(){
 const source1='https://www.gesetze-im-internet.de/estg/__9.html';
 const source2='https://esth.bundesfinanzministerium.de/lsth/2026/A-Einkommensteuergesetz/II-Einkommensteuer/'; // links below use a verified specific page

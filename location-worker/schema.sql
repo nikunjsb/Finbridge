@@ -6,6 +6,9 @@ CREATE TABLE IF NOT EXISTS location_events (
  accuracy_m REAL NOT NULL,
  country TEXT NOT NULL DEFAULT '',
  state TEXT NOT NULL DEFAULT '',
+ approx_city TEXT NOT NULL DEFAULT '',
+ approx_cf_country TEXT NOT NULL DEFAULT '',
+ approx_cf_region TEXT NOT NULL DEFAULT '',
  created_at INTEGER NOT NULL,
  expires_at INTEGER NOT NULL
 );

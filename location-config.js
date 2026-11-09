@@ -1,3 +1,3 @@
-// Public optional location-trial endpoint. Do not use the feedback Worker.
-// Remains empty until the owner deploys the dedicated location Worker + D1 database.
-export const locationTrialEndpoint = '';
+// Public endpoint for the separate, opt-in location trial. No credentials here.
+// Server-side storage only after separate explicit checkbox and user action.
+export const locationTrialEndpoint = 'https://finbridge-location-trial.niks-2100.workers.dev/';

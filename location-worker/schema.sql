@@ -27,3 +27,17 @@ CREATE TABLE IF NOT EXISTS location_approx_daily (
  PRIMARY KEY(day,country,region,city)
 );
 CREATE INDEX IF NOT EXISTS location_approx_daily_expiry_idx ON location_approx_daily(expires_at);
+
+-- Aggregated manual selections, without any persistent visitor identifier.
+CREATE TABLE IF NOT EXISTS location_manual_daily (
+ day TEXT NOT NULL,
+ selected_country TEXT NOT NULL,
+ selected_state TEXT NOT NULL DEFAULT '',
+ network_country TEXT NOT NULL DEFAULT '',
+ network_region TEXT NOT NULL DEFAULT '',
+ network_city TEXT NOT NULL DEFAULT '',
+ saves INTEGER NOT NULL DEFAULT 0,
+ expires_at INTEGER NOT NULL,
+ PRIMARY KEY(day,selected_country,selected_state,network_country,network_region,network_city)
+);
+CREATE INDEX IF NOT EXISTS location_manual_daily_expiry_idx ON location_manual_daily(expires_at);

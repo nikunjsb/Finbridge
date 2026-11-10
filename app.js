@@ -210,7 +210,7 @@ function fbUpdateLocationHeader(){
 const target=document.getElementById('fbLocationButton');
 if(target)target.textContent='Location: '+fbLocationLabel();
 }
-async async function fbRecordApproximateLocation(){
+async function fbRecordApproximateLocation(){
 if(!locationTrialEndpoint)return;
 try{
   if(sessionStorage.getItem('finbridge-approx-reported'))return;

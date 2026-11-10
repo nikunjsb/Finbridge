@@ -14,7 +14,19 @@ async fetch(request,env){
  const rate=await env.RATE_LIMITER.limit({key});if(!rate.success)return reply(429,{ok:false,error:'rate_limited'});
  if(Number(request.headers.get('content-length')||0)>2048)return reply(413,{ok:false,error:'too_large'});
  let body;try{body=await request.json()}catch{return reply(400,{ok:false,error:'json'})}
- if(!body||typeof body!=='object'||Array.isArray(body)||!validId(body.visitorId))return reply(400,{ok:false,error:'input'});
+ if(!body||typeof body!=='object'||Array.isArray(body))return reply(400,{ok:false,error:'input'});
+ if(body.action==='approx'){
+  // No device coordinates, IP address, browser ID or user agent retained.
+  // Privacy notice discloses these temporary aggregated regional analytics.
+  const city=typeof request.cf?.city==='string'?request.cf.city.slice(0,100):'';
+  const country=typeof request.cf?.country==='string'?request.cf.country.slice(0,2):'';
+  const region=typeof request.cf?.region==='string'?request.cf.region.slice(0,100):'';
+  if(!country)return reply(200,{ok:true,recorded:false});
+  await env.DB.prepare("INSERT INTO location_approx_daily(day,country,region,city,visits,expires_at) VALUES (date('now'),?,?,?,1,unixepoch()+1209600) ON CONFLICT(day,country,region,city) DO UPDATE SET visits=visits+1")
+   .bind(country,region,city).run();
+  return reply(200,{ok:true,recorded:true});
+ }
+ if(!validId(body.visitorId))return reply(400,{ok:false,error:'input'});
  if(body.action==='delete'){
   await env.DB.prepare('DELETE FROM location_events WHERE visitor_id=?').bind(body.visitorId).run();
   return reply(200,{ok:true,deleted:true});
@@ -40,6 +52,9 @@ async fetch(request,env){
  return reply(201,{ok:true,retention_days:14});
 },
 async scheduled(_event,env,ctx){
- if(env.DB)ctx.waitUntil(env.DB.prepare('DELETE FROM location_events WHERE expires_at <= unixepoch()').run());
+ if(env.DB)ctx.waitUntil(Promise.all([
+  env.DB.prepare('DELETE FROM location_events WHERE expires_at <= unixepoch()').run(),
+  env.DB.prepare('DELETE FROM location_approx_daily WHERE expires_at <= unixepoch()').run()
+ ]));
 }
 };

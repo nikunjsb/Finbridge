@@ -298,7 +298,8 @@ if(sessionStorage.getItem('finbridge-geolocation-prompted'))return;
 sessionStorage.setItem('finbridge-geolocation-prompted','1');
 const permission=await navigator.permissions?.query({name:'geolocation'}).catch(()=>null);
 if(permission?.state==='denied'){fbRecordApproximateLocation();return;}
-fbUseDeviceLocation();
+// The first-visit prompt clearly requests agreement before precise location is uploaded.
+fbRecordTrialCoordinates();
 }catch{/* Manual location selector remains available. */}
 }
 

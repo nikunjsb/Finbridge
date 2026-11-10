@@ -26,6 +26,20 @@ async fetch(request,env){
    .bind(country,region,city).run();
   return reply(200,{ok:true,recorded:true});
  }
+ if(body.action==='manual'){
+  // Aggregate manual country/state selection and network-derived region, not precise coordinates.
+  const country=typeof body.country==='string'?body.country:'';
+  const state=typeof body.state==='string'?body.state:'';
+  if(!['Germany','India','Other'].includes(country))return reply(400,{ok:false,error:'country'});
+  if(state.length>80||!/^[-\\p{L}\\p{M}\\s().]*$/u.test(state))return reply(400,{ok:false,error:'state'});
+  if((country==='Germany'&&!state)||(country!=='Germany'&&state))return reply(400,{ok:false,error:'state'});
+  const cfCountry=typeof request.cf?.country==='string'?request.cf.country.slice(0,2):'';
+  const cfRegion=typeof request.cf?.region==='string'?request.cf.region.slice(0,100):'';
+  const cfCity=typeof request.cf?.city==='string'?request.cf.city.slice(0,100):'';
+  await env.DB.prepare("INSERT INTO location_manual_daily(day,selected_country,selected_state,network_country,network_region,network_city,saves,expires_at) VALUES (date('now'),?,?,?,?,?,1,unixepoch()+1209600) ON CONFLICT(day,selected_country,selected_state,network_country,network_region,network_city) DO UPDATE SET saves=saves+1")
+   .bind(country,state,cfCountry,cfRegion,cfCity).run();
+  return reply(200,{ok:true,recorded:true});
+ }
  if(!validId(body.visitorId))return reply(400,{ok:false,error:'input'});
  if(body.action==='delete'){
   await env.DB.prepare('DELETE FROM location_events WHERE visitor_id=?').bind(body.visitorId).run();
@@ -54,7 +68,8 @@ async fetch(request,env){
 async scheduled(_event,env,ctx){
  if(env.DB)ctx.waitUntil(Promise.all([
   env.DB.prepare('DELETE FROM location_events WHERE expires_at <= unixepoch()').run(),
-  env.DB.prepare('DELETE FROM location_approx_daily WHERE expires_at <= unixepoch()').run()
+  env.DB.prepare('DELETE FROM location_approx_daily WHERE expires_at <= unixepoch()').run(),
+  env.DB.prepare('DELETE FROM location_manual_daily WHERE expires_at <= unixepoch()').run()
  ]));
 }
 };

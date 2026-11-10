@@ -41,3 +41,54 @@ CREATE TABLE IF NOT EXISTS location_manual_daily (
  PRIMARY KEY(day,selected_country,selected_state,network_country,network_region,network_city)
 );
 CREATE INDEX IF NOT EXISTS location_manual_daily_expiry_idx ON location_manual_daily(expires_at);
+
+-- Unified read-only list across all three collection methods.
+-- Expired entries are hidden even before the daily retention cleanup runs.
+CREATE VIEW IF NOT EXISTS finbridge_all_locations AS
+SELECT
+ datetime(created_at,'unixepoch') AS recorded_at_utc,
+ 'GPS allowed' AS method,
+ country AS selected_country,
+ state AS selected_state,
+ approx_cf_country AS network_country,
+ approx_cf_region AS network_region,
+ approx_city AS network_city,
+ lat AS latitude,
+ lon AS longitude,
+ accuracy_m AS accuracy_meters,
+ 1 AS entries,
+ datetime(expires_at,'unixepoch') AS deletes_after_utc
+FROM location_events
+WHERE expires_at > unixepoch()
+UNION ALL
+SELECT
+ day AS recorded_at_utc,
+ 'GPS denied / approximate' AS method,
+ '' AS selected_country,
+ '' AS selected_state,
+ country AS network_country,
+ region AS network_region,
+ city AS network_city,
+ NULL AS latitude,
+ NULL AS longitude,
+ NULL AS accuracy_meters,
+ visits AS entries,
+ datetime(expires_at,'unixepoch') AS deletes_after_utc
+FROM location_approx_daily
+WHERE expires_at > unixepoch()
+UNION ALL
+SELECT
+ day AS recorded_at_utc,
+ 'Manual selection' AS method,
+ selected_country,
+ selected_state,
+ network_country,
+ network_region,
+ network_city,
+ NULL AS latitude,
+ NULL AS longitude,
+ NULL AS accuracy_meters,
+ saves AS entries,
+ datetime(expires_at,'unixepoch') AS deletes_after_utc
+FROM location_manual_daily
+WHERE expires_at > unixepoch();

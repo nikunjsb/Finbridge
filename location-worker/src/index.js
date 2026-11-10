@@ -31,7 +31,7 @@ async fetch(request,env){
   const country=typeof body.country==='string'?body.country:'';
   const state=typeof body.state==='string'?body.state:'';
   if(!['Germany','India','Other'].includes(country))return reply(400,{ok:false,error:'country'});
-  if(state.length>80||!/^[-\\p{L}\\p{M}\\s().]*$/u.test(state))return reply(400,{ok:false,error:'state'});
+  if(state.length>80||!/^[-\p{L}\p{M}\s().]*$/u.test(state))return reply(400,{ok:false,error:'state'});
   if((country==='Germany'&&!state)||(country!=='Germany'&&state))return reply(400,{ok:false,error:'state'});
   const cfCountry=typeof request.cf?.country==='string'?request.cf.country.slice(0,2):'';
   const cfRegion=typeof request.cf?.region==='string'?request.cf.region.slice(0,100):'';

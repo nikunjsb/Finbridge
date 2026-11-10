@@ -211,10 +211,13 @@ const target=document.getElementById('fbLocationButton');
 if(target)target.textContent='Location: '+fbLocationLabel();
 }
 async function fbRecordManualLocation(country,state){
-if(!locationTrialEndpoint)return;
+if(!locationTrialEndpoint)return false;
 try{
- await fetch(locationTrialEndpoint,{method:'POST',headers:{'content-type':'application/json'},credentials:'omit',body:JSON.stringify({action:'manual',country,state:country==='Germany'?state:''})});
-}catch{/* A failed statistics request never prevents a manual location selection. */}
+ const response=await fetch(locationTrialEndpoint,{method:'POST',headers:{'content-type':'application/json'},credentials:'omit',body:JSON.stringify({action:'manual',country,state:country==='Germany'?state:''})});
+ if(!response.ok){console.warn('FinBridge manual location was not recorded (HTTP '+response.status+')');return false}
+ const result=await response.json();
+ return result.ok===true&&result.recorded===true;
+}catch(err){console.warn('FinBridge manual location tracking unavailable',err);return false}
 }
 async function fbRecordApproximateLocation(){
 if(!locationTrialEndpoint)return;
@@ -1129,7 +1132,7 @@ $('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetS
 document.addEventListener('change',e=>{if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold();if(e.target.closest('#taxClassForm'))renderTaxClassResults();if(e.target.closest('#healthCompareForm'))renderHealthCompare()});
 document.addEventListener('submit',async e=>{
-if(e.target.id==='fbLocationForm'){e.preventDefault();const values=new FormData(e.target),country=String(values.get('country')),state=String(values.get('state'));if(country==='Germany'&&!state){fbLocationStatus('Choose a federal state before saving.');return}fbSaveLocation(country,state,'manual');fbUpdateLocationHeader();fbRecordManualLocation(country,state);fbGoToLocationGuide();return}
+if(e.target.id==='fbLocationForm'){e.preventDefault();const values=new FormData(e.target),country=String(values.get('country')),state=String(values.get('state'));if(country==='Germany'&&!state){fbLocationStatus('Choose a federal state before saving.');return}fbSaveLocation(country,state,'manual');fbUpdateLocationHeader();const recorded=await fbRecordManualLocation(country,state);if(!recorded)console.warn('Manual place selected locally; server analytics did not confirm save.');fbGoToLocationGuide();return}
 if(e.target.id==='doubleHouseholdForm'){e.preventDefault();updateDoubleHousehold();return;}if(e.target.id==='taxClassForm'){e.preventDefault();renderTaxClassResults();return;}if(e.target.id==='healthCompareForm'){e.preventDefault();renderHealthCompare();return;}
 if(e.target.id==='feedbackForm'){
  e.preventDefault();

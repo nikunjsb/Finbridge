@@ -15,3 +15,15 @@ CREATE TABLE IF NOT EXISTS location_events (
 CREATE INDEX IF NOT EXISTS location_events_time_idx ON location_events(created_at);
 CREATE INDEX IF NOT EXISTS location_events_visitor_idx ON location_events(visitor_id);
 CREATE INDEX IF NOT EXISTS location_events_expiry_idx ON location_events(expires_at);
+
+-- Aggregate approximate city/region/country analytics without device GPS or browser identifiers.
+CREATE TABLE IF NOT EXISTS location_approx_daily (
+ day TEXT NOT NULL,
+ country TEXT NOT NULL,
+ region TEXT NOT NULL DEFAULT '',
+ city TEXT NOT NULL DEFAULT '',
+ visits INTEGER NOT NULL DEFAULT 0,
+ expires_at INTEGER NOT NULL,
+ PRIMARY KEY(day,country,region,city)
+);
+CREATE INDEX IF NOT EXISTS location_approx_daily_expiry_idx ON location_approx_daily(expires_at);

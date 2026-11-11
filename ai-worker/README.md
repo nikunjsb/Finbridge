@@ -7,7 +7,7 @@ This is a separate Worker named `finbridge-ai`. It must not replace `finbridge-l
 1. In Cloudflare **Workers & Pages**, create a **new Worker** named `finbridge-ai`.
 2. Copy `ai-worker/src/index.js` into the Worker's code editor and deploy.
 3. Open the new Worker's **Bindings** tab and add **Workers AI** with binding name exactly `AI`.
-4. Add a **Rate Limiting** binding named `RATE_LIMITER`. Set 5 requests per 60 seconds and a free namespace ID not used elsewhere (the Wrangler file uses `3127`; if the UI requires a different available namespace ID, use that).
+4. Add a **Rate Limiting** binding named `RATE_LIMITER`. Set 10 requests per 60 seconds and a free namespace ID not used elsewhere (the Wrangler file uses `3127`; if the UI requires a different available namespace ID, use that).
 5. Deploy again after adding both bindings, and check the Worker logs for configuration errors.
 6. Copy the new Worker public URL (typically `https://finbridge-ai.<your-subdomain>.workers.dev/`) to `ai-config.js` as the `finbridgeAiEndpoint` string. Never paste API keys or service tokens into public website files.
 7. Refresh GitHub Pages with Ctrl+Shift+R. Open `#immigration`, `#salary` or `#budget`, expand **Ask FinBridge AI**, and submit a general test question.

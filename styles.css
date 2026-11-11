@@ -267,3 +267,21 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 .fb-discover-search input{min-width:0;flex:1;border:1px solid #d9dfe0;border-radius:9px;padding:11px 13px;font-size:14px}
 .fb-discover-search button{white-space:nowrap;flex-shrink:0}
 @media(max-width:700px){.top{display:flex;align-items:center;gap:12px;justify-content:space-between}.top .tools{margin-left:auto}.top .tools #fbLocationButton{max-width:56vw;padding:8px 9px;font-size:11px}.fb-discover-search{flex-wrap:wrap}.fb-discover-search input{flex-basis:100%;width:100%}.fb-discover-search button{flex:1;justify-content:center}}
+
+/* Desktop polish: unobtrusive navigation scrollbar and compact homepage tiles */
+@media(min-width:701px){
+ .sidebar nav{min-height:0;flex:1;scrollbar-width:thin;scrollbar-color:#555 transparent;padding-right:3px}
+ .sidebar nav::-webkit-scrollbar{width:5px}
+ .sidebar nav::-webkit-scrollbar-track{background:transparent}
+ .sidebar nav::-webkit-scrollbar-thumb{background:#505052;border-radius:12px}
+ .sidebar nav::-webkit-scrollbar-thumb:hover{background:#858587}
+ .fb-feature-card{min-height:148px;padding:17px 19px;gap:0}
+ .fb-feature-card .fb-card-symbol{width:34px;height:34px;border-radius:10px;margin-bottom:9px}
+ .fb-feature-card .fb-card-symbol .fb-icon{width:18px;height:18px}
+ .fb-feature-card h3{font-size:15px;line-height:1.3;margin-bottom:5px}
+ .fb-feature-card p{font-size:12px;line-height:1.45;margin-bottom:10px}
+ .fb-feature-grid{gap:13px}
+}
+@media(min-width:701px) and (max-width:1050px){
+ .fb-feature-card{min-height:154px}
+}

@@ -1,31 +1,32 @@
 # FinBridge
 
-A privacy-first personal finance learning and planning web app for life in Germany and across Germany ↔ India.
+**Your guide to life in Germany** — practical information about arriving, working, managing money, residence/citizenship, healthcare-profession recognition, and decisions between Germany and India.
+
+**Live public beta:** https://nikunjsb.github.io/Finbridge/
 
 ## Current status
-**Early working prototype**, not a hosted production service. It includes an interactive home page, searchable guides, budgeting, a tax expense tracker, cross-border question pathways and local question insights. Tax and legal examples are educational; figures and rules must be checked against official guidance for the applicable year.
+FinBridge is a publicly accessible beta, hosted on GitHub Pages. It includes an interactive home page, guide search, arrival/departure journeys, salary and tax class calculators, budget and expense planning, healthcare recognition, immigration guidance and contextual FinBridge AI powered by a separate Cloudflare Worker. These are educational tools, not individualized legal, tax or medical advice.
 
-## Run
-Open `index.html` in a browser. For development, serve the repository using any static HTTP server (e.g. `python -m http.server 8000`). No npm install is required.
+## Run locally
+Serve the repository as a static HTTP site (e.g. `python -m http.server 8000`), then open the local URL. JavaScript module imports may not work properly when `index.html` is opened with `file://`. No application build command is required.
 
-## Privacy
-Data entered into the tools is saved in browser localStorage. It is **not** synchronized between devices or sent to GitHub. Never enter tax identification numbers, banking credentials, or other secrets. Browser storage can be lost; use the export function to back up data. A later hosted version will have an explicit privacy policy and opt-in server-side functionality.
+## Privacy and integrations
+- Finance and planning entries are stored in your browser using localStorage; export a backup before switching devices, browsers or domains. They are not automatically uploaded to FinBridge.
+- The contextual AI assistant sends the question, selected topic and a small number of previous chat turns to Cloudflare Workers AI **only when submitted**; avoid submitting private or sensitive information. FinBridge does not save AI transcripts to D1.
+- Other separate services include feedback and a limited location trial. The website also loads Cloudflare Web Analytics. See the in-app Privacy page for details and limitations.
+- `insights-worker/` is an **inactive**, opt-in-only anonymous category analytics pilot. Its endpoint is blank by default; no new search/chat analytics is collected while disabled. See `insights-worker/README.md`.
+- Public code must never contain API credentials, secret tokens or personally identifiable visitor data.
 
-## Navigation & design
-All active navigation items lead to functioning sections. Guidance articles are clearly distinguished from unimplemented future features. The visual design uses high-contrast neutral grays, mobile responsive layouts, and accessible labels.
+## Product planning and tracking
+- [P0–P10 roadmap](ROADMAP.md)
+- [Issues and improvement backlog](https://github.com/nikunjsb/Finbridge/issues)
+- Scheduled public-site release QA and content-gap reviews assist with triage; they do not replace live interactive browser tests.
 
-## Roadmap
-1. Refine and verify content, add year-versioned rules and official-source links.
-2. Move from static modules to tested React + TypeScript app with predictable routes.
-3. Cloudflare Pages deployment; optional invite-only access.
-4. Backend service for reviewed rule changes, citation checking and AI question assistance, with explicit user consent.
-5. Admin moderation and updates; independent review of high-impact rules.
+## Hosting and deployment
+The production beta runs on **GitHub Pages**, not Cloudflare Pages. It is a static site; the AI, location, feedback and future insights endpoints are independent Cloudflare Workers. A later custom domain or hosting move requires updating allowed origins in Workers and warning users that localStorage does not migrate across domains.
 
 ## Disclaimer
-FinBridge provides general educational information, not individual tax, legal, financial or investment advice. No tax filing or investment transactions are performed.
+FinBridge provides general educational information and estimated calculations, not personal tax, immigration, legal, financial or medical advice. Verify current official rules and sources before acting. No tax filing or investment transactions are performed.
 
 ## Contributing
-Open a GitHub issue describing the missing feature or incorrect information and supply a source. No secrets or personal financial data in issues.
-
-## Deployment
-This static project can be deployed to Cloudflare Pages using a Git integration with no build command and output directory `/`. **No live deployment is configured yet.**
+Open a GitHub issue to report a bug or missing content. Share relevant source links and reproduction steps, not personal details, salary records, passwords, account identifiers or private AI transcripts.

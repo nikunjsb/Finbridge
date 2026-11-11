@@ -2,6 +2,7 @@ import { extraArticles } from './content.js';
 import { glossary, conceptBridge } from './language-data.js';
 import { feedbackEndpoint, turnstileSiteKey } from './feedback-config.js?v=20261106active1';
 import { locationTrialEndpoint } from './location-config.js';
+import { finbridgeAiEndpoint } from './ai-config.js';
 
 const $=(s)=>document.querySelector(s);
 const money=(v)=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(Number(v)||0);
@@ -1288,6 +1289,58 @@ return title('YOUR PRIVACY','How FinBridge handles information','A transparent e
 }
 
 function settings(){return title('PRIVACY FIRST','Your data and backups','All workspace entries currently live only in your browser. Keep a backup if you rely on them.')+privacyNote('saved')+'<div class="grid two"><div class="card"><h3>Export local data</h3><p>Download your local budget, candidate expenses, voluntary question history and checklist status as JSON.</p><button class="button" id="exportData">Export backup</button></div><div class="card"><h3>Import a backup</h3><p>Restore a previously exported JSON file. Existing local entries will be replaced.</p>'+privacyNote('localupload')+'<label class="field">Choose JSON file<input type="file" id="importData" accept=".json,application/json"/></label></div><div class="card"><h3>Clear personal information</h3><p>Delete FinBridge local entries from this browser only.</p><button class="button secondary" id="clearData">Clear local data</button></div><div class="card"><h3>Your location preference</h3><p>Only the country and German state are kept locally. Correct them whenever needed. Clear local data to remove the selection.</p><a class="button secondary" href="#location">Change location →</a></div><div class="card"><h3>What stays online?</h3><p>The website files can be served from GitHub-backed hosting. FinBridge does not upload financial form entries to a FinBridge backend. GitHub Pages may process standard technical access logs. Feedback submitted through the separate form is processed by Cloudflare and stored as private GitHub Issues, not in the browser-only tax workspace.</p></div></div>'}
+
+const fbAiTopics={immigration:'Immigration, PR and citizenship',salary:'Salary and payroll',budget:'Money and expenses',taxclasses:'Tax classes and salary',tax:'Tax expenses'};
+const fbAiThreads=new Map();
+function fbAiWidget(topic){
+if(!Object.hasOwn(fbAiTopics,topic))return '';
+const enabled=Boolean(finbridgeAiEndpoint);
+return '<div class="card fb-ai-card" id="fbAiCard"><details id="fbAiDetails"><summary><span class="fb-ai-heading"><span aria-hidden="true">✦</span> Ask FinBridge AI <small>About '+escapeHTML(fbAiTopics[topic])+'</small></span><span class="fb-ai-chevron" aria-hidden="true">⌄</span></summary><div class="fb-ai-body">'+
+'<p class="muted">Ask a short follow-up about this guide. General explanations only—not legal, tax or financial advice. Do not enter bank details, passport numbers, addresses or other private information. Your question is sent to Cloudflare AI only when you submit it, not stored by FinBridge, and the conversation is cleared on page reload.</p>'+
+(enabled?'<form id="fbAiForm"><label class="sr" for="fbAiQuestion">Question for FinBridge AI</label><div class="fb-ai-input"><input id="fbAiQuestion" name="question" maxlength="700" required placeholder="Ask a follow-up question…" autocomplete="off"><button class="button" type="submit" id="fbAiSend">Ask →</button></div></form>':'<div class="note">AI assistant setup pending. The separate Cloudflare AI Worker must be deployed and its endpoint configured before questions can be sent.</div>')+
+'<div id="fbAiConversation" class="fb-ai-conversation" role="log" aria-live="polite"></div>'+
+'<div class="fb-ai-footer"><span class="muted">Answers may be incomplete or outdated. Verify requirements with the official sources.</span><button class="quiet" id="fbAiClear" type="button">Clear chat</button></div></div></details></div>';
+}
+function fbAiRender(topic){
+const target=document.getElementById('fbAiConversation');if(!target)return;
+target.replaceChildren();
+const history=fbAiThreads.get(topic)||[];
+for(const message of history){
+ const item=document.createElement('div');item.className='fb-ai-message fb-ai-'+message.role;
+ const title=document.createElement('b');title.textContent=message.role==='assistant'?'FinBridge AI':'You';
+ const text=document.createElement('p');text.textContent=message.content;
+ item.append(title,text);
+ if(message.role==='assistant'&&Array.isArray(message.sources)){
+  const src=document.createElement('div');src.className='fb-ai-sources';
+  for(const v of message.sources){if(!v||!/^https:\/\//.test(v.url)||!v.url.startsWith('https://www.')&&!v.url.startsWith('https://www.bmf-')&&!v.url.startsWith('https://www.deutsche-'))continue;const link=document.createElement('a');link.href=v.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=v.name+' ↗';src.appendChild(link)}
+  item.appendChild(src);
+ }
+ target.append(item);
+}
+}
+async function fbAiAsk(form){
+const page=decodeURIComponent(location.hash.replace(/^#\/?/,'')||'overview').split('/')[0];
+if(!Object.hasOwn(fbAiTopics,page)||!finbridgeAiEndpoint)return;
+const question=String(new FormData(form).get('question')||'').trim(),status=document.getElementById('fbAiStatus');
+if(question.length<3||question.length>700)return;
+const button=form.querySelector('button[type="submit"]');button.disabled=true;button.textContent='Answering…';
+const past=fbAiThreads.get(page)||[];
+fbAiThreads.set(page,[...past,{role:'user',content:question}]);fbAiRender(page);form.reset();
+try{
+ const response=await fetch(finbridgeAiEndpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({topic:page,question,history:past.slice(-4).map(x=>({role:x.role,content:x.content.slice(0,600)}))}),credentials:'omit'});
+ const result=await response.json().catch(()=>({ok:false,error:'invalid_response'}));
+ if(!response.ok||!result.ok||typeof result.answer!=='string')throw Error(response.status===429?'Too many requests. Try again later.':response.status===503?'AI is temporarily unavailable.':'Could not get a response. Please try again.');
+ const existing=fbAiThreads.get(page)||[];
+ fbAiThreads.set(page,[...existing,{role:'assistant',content:result.answer,sources:Array.isArray(result.sources)?result.sources:[]}].slice(-10));
+ fbAiRender(page);
+}catch(err){
+ const existing=fbAiThreads.get(page)||[];
+ fbAiThreads.set(page,[...existing,{role:'assistant',content:'Sorry, '+err.message}]);
+ fbAiRender(page);
+}finally{
+ if(document.contains(button)){button.disabled=false;button.textContent='Ask →'}
+}
+}
 function render(){
 const hash=decodeURIComponent(location.hash.replace(/^#\/?/,'')||'overview');
 const [page,id]=hash.split('/');
@@ -1299,7 +1352,8 @@ case 'invest':content=invest();break;case 'immigration':content=immigrationGuide
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }
-$('#content').innerHTML=content;
+$('#content').innerHTML=content+(Object.hasOwn(fbAiTopics,page)?fbAiWidget(page):'');
+if(Object.hasOwn(fbAiTopics,page))fbAiRender(page);
 if(page==='immigration'&&id)requestAnimationFrame(()=>fbJumpToImmigrationSection(id));
 fbUpdateLocationHeader();
 if(page==='taxclasses'&&fbGeoState.country==='Germany'&&fbGeoState.state){const field=document.querySelector('#taxClassForm [name=state]');if(field)field.value=fbGeoState.state;}
@@ -1315,6 +1369,7 @@ $('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetS
 document.addEventListener('change',e=>{if(e.target.id==='financeMonth'){if(/^\d{4}-\d{2}$/.test(e.target.value)){state.financeViewMonth=e.target.value;save();render()}return}if(e.target.matches('#fbImmigrationGoal,#fbImmigrationProfession,#fbImmigrationMissing'))fbImmigrationToolResult();if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold();if(e.target.closest('#taxClassForm'))renderTaxClassResults();if(e.target.closest('#healthCompareForm'))renderHealthCompare()});
 document.addEventListener('submit',async e=>{
+if(e.target.id==='fbAiForm'){e.preventDefault();await fbAiAsk(e.target);return}
 if(e.target.id==='fbOverviewQuestionForm'){
 e.preventDefault();
 const question=String(new FormData(e.target).get('question')||'');
@@ -1369,6 +1424,7 @@ const rm=e.target.closest('[data-delete-expense]');if(rm){state.expenses.splice(
 if(e.target.dataset.saveinsight!==undefined){const i=Number(e.target.dataset.saveinsight);state.savedInsights=state.savedInsights||[];state.savedInsights=state.savedInsights.includes(i)?state.savedInsights.filter(x=>x!==i):[...state.savedInsights,i];save();render()}
 if(e.target.dataset.dismissinsight!==undefined){const i=Number(e.target.dataset.dismissinsight);state.dismissedInsights=[...(state.dismissedInsights||[]),i];save();render()}
 if(e.target.dataset.unsaveinsight!==undefined){state.savedInsights=(state.savedInsights||[]).filter(x=>x!==Number(e.target.dataset.unsaveinsight));save();render()}
+if(e.target.id==='fbAiClear'){const topic=location.hash.replace(/^#\/?/,'').split('/')[0];fbAiThreads.delete(topic);fbAiRender(topic);return}
 if(e.target.id==='financeCsv'){fbFinanceCsv();return}
 if(e.target.id==='financeUseSalary'){if(!Number.isFinite(state.salaryEstimatedNet))return;state.budget.income=state.salaryEstimatedNet;save();render();return}
 if(e.target.dataset.financeDelete!==undefined){const id=e.target.dataset.financeDelete;state.financeTransactions=fbFinanceRecords().filter(x=>x.id!==id);save();render();return}

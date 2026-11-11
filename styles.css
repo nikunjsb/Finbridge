@@ -234,3 +234,22 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  .fb-ai-input button{padding:9px 12px}
  .fb-ai-footer{align-items:flex-start}
 }
+
+/* Healthcare recognition pathway finder */
+.fb-healthcare-tool{margin:16px 0 24px}
+.fb-healthcare-tool .formgrid{margin:14px 0;grid-template-columns:repeat(2,minmax(0,1fr))}
+.fb-healthcare-tool h2{font-size:20px}
+.fb-healthcare-tool .field select{width:100%;min-width:0;max-width:100%}
+#fbHealthResult{margin-top:17px;overflow-wrap:anywhere}
+#fbHealthResult h3{font-size:18px;margin:0 0 10px}
+#fbHealthResult h4{font-size:15px;margin:18px 0 7px}
+#fbHealthResult li{font-size:13px;line-height:1.65;padding:3px 0}
+#fbHealthResult ol,#fbHealthResult ul{padding-left:19px}
+#fbHealthResult .biglink{display:inline-block;margin:6px 10px 6px 0;font-size:12px}
+@media(max-width:700px){
+ .fb-healthcare-tool{padding:16px}
+ .fb-healthcare-tool .formgrid{grid-template-columns:1fr;gap:12px}
+ .fb-healthcare-tool h2{font-size:18px}
+ #fbHealthResult{padding:14px}
+ #fbHealthResult li{font-size:12px}
+}

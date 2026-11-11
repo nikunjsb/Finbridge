@@ -199,7 +199,7 @@ const match=geo.features.find(f=>fbPointInGeometry(lon,lat,f.geometry));
 return match?fbStateCode[match.properties.id]||'':null;
 }
 function fbLocationStatus(message){
-const target=document.getElementById('fbLocationStatus');
+const target=document.getElementById('fbLocationStatus')||document.getElementById('fbLocationNudgeStatus');
 if(target)target.textContent=message;
 }
 function fbGoToLocationGuide(){
@@ -239,7 +239,7 @@ const lat=position.coords.latitude,lon=position.coords.longitude;
 const state=await fbDetectGermanState(lat,lon);
 if(state){
 fbSaveLocation('Germany',state,'device');fbLocationStatus('Detected '+state+'. You can correct this location manually.');
-fbUpdateLocationHeader();if(navigate)fbGoToLocationGuide();
+fbUpdateLocationHeader();if(navigate)fbGoToLocationGuide();else render();
 }else{
 fbLocationStatus('We could not identify a German federal state. Choose your country manually below. Precise coordinates were not stored.');
 }
@@ -306,7 +306,7 @@ return title('LOCATION & TAX GUIDANCE','Guidance based on your location','Detect
 let fbLocationPromptDismissed=false;
 function fbLocationPrompt(){
  if(fbLocationPromptDismissed)return '';
- return '<div class="fb-location-nudge" id="fbLocationNudge"><div><b>Check your current location?</b><p>Use your device location to suggest the right German state guides. Optional; precise coordinates are not uploaded during this check.</p></div><div class="fb-location-actions"><button class="button" id="fbCheckLocation" type="button">Check location</button><button class="button secondary" id="fbChooseLocation" type="button">Choose manually</button><button class="quiet" id="fbSkipLocation" type="button">Not now</button></div></div>';
+ return '<div class="fb-location-nudge" id="fbLocationNudge"><div><b>Check your current location?</b><p id="fbLocationNudgeStatus" role="status">Use your device location to suggest the right German state guides. Optional; precise coordinates are not uploaded during this check.</p></div><div class="fb-location-actions"><button class="button" id="fbCheckLocation" type="button">Check location</button><button class="button secondary" id="fbChooseLocation" type="button">Choose manually</button><button class="quiet" id="fbSkipLocation" type="button">Not now</button></div></div>';
 }
 
 function fbOverviewQuestionTarget(question){
@@ -1614,9 +1614,9 @@ if(e.target.id==='questionForm'){e.preventDefault();const f=new FormData(e.targe
 });
 document.addEventListener('click',async e=>{
 if(e.target.id==='fbLocateNow'){fbUseDeviceLocation();return}
-if(e.target.id==='fbCheckLocation'){fbLocationPromptDismissed=true;document.getElementById('fbLocationNudge')?.remove();fbUseDeviceLocation();return}
+if(e.target.id==='fbCheckLocation'){fbLocationPromptDismissed=true;fbUseDeviceLocation();return}
 if(e.target.id==='fbSkipLocation'){fbLocationPromptDismissed=true;document.getElementById('fbLocationNudge')?.remove();return}
-if(e.target.id==='fbChooseLocation'){fbLocationPromptDismissed=true;location.hash='#location';return}
+if(e.target.id==='fbChooseLocation'){fbLocationPromptDismissed=true;document.getElementById('fbLocationNudge')?.remove();location.hash='#location';return}
 if(e.target.id==='fbTrialShare'){fbRecordTrialCoordinates();return}
 const taxPick=e.target.closest('[data-tax-category]');if(taxPick){const select=document.querySelector('#expenseForm select[name="category"]');if(select){select.value=taxPick.dataset.taxCategory;updateExpenseFields();updateExpensePreview();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===select.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});select.scrollIntoView({behavior:'smooth',block:'center'});}return;}
 const rm=e.target.closest('[data-delete-expense]');if(rm){state.expenses.splice(Number(rm.dataset.deleteExpense),1);save();render()}

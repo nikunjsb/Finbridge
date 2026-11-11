@@ -170,3 +170,34 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  .notice-controls{display:none}
  .fb-feature-card{padding:14px}
 }
+
+/* Salary and browser-local finance manager */
+.fb-finance-toolbar{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0 18px}
+.fb-finance-toolbar .field{min-width:170px}
+.fb-finance-kpis .card{padding:18px}
+.fb-finance-kpis .stat{font-size:clamp(23px,3vw,31px);white-space:normal;overflow-wrap:anywhere}
+.fb-spend-category{padding:8px 0}
+.fb-spend-category .row{font-size:13px;gap:12px}
+.fb-spend-category .row b{white-space:nowrap}
+.fb-spend-bar{height:9px;border-radius:999px;background:#e7ecea;overflow:hidden;margin:7px 0 5px}
+.fb-spend-bar span{display:block;height:100%;border-radius:999px;background:#54776c}
+.fb-finance-goal{display:flex;align-items:end;gap:10px;flex-wrap:wrap}
+.fb-finance-goal .field{flex:1;min-width:120px}
+.fb-finance-row-end{display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:right}
+.fb-finance-row-end b{white-space:nowrap}
+#salaryResult .listrow{font-size:13px;padding:9px 0}
+#salaryResult .stat{margin:4px 0 12px}
+#salaryForm .field{min-width:0}
+#salaryForm .field input,#salaryForm .field select{width:100%}
+@media(max-width:700px){
+ .fb-finance-toolbar{align-items:stretch}
+ .fb-finance-toolbar .field{flex:1;min-width:130px}
+ .fb-finance-kpis{grid-template-columns:1fr!important;gap:9px}
+ .fb-finance-kpis .card{padding:13px 16px}
+ .fb-finance-kpis .stat{font-size:25px}
+ .fb-finance-row{align-items:flex-start}
+ .fb-finance-row-end{align-items:flex-end;flex-direction:column;gap:3px}
+ .fb-finance-goal{align-items:stretch}
+ .fb-finance-goal button{width:100%;justify-content:center}
+ #salaryResult{padding:12px}
+}

@@ -2,7 +2,7 @@ import { extraArticles } from './content.js';
 import { glossary, conceptBridge } from './language-data.js';
 import { feedbackEndpoint, turnstileSiteKey } from './feedback-config.js?v=20261106active1';
 import { locationTrialEndpoint } from './location-config.js';
-import { finbridgeAiEndpoint } from './ai-config.js';
+import { finbridgeAiEndpoint } from './ai-config.js?v=20261111live1';
 
 const $=(s)=>document.querySelector(s);
 const money=(v)=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(Number(v)||0);

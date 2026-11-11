@@ -1428,8 +1428,8 @@ if(!Object.hasOwn(fbAiTopics,topic))return '';
 const enabled=Boolean(finbridgeAiEndpoint);
 return '<div class="card fb-ai-card" id="fbAiCard"><details id="fbAiDetails"><summary><span class="fb-ai-heading"><span aria-hidden="true">✦</span> Ask FinBridge AI <small>About '+escapeHTML(fbAiTopics[topic])+'</small></span><span class="fb-ai-chevron" aria-hidden="true">⌄</span></summary><div class="fb-ai-body">'+
 '<p class="muted">Ask a short follow-up about this guide. General explanations only—not legal, tax or financial advice. Do not enter bank details, passport numbers, addresses or other private information. Your question is sent to Cloudflare AI only when you submit it, not stored by FinBridge, and the conversation is cleared on page reload.</p>'+
-(enabled?'<form id="fbAiForm"><label class="sr" for="fbAiQuestion">Question for FinBridge AI</label><div class="fb-ai-input"><input id="fbAiQuestion" name="question" maxlength="700" required placeholder="Ask a follow-up question…" autocomplete="off"><button class="button" type="submit" id="fbAiSend">Ask →</button></div></form>':'<div class="note">AI assistant setup pending. The separate Cloudflare AI Worker must be deployed and its endpoint configured before questions can be sent.</div>')+
-'<div id="fbAiConversation" class="fb-ai-conversation" role="log" aria-live="polite"></div>'+
+'<div id="fbAiConversation" class="fb-ai-conversation" role="log" aria-live="polite" aria-label="AI conversation"></div>'+
+(enabled?'<form id="fbAiForm"><label class="sr" for="fbAiQuestion">Question for FinBridge AI</label><div class="fb-ai-input"><input id="fbAiQuestion" name="question" maxlength="700" required placeholder="Ask a follow-up question…" autocomplete="off"><button class="button" type="submit" id="fbAiSend" aria-label="Send question" title="Send question">➤</button></div></form>':'<div class="note">AI assistant setup pending. The separate Cloudflare AI Worker must be deployed and its endpoint configured before questions can be sent.</div>')+
 '<div class="fb-ai-footer"><span class="muted">Answers may be incomplete or outdated. Verify requirements with the official sources.</span><button class="quiet" id="fbAiClear" type="button">Clear chat</button></div></div></details></div>';
 }
 function fbAiRender(topic){
@@ -1439,7 +1439,15 @@ const history=fbAiThreads.get(topic)||[];
 for(const message of history){
  const item=document.createElement('div');item.className='fb-ai-message fb-ai-'+message.role;
  const title=document.createElement('b');title.textContent=message.role==='assistant'?'FinBridge AI':'You';
- const text=document.createElement('p');text.textContent=message.content;
+ const text=document.createElement('p');
+ const sourceUrls=Array.isArray(message.sources)?message.sources.filter(x=>x&&typeof x.url==='string').map(x=>x.url):[];
+ let displayed=String(message.content||'');
+ for(const url of sourceUrls){
+   displayed=displayed.split('['+url+']('+url+')').join('the official source linked below');
+   displayed=displayed.split('('+url+')').join('');
+   displayed=displayed.split(url).join('the official source linked below');
+ }
+ text.textContent=displayed;
  item.append(title,text);
  if(message.role==='assistant'&&Array.isArray(message.sources)){
   const src=document.createElement('div');src.className='fb-ai-sources';
@@ -1448,13 +1456,14 @@ for(const message of history){
  }
  target.append(item);
 }
+requestAnimationFrame(()=>{if(target.isConnected)target.scrollTop=target.scrollHeight});
 }
 async function fbAiAsk(form){
 const page=decodeURIComponent(location.hash.replace(/^#\/?/,'')||'overview').split('/')[0];
 if(!Object.hasOwn(fbAiTopics,page)||!finbridgeAiEndpoint)return;
-const question=String(new FormData(form).get('question')||'').trim(),status=document.getElementById('fbAiStatus');
+const question=String(new FormData(form).get('question')||'').trim();
 if(question.length<3||question.length>700)return;
-const button=form.querySelector('button[type="submit"]');button.disabled=true;button.textContent='Answering…';
+const button=form.querySelector('button[type="submit"]');button.disabled=true;button.textContent='…';
 const past=fbAiThreads.get(page)||[];
 fbAiThreads.set(page,[...past,{role:'user',content:question}]);fbAiRender(page);form.reset();
 try{
@@ -1469,7 +1478,7 @@ try{
  fbAiThreads.set(page,[...existing,{role:'assistant',content:'Sorry, '+err.message}]);
  fbAiRender(page);
 }finally{
- if(document.contains(button)){button.disabled=false;button.textContent='Ask →'}
+ if(document.contains(button)){button.disabled=false;button.textContent='➤'}
 }
 }
 function render(){

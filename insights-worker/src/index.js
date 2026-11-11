@@ -11,6 +11,12 @@ function reply(status,data,origin){
  return new Response(JSON.stringify(data),{status,headers});
 }
 export default {
+ // Daily UTC cron: remove aggregate rows older than the most recent 30 UTC dates.
+ // Never log or expose visitor-level records (none are stored).
+ async scheduled(controller,env,ctx){
+  if(!env.DB)throw new Error('Insights D1 binding missing');
+  await env.DB.prepare("DELETE FROM insight_daily WHERE day < date('now', '-29 days')").run();
+ },
  async fetch(request,env){
   const origin=request.headers.get('Origin');
   if(origin!==ORIGIN)return reply(403,{ok:false,error:'origin'},origin);

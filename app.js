@@ -205,7 +205,7 @@ function fbTaxLocationSuggestion(){
  // If a location has been explicitly selected, the relevant calculator already has its state input.
  if(fbGeoState.country==='Germany'&&fbGeoState.state&&fbGeoState.source==='manual')return '';
  const explanation=fbGeoCheckStatus==='denied'?'Location access was declined or blocked.':fbGeoCheckStatus==='outside'?'Your current position was not identified inside Germany.':'Your current location could not be determined.';
- return '<div class="note fb-tax-location-suggestion" role="status"><b>Choose your location manually.</b> '+explanation+' For German tax and salary estimates, select the relevant German federal state; your current physical location is not necessarily your tax residence. <a class="biglink" href="#location">Choose country and state →</a></div>';
+ return '<div class="note fb-tax-location-suggestion" role="status"><b>Select a German federal state.</b> '+explanation+' Choose the state relevant to this calculation (not necessarily where you are currently located). <label class="field" style="margin-top:10px">Federal state<select id="fbTaxFallbackState"><option value="">Select federal state…</option>'+fbStates.map(([label,state])=>'<option value="'+escapeHTML(state)+'">'+escapeHTML(label)+'</option>').join('')+'</select></label></div>';
 }
 function fbLocationStatus(message){
 const target=document.getElementById('fbLocationStatus');
@@ -1644,6 +1644,11 @@ if(e.target.id==='exportData'){const b=new Blob([JSON.stringify({version:1,data:
 if(e.target.id==='clearData'&&confirm('Delete all local FinBridge data and request deletion of saved location records associated with this browser?')){const removed=await fbWithdrawTrialData();if(!removed){alert('Saved location records could not be deleted from Cloudflare. Nothing has been cleared locally; please retry.');return}localStorage.removeItem(storageKey);localStorage.removeItem(fbGeoKey);localStorage.removeItem(fbInsightsConsentKey);sessionStorage.removeItem('finbridge-geolocation-prompted');location.reload()}
 });
 document.addEventListener('change',async e=>{
+if(e.target.id==='fbTaxFallbackState'){
+ const chosen=String(e.target.value||'');
+ if(!fbStates.some(([,value])=>value===chosen))return;
+ fbSaveLocation('Germany',chosen,'manual');fbGeoCheckStatus='resolved';fbUpdateLocationHeader();render();return;
+}
 if(e.target.id==='fbInsightsOptIn'){if(finbridgeInsightsEndpoint&&e.target.checked)localStorage.setItem(fbInsightsConsentKey,'yes');else localStorage.removeItem(fbInsightsConsentKey);return}
 if(e.target.matches('[data-golddoc]')){state['gold:'+e.target.dataset.golddoc]=e.target.checked;save()}
 if(e.target.id==='goldScenario'){const x={bar:'Investment bars and coins: verify §25c VAT treatment and keep the invoice. EU cash declaration may apply at €10,000 of qualifying cash/gold. India may impose import duty and declaration requirements even when VAT was exempt in Germany.',jewellery:'New jewellery: VAT treatment differs from investment gold. Check Indian jewellery allowance eligibility, weight, proof of purchase, and whether any amount is dutiable.',old:'Existing jewellery: keep proof of prior ownership. For temporary movements and re-imports, Indian customs export/re-import certificates can be relevant, and you should retain proof before returning to Germany.',return:'Bought in India: check Indian departure rules and German import duty/VAT and traveller allowances when re-entering the EU. Keep invoices and any customs declaration evidence.'};const target=document.getElementById('goldScenarioResult');if(target)target.textContent=x[e.target.value]||''}

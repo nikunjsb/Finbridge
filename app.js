@@ -15,6 +15,7 @@ const save=()=>localStorage.setItem(storageKey,JSON.stringify(state));
 const sections=[
 ['overview','Overview','◧','START HERE'],
 ['discover','Explore topics','⌕','START HERE'],
+['immigration','Residency, PR & citizenship','▣','START HERE'],
 ['healthcare','Healthcare professionals','✚','START HERE'],
 ['journeys','Life journeys','◇','START HERE'],
 ['news','Expat updates','▤','START HERE'],
@@ -25,15 +26,15 @@ const sections=[
 ['taxguide','What can I claim?','☷','WORK & MONEY'],
 ['doublehousehold','Double household costs','⌂','WORK & MONEY'],
 ['invest','Investment planner','↗','WORK & MONEY'],
-['immigration','Residency, PR & citizenship','▣','LIVING IN GERMANY'],
+['everyday','Everyday life in Germany','⌂','LIVING IN GERMANY'],
 ['healthaccess','Healthcare in Germany','✚','LIVING IN GERMANY'],
 ['healthcompare','Health insurance comparison','♡','LIVING IN GERMANY'],
 ['language','Language Bridge','文','LIVING IN GERMANY'],
-['location','My location & guidance','◎','LIVING IN GERMANY'],
 ['cross','Germany ↔ India','⇄','CROSS-BORDER'],
 ['parentsguide','Parents: tax filing guide','▣','CROSS-BORDER'],
 ['gold','Gold: Germany ↔ India','◈','CROSS-BORDER'],
 ['residency','Residency & pension','◎','CROSS-BORDER'],
+['location','My location & guidance','◎','RESOURCES & SETTINGS'],
 ['insights','Did you know?','✦','RESOURCES & SETTINGS'],
 ['sources','Sources & updates','☑','RESOURCES & SETTINGS'],
 ['ask','Ask & feedback','?','RESOURCES & SETTINGS'],
@@ -92,7 +93,7 @@ key:'<circle cx="8" cy="9" r="5"/><path d="m12 13 9 9m-4-4 2-2"/>',
 arrow:'<path d="M4 12h16m-7-7 7 7-7 7"/>'
 };
 function fbIcon(name,cls=''){return '<svg class="fb-icon '+cls+'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+(fbIconShapes[name]||fbIconShapes.file)+'</svg>'}
-const fbNavIcons={overview:'home',location:'globe',news:'news',discover:'search',language:'language',tax:'receipt',taxguide:'checklist',taxclasses:'family',salary:'wallet',healthcompare:'heart',healthaccess:'heart',doublehousehold:'home',budget:'wallet',invest:'chart',cross:'globe',gold:'coins',parentsguide:'family',residency:'calendar',immigration:'shield',healthcare:'heart',journeys:'suitcase',insights:'bulb',ask:'message',feedback:'message',sources:'book',privacy:'shield',settings:'settings'};
+const fbNavIcons={overview:'home',location:'globe',news:'news',discover:'search',language:'language',tax:'receipt',taxguide:'checklist',taxclasses:'family',salary:'wallet',healthcompare:'heart',healthaccess:'heart',everyday:'home',doublehousehold:'home',budget:'wallet',invest:'chart',cross:'globe',gold:'coins',parentsguide:'family',residency:'calendar',immigration:'shield',healthcare:'heart',journeys:'suitcase',insights:'bulb',ask:'message',feedback:'message',sources:'book',privacy:'shield',settings:'settings'};
 const fbTaxIcons={'Commuting':['train','Travel to work','Office days and distance'],'Home office':['laptop','Home office','Eligible work-from-home days'],'Work equipment':['monitor','Work equipment','Laptop, monitor and tools'],'Professional education':['book','Training & learning','Courses, exams and books'],'Business travel':['suitcase','Business travel','Work trips and transport'],'Insurance':['shield','Insurance','Qualifying contributions'],'Support to family':['family','Family support','Payments and required proof'],'Other':['folder','Other expenses','Additional costs to review']};
 const fbNewcomerIcons={housing:'home',confirmation:'file',anmeldung:'building',bank:'bank',sim:'wifi',internet:'wifi',transport:'train',insurance:'shield',residence:'file',broadcast:'news',electric:'bulb',taxid:'receipt',budget:'wallet',workcontract:'file',payslip:'receipt',bluecard:'shield',jobticket:'train',movejob:'suitcase',worktax:'receipt',enroll:'book',studenthealth:'heart',blocked:'bank',semesterticket:'train',studentpermit:'file',uniaccess:'book',studentwork:'wallet',studenthousing:'home',familypermit:'family',familyinsurance:'shield',childcare:'family',familybenefits:'wallet',familytax:'receipt'};
 const fbReturnIcons={decision:'globe',employment:'file',housing:'home',utilities:'bulb',internet:'wifi',transport:'train',insurance:'shield',broadcast:'news',bank:'bank',documents:'folder',shipping:'suitcase',mail:'message',abmeldung:'building',handover:'key',lastsalary:'receipt',residencetitle:'file',flight:'plane',indiabank:'bank',indiatax:'receipt',germantax:'receipt',investments:'chart',pension:'wallet',healthindia:'heart',foreignassets:'globe',security:'shield',employergoodbye:'file',drvstatus:'calendar',prstatus:'shield',university:'book',studentinsurance:'heart',studentloans:'bank'};
@@ -582,6 +583,26 @@ travel:{text:'100% of qualifying private-travel vaccination costs, subject to el
 const gkvRateSource='https://www.gkv-spitzenverband.de/service/krankenkassenliste/krankenkassen.jsp?filter=17&pageNo=2';
 
 // Public-patient guide, separate from the recognition guide for healthcare workers.
+
+function fbEverydayGermanyPage(){
+const ext=(url,label)=>'<a class="biglink" target="_blank" rel="noopener noreferrer" href="'+url+'">'+label+' ↗</a>';
+return title('LIVING IN GERMANY','Everyday life in Germany','Practical tasks, local services and routines for people who already live in Germany — from your apartment to transport, paperwork and community.')+
+'<div class="note"><b>Start with your situation:</b> If you have just arrived, use the <a href="#journey/newcomer">arrival checklist</a>. If you are moving between German cities, update the address and contracts that apply to you. Rules and local services can vary by municipality.</div>'+
+'<div class="grid two">'+
+'<div class="card"><h3>Housing, address and Bürgeramt</h3><p>After moving into a home, register the new address with the local registration authority (Anmeldung or Ummeldung), normally within <b>two weeks</b>. Ask the landlord for a <b>Wohnungsgeberbestätigung</b>; a rental contract alone is not the same document. Keep your registration confirmation.</p><p>'+ext('https://www.make-it-in-germany.com/en/arriving-living/getting-started/housing-registration','Official housing and registration guidance')+'</p><a href="#journey/newcomer" class="biglink">Moving-in checklist →</a></div>'+
+'<div class="card"><h3>Electricity, heating and internet</h3><p>Check which utilities are covered by rent and which need separate contracts. Record meter readings when taking or handing over keys, compare contract terms and keep confirmations. Internet installation may require an appointment; notify providers when you move.</p>'+ext('https://www.make-it-in-germany.com/en/arriving-living/getting-started/housing-registration','Official guidance on utilities and contracts')+'</div>'+
+'<div class="card"><h3>Public transport and getting around</h3><p>Check your local transport association for tickets, service areas and current fares. The Deutschlandticket has its own validity and cancellation conditions, so confirm the current terms before subscribing. Keep rail, bus and work-travel costs separate when tracking expenses.</p><a href="#budget" class="biglink">Plan transport expenses →</a><p>'+ext('https://www.bahn.de/angebot/regio/deutschland-ticket','Official Deutsche Bahn Deutschlandticket information')+'</p></div>'+
+'<div class="card"><h3>Rundfunkbeitrag and household post</h3><p>The public broadcasting contribution generally applies <b>per dwelling</b>, not separately to every person living there. Check whether someone in the household already pays before registering or replying to a letter. Exemptions can apply to certain circumstances.</p>'+ext('https://www.rundfunkbeitrag.de/','Official Beitragsservice')+'</div>'+
+'<div class="card"><h3>Doctors, pharmacies and emergencies</h3><p>Know how to find a Hausarzt and specialist, and keep your health insurance information available. For urgent medical help that is not life-threatening, contact <b>116117</b>; for an emergency, call <b>112</b>.</p><a href="#healthaccess" class="biglink">Family doctor, hospitals and appointments →</a><p><a href="#healthcompare" class="biglink">Compare health insurers →</a></p></div>'+
+'<div class="card"><h3>Waste sorting, house rules and neighbours</h3><p>Follow local rules for recycling, collection days and bulky waste. Check the building’s <b>Hausordnung</b> for quiet hours, communal facilities and other requirements. Your municipality and building management are the best sources for local rules.</p>'+ext('https://www.make-it-in-germany.com/en/arriving-living/getting-started/housing-registration','Official housing and daily-life guidance')+'</div>'+
+'<div class="card"><h3>Banking, bills and monthly spending</h3><p>Use your bank account for rent and recurring bills, check direct debits (<b>Lastschrift</b>) and set aside money for annual statements and irregular costs. Keep important account and contract information private.</p><a href="#budget" class="biglink">Budget and expense manager →</a></div>'+
+'<div class="card"><h3>German letters and appointments</h3><p>Look for the sender, any deadline (<b>Frist</b>) and required documents (<b>Unterlagen</b>). Book appointments using the official municipality or service website, and verify any payment request before responding.</p><a href="#language" class="biglink">Understand German terms →</a><p><a href="#discover" class="biglink">Find more practical guides →</a></p></div>'+
+'</div>'+
+'<div class="sectionhead"><h2>Useful next steps</h2></div>'+
+'<div class="grid two"><a class="card link" href="#journey/newcomer"><h3>New to Germany?</h3><p>Follow the arrival checklist for registration, banking, contracts and setting up your household.</p><span class="arrow">Open checklist →</span></a><a class="card link" href="#location"><h3>Need local guidance?</h3><p>Review the German state used by FinBridge and adjust it manually when needed.</p><span class="arrow">Location settings →</span></a></div>'+
+'<p class="muted" style="margin-top:18px">Information last reviewed 11 November 2026. National rules, city services and provider terms may change; use the linked official services to verify the latest details.</p>';
+}
+
 function fbHealthcareAccessPage(){
 const ext=(url,label)=>'<a href="'+url+'" target="_blank" rel="noopener noreferrer" class="biglink">'+label+' ↗</a>';
 return title('LIVING IN GERMANY / HEALTH','Healthcare in Germany: doctors, hospitals and appointments','A practical guide to finding a family doctor, arranging care and understanding where to go in Germany. Reviewed 11 November 2026.')+
@@ -1605,7 +1626,7 @@ let content='';
 switch(page){
 case 'overview':content=overview();break;case 'location':content=fbLocationPage();break;case 'news':content=newsPage();break;case 'discover':content=discover(fbDiscoverQuery);break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
 case 'guide':content=guide(id);break;case 'term':content=termPage(id);break;case 'parentsguide':content=parentsGuide();break;case 'tax':content=tax();break;case 'taxguide':content=taxguide();break;case 'taxclasses':content=taxClasses();break;case 'salary':content=salaryPage();break;case 'healthcompare':content=healthCompare();break;case 'doublehousehold':content=doubleHousehold();break;case 'budget':content=budget();break;
-case 'invest':content=invest();break;case 'healthaccess':content=fbHealthcareAccessPage();break;case 'healthcare':content=fbHealthcareGuide();break;case 'immigration':content=immigrationGuide();break;case 'cross':content=cross();break;case 'gold':content=goldGuide();break;case 'residency':content=residency();break;
+case 'invest':content=invest();break;case 'everyday':content=fbEverydayGermanyPage();break;case 'healthaccess':content=fbHealthcareAccessPage();break;case 'healthcare':content=fbHealthcareGuide();break;case 'immigration':content=immigrationGuide();break;case 'cross':content=cross();break;case 'gold':content=goldGuide();break;case 'residency':content=residency();break;
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }

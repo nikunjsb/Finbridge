@@ -320,9 +320,9 @@ function fbOverviewQuestionTarget(question){
 const q=normalizeTerm(question);
 if(!q)return null;
 const rules=[
- {pattern:/citizenship|naturalisation|naturalization|einburger|nationality|passport/,route:'immigration/citizenship',label:'German citizenship requirements'},
+ {pattern:/citizenship|naturalisation|naturalization|einburger|nationality/,route:'immigration/citizenship',label:'German citizenship requirements'},
  {pattern:/salary requirement|minimum salary|shortage occupation|profession|occupation|degree recognition|recognition|engineer|nurs|doctor|it specialist/,route:'immigration/professions',label:'Profession and salary requirements'},
- {pattern:/missing document|alternative document|instead of|lost certificate|replacement certificate|substitute proof/,route:'immigration/alternatives',label:'Alternative document evidence'},
+ {pattern:/missing document|alternative document|instead of|lost certificate|lost passport|passport missing|replacement certificate|substitute proof/,route:'immigration/alternatives',label:'Alternative document evidence'},
  {pattern:/blue card|bluecard|blaue karte/,route:'immigration/bluecard',label:'EU Blue Card settlement permit'},
  {pattern:/\bpr\b|permanent residence|settlement|niederlassung|unlimited residence/,route:'immigration/pr',label:'Permanent residence pathways'},
  {pattern:/language|german level|b1|a1|test|integration/,route:'immigration/language',label:'Language and citizenship tests'},
@@ -924,7 +924,7 @@ const fbImmigrationProfiles={
  trades:{name:'Skilled trades / vocational',details:'Check the qualified professional visa under §§18a/18b. A recognised qualification and qualified job offer are central. The Blue Card is not automatically the correct residence route.',source:'https://www.make-it-in-germany.com/en/visa-recognition/visa-types/qualified-professionals'},
  business:{name:'Management / business',details:'Some management occupations fall on the shortage list, but many do not. Whether a lower Blue Card threshold applies depends on the exact occupation classification, not the broad job title.',source:'https://www.make-it-in-germany.com/en/visa-recognition/visa-types/eu-blue-card'},
  experienced:{name:'Professionally experienced / other',details:'The professionally experienced-worker visa normally concerns qualified non-regulated work, with 2 relevant years of experience in the last 5 years and specific qualification/job conditions. IT has a special experience-based provision.',source:'https://www.make-it-in-germany.com/en/visa-recognition/visa-types/professionally-experienced-workers'},
- self:{name:'Self-employed',details:'Self-employed pathways use different residence provisions and economic/financing criteria. The employee Blue Card salary thresholds are not a self-employment test. Ask the responsible authority for the applicable checklist.',source:'https://www.make-it-in-germany.com/en/visa-recognition/visa-types'}
+ self:{name:'Self-employed',details:'Self-employed pathways use different residence provisions and economic/financing criteria. The employee Blue Card salary thresholds are not a self-employment test. Ask the responsible authority for the applicable checklist.',source:'https://www.make-it-in-germany.com/en/visa-recognition/visa-types/other/self-employment'}
 };
 const fbImmigrationMissing={
  language:{name:'German B1 certificate',cit:'For naturalisation, authorities may also accept appropriate German schooling or university graduation, an integration-course certificate, or the German Test for Immigrants. Check the exact qualification and exceptions; PR routes can differ.',url:'https://www.einbuergerung.de/ablauf.php?l=en'},

@@ -398,13 +398,15 @@ for(const w of words){if(title.includes(w))score+=4;else if(hay.includes(w))scor
 return {x,score};
 }).filter(o=>o.score>0).sort((a,b)=>b.score-a.score).map(o=>o.x).slice(0,8);
 }
+let fbDiscoverQuery='';
 function discover(filter=''){
 const q=normalizeTerm(filter);
 const a=articles.filter(x=>normalizeTerm(x.name+' '+x.cat+' '+x.summary+' '+x.overview).includes(q));
 const g=filter?glossaryResults(filter,8):[];
 const matched=filter?searchToolMatches(filter):searchableTools.slice(0,4);
-return title('KNOWLEDGE LIBRARY','Explore financial topics','Search guides, calculators and German-English terminology. Try “tax class”, “married salary”, “Steuerklasse”, “payslip” or “NRE”.')+
-'<div class="note">Guides are educational, not individually reviewed tax advice. Check the applicable year and official sources before decisions.</div>'+
+return title('KNOWLEDGE LIBRARY','Explore topics and tools','Search FinBridge guides, calculators and German terminology. Try “PR”, “doctor”, “Steuerklasse”, “salary” or “NRE”.')+
+'<form id="fbDiscoverSearchForm" class="fb-discover-search" role="search"><label class="sr" for="fbDiscoverSearch">Search all FinBridge topics</label><input id="fbDiscoverSearch" name="query" maxlength="200" placeholder="Search guides, tools and terms…" value="'+escapeHTML(filter)+'" autocomplete="off" required><button type="submit" class="button">Search →</button>'+(filter?'<button type="button" class="button secondary" id="fbDiscoverClear">Clear</button>':'')+'</form>'+
+'<div class="note">Searches are handled in your browser. Guides are educational and should be verified against current official rules.</div>'+
 (matched.length?'<div class="sectionhead"><h2>Tools and guided sections</h2></div><div class="grid two">'+matched.map(x=>'<a href="#'+x.id+'" class="card link"><span class="fb-card-symbol">'+fbIcon(x.id==='taxclasses'?'family':x.id==='doublehousehold'?'home':'book')+'</span><h3>'+escapeHTML(x.title)+'</h3><p>'+escapeHTML(x.summary)+'</p><span class="arrow">Open tool →</span></a>').join('')+'</div>':'')+
 (g.length?'<div class="sectionhead"><h2>German terminology matches</h2><a class="biglink" href="#language">Open Language Bridge →</a></div><div class="grid two">'+g.map(glossaryCard).join('')+'</div>':'')+
 '<div class="sectionhead"><h2>Guides and explainers</h2></div>'+
@@ -1486,7 +1488,7 @@ const hash=decodeURIComponent(location.hash.replace(/^#\/?/,'')||'overview');
 const [page,id]=hash.split('/');
 let content='';
 switch(page){
-case 'overview':content=overview();break;case 'location':content=fbLocationPage();break;case 'news':content=newsPage();break;case 'discover':content=discover($('#search')?.value||'');break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
+case 'overview':content=overview();break;case 'location':content=fbLocationPage();break;case 'news':content=newsPage();break;case 'discover':content=discover(fbDiscoverQuery);break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
 case 'guide':content=guide(id);break;case 'term':content=termPage(id);break;case 'parentsguide':content=parentsGuide();break;case 'tax':content=tax();break;case 'taxguide':content=taxguide();break;case 'taxclasses':content=taxClasses();break;case 'salary':content=salaryPage();break;case 'healthcompare':content=healthCompare();break;case 'doublehousehold':content=doubleHousehold();break;case 'budget':content=budget();break;
 case 'invest':content=invest();break;case 'healthcare':content=fbHealthcareGuide();break;case 'immigration':content=immigrationGuide();break;case 'cross':content=cross();break;case 'gold':content=goldGuide();break;case 'residency':content=residency();break;
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
@@ -1504,21 +1506,19 @@ $('#breadcrumb').textContent=page==='guide'?'Guide / '+(articles.find(x=>x.id===
 document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
 }
 window.addEventListener('hashchange',()=>{render();if(!location.hash.startsWith('#immigration/'))window.scrollTo(0,0)});
-$('#search').addEventListener('input',e=>{if(!location.hash.startsWith('#discover'))location.hash='#discover';else render();$('#resetSearch').hidden=!e.target.value});
-$('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetSearch').hidden=true;render()});
 document.addEventListener('change',e=>{if(e.target.id==='financeMonth'){if(/^\d{4}-\d{2}$/.test(e.target.value)){state.financeViewMonth=e.target.value;save();render()}return}if(e.target.matches('#fbImmigrationGoal,#fbImmigrationProfession,#fbImmigrationMissing'))fbImmigrationToolResult();if(e.target.matches('#fbHealthRole,#fbHealthState,#fbHealthOrigin,#fbHealthSituation,#fbHealthGerman,#fbHealthSpecialty,#fbHealthMissing'))fbHealthcareResult();if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold();if(e.target.closest('#taxClassForm'))renderTaxClassResults();if(e.target.closest('#healthCompareForm'))renderHealthCompare()});
 document.addEventListener('submit',async e=>{
 if(e.target.id==='fbAiForm'){e.preventDefault();await fbAiAsk(e.target);return}
+if(e.target.id==='fbDiscoverSearchForm'){
+e.preventDefault();fbDiscoverQuery=String(new FormData(e.target).get('query')||'').trim().slice(0,200);render();return;
+}
 if(e.target.id==='fbOverviewQuestionForm'){
 e.preventDefault();
-const question=String(new FormData(e.target).get('question')||'');
+const question=String(new FormData(e.target).get('question')||'').trim();
 const matched=fbOverviewQuestionTarget(question);
 if(matched)location.hash='#'+matched.route;
-else{
-const result=document.getElementById('fbOverviewQuestionResult');
-if(result){result.textContent='No exact section found. Try “citizenship”, “PR”, “Blue Card”, “tax” or browse all topics.';const link=document.createElement('a');link.href='#discover';link.className='biglink';link.textContent=' Explore all guides →';result.appendChild(link);}
-}
+else{fbDiscoverQuery=question.slice(0,200);location.hash='#discover';if(location.hash==='#discover')render();}
 return;
 }
 if(e.target.id==='fbLocationForm'){e.preventDefault();const values=new FormData(e.target),country=String(values.get('country')),state=String(values.get('state'));if(country==='Germany'&&!state){fbLocationStatus('Choose a federal state before saving.');return}fbSaveLocation(country,state,'manual');fbUpdateLocationHeader();const recorded=await fbRecordManualLocation(country,state);if(!recorded)console.warn('Manual place selected locally; server analytics did not confirm save.');fbGoToLocationGuide();return}
@@ -1565,6 +1565,7 @@ if(e.target.dataset.saveinsight!==undefined){const i=Number(e.target.dataset.sav
 if(e.target.dataset.dismissinsight!==undefined){const i=Number(e.target.dataset.dismissinsight);state.dismissedInsights=[...(state.dismissedInsights||[]),i];save();render()}
 if(e.target.dataset.unsaveinsight!==undefined){state.savedInsights=(state.savedInsights||[]).filter(x=>x!==Number(e.target.dataset.unsaveinsight));save();render()}
 if(e.target.id==='fbAiClear'){const topic=location.hash.replace(/^#\/?/,'').split('/')[0];fbAiThreads.delete(topic);fbAiRender(topic);return}
+if(e.target.id==='fbDiscoverClear'){fbDiscoverQuery='';render();document.getElementById('fbDiscoverSearch')?.focus();return}
 if(e.target.id==='financeCsv'){fbFinanceCsv();return}
 if(e.target.id==='financeUseSalary'){if(!Number.isFinite(state.salaryEstimatedNet))return;state.budget.income=state.salaryEstimatedNet;save();render();return}
 if(e.target.dataset.financeDelete!==undefined){const id=e.target.dataset.financeDelete;state.financeTransactions=fbFinanceRecords().filter(x=>x.id!==id);save();render();return}

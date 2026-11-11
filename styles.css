@@ -322,3 +322,6 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  .top .tools{margin-left:auto}
 }
 @media(prefers-reduced-motion:reduce){#fbSidebar.sidebar{transition:none}}
+
+/* No redundant overview location control */
+#fbLocationButton[hidden]{display:none!important}

@@ -20,7 +20,7 @@ Serve the repository as a static HTTP site (e.g. `python -m http.server 8000`), 
 ## Product planning and tracking
 - [P0–P10 roadmap](ROADMAP.md)
 - [Issues and improvement backlog](https://github.com/nikunjsb/Finbridge/issues)
-- Scheduled public-site release QA and content-gap reviews assist with triage; they do not replace live interactive browser tests.
+- Scheduled public-site release QA and content-gap reviews help identify issues; they do not replace live interactive browser testing.
 
 ## Hosting and deployment
 The production beta runs on **GitHub Pages**, not Cloudflare Pages. It is a static site; the AI, location, feedback and future insights endpoints are independent Cloudflare Workers. A later custom domain or hosting move requires updating allowed origins in Workers and warning users that localStorage does not migrate across domains.

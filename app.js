@@ -316,6 +316,31 @@ fbRecordTrialCoordinates();
 }catch{/* Manual location selector remains available. */}
 }
 
+function fbOverviewQuestionTarget(question){
+const q=normalizeTerm(question);
+if(!q)return null;
+const rules=[
+ {pattern:/citizenship|naturalisation|naturalization|einburger|nationality|passport/,route:'immigration/citizenship',label:'German citizenship requirements'},
+ {pattern:/blue card|bluecard|blaue karte/,route:'immigration/bluecard',label:'EU Blue Card settlement permit'},
+ {pattern:/pr|permanent residence|settlement|niederlassung|unlimited residence/,route:'immigration/pr',label:'Permanent residence pathways'},
+ {pattern:/language|german level|b1|a1|test|integration/,route:'immigration/language',label:'Language and citizenship tests'},
+ {pattern:/document|paperwork|application|apply|checklist/,route:'immigration/documents',label:'Application document checklist'},
+ {pattern:/fee|cost|processing|waiting time/,route:'immigration/fees',label:'Fees and processing'},
+ {pattern:/travel|absence|abroad|family|spouse|children/,route:'immigration/travel',label:'Travel and family implications'},
+ {pattern:/residence permit|visa|immigration|work permit/,route:'immigration/stages',label:'Residence permits overview'},
+ {pattern:/tax class|steuerklasse|salary|net pay|payslip/,route:'taxclasses',label:'Salary and tax class guide'},
+ {pattern:/health insurance|krankenkasse/,route:'healthcompare',label:'Health insurance comparison'},
+ {pattern:/rent|moving|newcomer|arriv|anmeldung/,route:'journey/newcomer',label:'Moving to Germany checklist'},
+ {pattern:/india|nre|nro|transfer|cross border/,route:'cross',label:'Germany–India guidance'},
+ {pattern:/pension|retirement/,route:'residency',label:'Residency and pension checker'},
+ {pattern:/commut|home office|deduct|tax return/,route:'tax',label:'Tax workspace'}
+];
+return rules.find(item=>item.pattern.test(q))||null;
+}
+function fbJumpToImmigrationSection(id){
+const section=document.getElementById('fbImmigration-'+id);
+if(section){section.scrollIntoView({behavior:'smooth',block:'start'});section.setAttribute('tabindex','-1');section.focus({preventScroll:true})}
+}
 function overview(){
 const starts=[
 ['journey/newcomer','suitcase','New to Germany?','A step-by-step plan for housing, registration, banking and daily life.','Start arrival guide'],
@@ -335,6 +360,7 @@ const tile=([id,icon,name,description,cta])=>'<a href="#'+id+'" class="card link
 return title('FINBRIDGE / YOUR LIFE, SIMPLIFIED','Make sense of life between Germany and India.','Practical help with moving, money, documents and everyday decisions — explained step by step.')+
 '<div class="card" style="margin-bottom:18px"><div class="row" style="align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px"><div><b>Guidance near you</b><p class="muted" style="margin:4px 0 0">'+(fbGeoState.country?'Selected: '+escapeHTML(fbLocationLabel()):'Allow location access or choose your area manually.')+'</p></div><div class="row" style="gap:9px"><button type="button" class="button secondary" id="fbLocateNow">Allow device location</button><a class="biglink" href="#location">Choose manually →</a></div></div><p class="muted" id="fbLocationStatus" aria-live="polite" style="margin:7px 0 0">If you allow device location, FinBridge stores precise coordinates for this temporary test and automatically deletes them after 14 days. If denied, only approximate regional visit counts may be recorded.</p></div>'+
 '<div class="hero fb-hero"><div><div class="eyebrow" style="color:#aaa">START WHERE YOU ARE</div><h2>What would you like to do today?</h2><p>You don’t need to know the right tax or German words to begin. Choose the situation that fits you.</p></div><a href="#journeys" class="button invert">Explore life journeys →</a></div>'+
+'<div class="card" style="margin:18px 0"><h3>Have a question? Jump straight to an answer</h3><p class="muted">Ask something like “How can I get PR?”, “When can I apply for citizenship?” or “What is the Blue Card?” FinBridge finds the closest published section without sending your question to a server.</p><form id="fbOverviewQuestionForm" class="row" style="gap:10px;align-items:end;flex-wrap:wrap"><label class="field" style="flex:1;min-width:220px">What would you like to know?<input name="question" maxlength="200" required placeholder="e.g. How do I get permanent residence?" autocomplete="off"/></label><button class="button" type="submit">Find guidance →</button></form><div id="fbOverviewQuestionResult" class="muted" role="status" style="margin-top:9px"></div><div class="row" style="gap:9px;flex-wrap:wrap;margin-top:10px"><a class="biglink" href="#immigration/pr">Permanent residence →</a><a class="biglink" href="#immigration/citizenship">German citizenship →</a><a class="biglink" href="#immigration/documents">Required documents →</a><a class="biglink" href="#taxclasses">Salary & tax classes →</a></div></div>'+ 
 '<div class="sectionhead"><h2>Choose your starting point</h2><span class="muted">Simple, guided next steps</span></div>'+
 '<div class="fb-feature-grid">'+starts.map(tile).join('')+'</div>'+
 expatNewsPreview()+
@@ -892,23 +918,23 @@ function immigrationGuide(){
 const out=(label,url)=>'<a class="biglink" href="'+escapeHTML(url)+'" target="_blank" rel="noopener noreferrer">'+escapeHTML(label)+' ↗</a>';
 return title('GERMANY / IMMIGRATION','Residence permits, permanent residence & citizenship','A practical overview of the different legal statuses, typical eligibility rules and documents. Official sources checked 11 November 2026.')+
 '<div class="note"><b>Rule status:</b> The ordinary naturalisation residence period remains <b>5 years</b>. The former 3-year special-integration naturalisation route was abolished effective 30 October 2025. A future return to 8 years must not be presented as enacted law without an official legal change.</div>'+
-'<div class="sectionhead"><h2>Understand the three stages</h2></div><div class="grid three">'+
+'<div class="sectionhead" id="fbImmigration-stages"><h2>Understand the three stages</h2></div><div class="grid three">'+
 '<div class="card"><h3>1. Temporary residence</h3><p>A residence permit or EU Blue Card allows residence for a specified purpose and under particular conditions. Its validity and employment rights depend on the title.</p></div>'+
 '<div class="card"><h3>2. Permanent residence (PR)</h3><p>A Niederlassungserlaubnis is generally an indefinite settlement permit. It is <b>not</b> German citizenship and can still be affected by certain prolonged absences or departure circumstances.</p></div>'+
 '<div class="card"><h3>3. German citizenship</h3><p>Naturalisation changes nationality. It normally involves a separate application, including residence, language, knowledge, livelihood and identity requirements.</p></div></div>'+
-'<div class="sectionhead"><h2>Permanent residence pathways</h2></div>'+
-'<div class="card"><h3>EU Blue Card → settlement permit</h3><p><b>27 months</b> of qualifying employment and pension contributions with German <b>A1</b>, or <b>21 months</b> with German <b>B1</b>, under §18c(2) AufenthG. Both routes also require the other statutory conditions, including secure livelihood, relevant knowledge and sufficient housing. The months are not merely months since arriving in Germany.</p>'+
+'<div class="sectionhead" id="fbImmigration-pr"><h2>Permanent residence pathways</h2></div>'+
+'<div class="card" id="fbImmigration-bluecard"><h3>EU Blue Card → settlement permit</h3><p><b>27 months</b> of qualifying employment and pension contributions with German <b>A1</b>, or <b>21 months</b> with German <b>B1</b>, under §18c(2) AufenthG. Both routes also require the other statutory conditions, including secure livelihood, relevant knowledge and sufficient housing. The months are not merely months since arriving in Germany.</p>'+
 '<div class="note">For both routes, confirm which employment/contribution periods count with your local Ausländerbehörde. A language certificate alone does not grant PR.</div>'+
 out('Official skilled-worker settlement-permit guidance','https://www.make-it-in-germany.com/en/arriving-living/long-term/settlement-permit')+' '+out('Residence Act §18c','https://www.gesetze-im-internet.de/aufenthg_2004/__18c.html')+'</div>'+
-'<div class="card"><h3>Other skilled-worker routes</h3><p>For certain qualified workers with residence under §§18a, 18b, 18d or 18g, the regular skilled-worker route generally requires <b>3 years</b> holding a qualifying title, <b>36 months</b> of relevant pension contributions, <b>B1</b> German and other conditions. A qualifying German degree or vocational qualification can reduce applicable periods to 2 years and 24 months. Different residence groups have separate rules.</p></div>'+
-'<div class="sectionhead"><h2>German citizenship (Einbürgerung)</h2></div>'+
+'<div class="card" id="fbImmigration-skilled"><h3>Other skilled-worker routes</h3><p>For certain qualified workers with residence under §§18a, 18b, 18d or 18g, the regular skilled-worker route generally requires <b>3 years</b> holding a qualifying title, <b>36 months</b> of relevant pension contributions, <b>B1</b> German and other conditions. A qualifying German degree or vocational qualification can reduce applicable periods to 2 years and 24 months. Different residence groups have separate rules.</p></div>'+
+'<div class="sectionhead" id="fbImmigration-citizenship"><h2>German citizenship (Einbürgerung)</h2></div>'+
 '<div class="card"><h3>Standard naturalisation — generally after 5 years</h3><p>Under §10 StAG, the usual route requires <b>5 years of lawful habitual residence</b> and further conditions. These generally include a qualifying residence status, established identity and nationality, secure livelihood, <b>B1</b> German, knowledge of German civic and legal life (usually an accepted test), constitutional commitments and no disqualifying circumstances. Special statutory exceptions may apply.</p><p><b>Important:</b> You do not necessarily need to obtain a settlement permit first if you already hold another residence title qualifying under citizenship law. A Blue Card may satisfy the residence-title requirement, but the authority checks the full case.</p>'+
 out('Naturalisation requirements — Federal Government','https://www.einbuergerung.de/fragebogen.php?l=en')+' '+out('Citizenship Act §10','https://www.gesetze-im-internet.de/stag/__10.html')+'</div>'+
-'<div class="grid two"><div class="card"><h3>Language and citizenship test</h3><p>For ordinary naturalisation, prepare B1 language evidence and an accepted citizenship or “Life in Germany” knowledge test. Specific qualifications or statutory exceptions may replace or waive evidence.</p></div>'+
-'<div class="card"><h3>Fees and processing</h3><p>The standard naturalisation fee is generally <b>€255 per person</b>; reduced fees may apply for eligible minor children. Processing depends on the responsible authority and can be lengthy. Verify the authority’s current checklist before applying.</p></div></div>'+
-'<div class="sectionhead"><h2>Documents to prepare</h2></div>'+
+'<div class="grid two" id="fbImmigration-language"><div class="card"><h3>Language and citizenship test</h3><p>For ordinary naturalisation, prepare B1 language evidence and an accepted citizenship or “Life in Germany” knowledge test. Specific qualifications or statutory exceptions may replace or waive evidence.</p></div>'+
+'<div class="card" id="fbImmigration-fees"><h3>Fees and processing</h3><p>The standard naturalisation fee is generally <b>€255 per person</b>; reduced fees may apply for eligible minor children. Processing depends on the responsible authority and can be lengthy. Verify the authority’s current checklist before applying.</p></div></div>'+
+'<div class="sectionhead" id="fbImmigration-documents"><h2>Documents to prepare</h2></div>'+
 '<div class="card"><ul><li>Passport, identity evidence and current residence title</li><li>Residence history, Anmeldung and accommodation evidence if requested</li><li>Employment contract, recent payslips and livelihood evidence</li><li>Health-insurance coverage and pension contribution history (especially for PR)</li><li>German-language certificate and civic-knowledge or naturalisation test evidence as applicable</li><li>Marital-status and family documents where relevant</li><li>Local authority application form, biometric photo and any additional requested originals</li></ul><p><b>Application:</b> Contact your local Ausländerbehörde for PR and Staatsangehörigkeitsbehörde for citizenship. Requirements and document formats vary by office; this list is a preparation checklist, not a guaranteed exhaustive list.</p></div>'+
-'<div class="sectionhead"><h2>Travel, family and legal changes</h2></div>'+
+'<div class="sectionhead" id="fbImmigration-travel"><h2>Travel, family and legal changes</h2></div>'+
 '<div class="card"><p><b>Travel:</b> Even a permanent settlement permit may lapse on departure for a non-temporary purpose or after certain time abroad. §51 AufenthG contains important exceptions. Ask your Ausländerbehörde before an extended stay outside Germany.</p><p><b>Family:</b> Spouse and children may qualify through different residence and naturalisation routes; do not assume one person’s PR or citizenship automatically gives everyone the same status.</p><p><b>Law changes:</b> Distinguish enacted changes from draft bills and political proposals. Check both the effective date and the current law before publishing a new threshold.</p>'+
 out('Residence Act §51 — expiry and exceptions','https://www.gesetze-im-internet.de/aufenthg_2004/__51.html')+' '+out('Naturalisation process and fees','https://www.einbuergerung.de/service.php?l=en')+'</div>'+
 '<div class="note">FinBridge provides general educational information, not a legal eligibility decision. Exact qualifying periods, exceptions, recognition of tests and application procedures depend on your circumstances and competent authority. Verified: 11 November 2026.</div>';
@@ -1146,6 +1172,7 @@ case 'journeys':content=journeys();break;case 'journey':content=journey(id);brea
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }
 $('#content').innerHTML=content;
+if(page==='immigration'&&id)requestAnimationFrame(()=>fbJumpToImmigrationSection(id));
 fbUpdateLocationHeader();
 if(page==='taxclasses'&&fbGeoState.country==='Germany'&&fbGeoState.state){const field=document.querySelector('#taxClassForm [name=state]');if(field)field.value=fbGeoState.state;}
 if(page==='feedback')setupFeedbackWidget();
@@ -1153,12 +1180,23 @@ if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleH
 $('#breadcrumb').textContent=page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
 document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
 }
-window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});
+window.addEventListener('hashchange',()=>{render();if(!location.hash.startsWith('#immigration/'))window.scrollTo(0,0)});
 $('#search').addEventListener('input',e=>{if(!location.hash.startsWith('#discover'))location.hash='#discover';else render();$('#resetSearch').hidden=!e.target.value});
 $('#resetSearch').addEventListener('click',()=>{$('#search').value='';$('#resetSearch').hidden=true;render()});
 document.addEventListener('change',e=>{if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold();if(e.target.closest('#taxClassForm'))renderTaxClassResults();if(e.target.closest('#healthCompareForm'))renderHealthCompare()});
 document.addEventListener('submit',async e=>{
+if(e.target.id==='fbOverviewQuestionForm'){
+e.preventDefault();
+const question=String(new FormData(e.target).get('question')||'');
+const matched=fbOverviewQuestionTarget(question);
+if(matched)location.hash='#'+matched.route;
+else{
+const result=document.getElementById('fbOverviewQuestionResult');
+if(result){result.textContent='No exact section found. Try “citizenship”, “PR”, “Blue Card”, “tax” or browse all topics.';const link=document.createElement('a');link.href='#discover';link.className='biglink';link.textContent=' Explore all guides →';result.appendChild(link);}
+}
+return;
+}
 if(e.target.id==='fbLocationForm'){e.preventDefault();const values=new FormData(e.target),country=String(values.get('country')),state=String(values.get('state'));if(country==='Germany'&&!state){fbLocationStatus('Choose a federal state before saving.');return}fbSaveLocation(country,state,'manual');fbUpdateLocationHeader();const recorded=await fbRecordManualLocation(country,state);if(!recorded)console.warn('Manual place selected locally; server analytics did not confirm save.');fbGoToLocationGuide();return}
 if(e.target.id==='doubleHouseholdForm'){e.preventDefault();updateDoubleHousehold();return;}if(e.target.id==='taxClassForm'){e.preventDefault();renderTaxClassResults();return;}if(e.target.id==='healthCompareForm'){e.preventDefault();renderHealthCompare();return;}
 if(e.target.id==='feedbackForm'){

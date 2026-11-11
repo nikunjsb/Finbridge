@@ -1,3 +1,3 @@
 // Optional opt-in topic-count analytics. Disabled by default.
-// Do not set until privacy notice, consent flow and isolated Worker are reviewed and deployed.
-export const finbridgeInsightsEndpoint = '';
+// Public endpoint contains no secret. Events are strictly opt-in; consent remains off by default.
+export const finbridgeInsightsEndpoint = 'https://finbridge-insights.niks-2100.workers.dev/';

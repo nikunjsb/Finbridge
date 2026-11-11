@@ -12,7 +12,7 @@ try{state={budget:{income:3500,housing:950,food:350,transport:180,other:400,indi
 const save=()=>localStorage.setItem(storageKey,JSON.stringify(state));
 const sections=[
 ['overview','Overview','◧','MAIN'],['location','My location & guidance','◎','MAIN'],['news','Expat updates','▤','MAIN'],['discover','Explore topics','⌕','MAIN'],['language','Language Bridge','文','MAIN'],['tax','Tax return workspace','▤','FINANCES'],['taxguide','What can I claim?','☷','FINANCES'],
-['healthcompare','Health insurance comparison','♡','FINANCES'],['taxclasses','Tax classes & salary','€','FINANCES'],['doublehousehold','Double household costs','⌂','FINANCES'],['budget','Budget & goals','◴','FINANCES'],['invest','Investment planner','↗','FINANCES'],
+['salary','Monthly take-home pay','€','FINANCES'],['healthcompare','Health insurance comparison','♡','FINANCES'],['taxclasses','Tax classes & salary','€','FINANCES'],['doublehousehold','Double household costs','⌂','FINANCES'],['budget','Budget & goals','◴','FINANCES'],['invest','Investment planner','↗','FINANCES'],
 ['immigration','Residency, PR & citizenship','▣','LIVING IN GERMANY'],['cross','Germany ↔ India','⇄','CROSS-BORDER'],['gold','Gold: Germany ↔ India','◈','CROSS-BORDER'],['parentsguide','Parents: tax filing guide','▣','CROSS-BORDER'],['residency','Residency & pension','◎','CROSS-BORDER'],
 ['journeys','Life journeys','◇','EXPLORE'],['insights','Did you know?','✦','EXPLORE'],['ask','Ask & feedback','?','EXPLORE'],['feedback','Suggest a feature','✎','EXPLORE'],['sources','Sources & updates','☑','EXPLORE'],['privacy','Privacy & data','♙','EXPLORE'],['settings','Privacy & backup','⚙','EXPLORE']];
 const articles=[
@@ -66,7 +66,7 @@ key:'<circle cx="8" cy="9" r="5"/><path d="m12 13 9 9m-4-4 2-2"/>',
 arrow:'<path d="M4 12h16m-7-7 7 7-7 7"/>'
 };
 function fbIcon(name,cls=''){return '<svg class="fb-icon '+cls+'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+(fbIconShapes[name]||fbIconShapes.file)+'</svg>'}
-const fbNavIcons={overview:'home',location:'globe',news:'news',discover:'search',language:'language',tax:'receipt',taxguide:'checklist',taxclasses:'family',healthcompare:'heart',doublehousehold:'home',budget:'wallet',invest:'chart',cross:'globe',gold:'coins',parentsguide:'family',residency:'calendar',immigration:'shield',journeys:'suitcase',insights:'bulb',ask:'message',feedback:'message',sources:'book',privacy:'shield',settings:'settings'};
+const fbNavIcons={overview:'home',location:'globe',news:'news',discover:'search',language:'language',tax:'receipt',taxguide:'checklist',taxclasses:'family',salary:'wallet',healthcompare:'heart',doublehousehold:'home',budget:'wallet',invest:'chart',cross:'globe',gold:'coins',parentsguide:'family',residency:'calendar',immigration:'shield',journeys:'suitcase',insights:'bulb',ask:'message',feedback:'message',sources:'book',privacy:'shield',settings:'settings'};
 const fbTaxIcons={'Commuting':['train','Travel to work','Office days and distance'],'Home office':['laptop','Home office','Eligible work-from-home days'],'Work equipment':['monitor','Work equipment','Laptop, monitor and tools'],'Professional education':['book','Training & learning','Courses, exams and books'],'Business travel':['suitcase','Business travel','Work trips and transport'],'Insurance':['shield','Insurance','Qualifying contributions'],'Support to family':['family','Family support','Payments and required proof'],'Other':['folder','Other expenses','Additional costs to review']};
 const fbNewcomerIcons={housing:'home',confirmation:'file',anmeldung:'building',bank:'bank',sim:'wifi',internet:'wifi',transport:'train',insurance:'shield',residence:'file',broadcast:'news',electric:'bulb',taxid:'receipt',budget:'wallet',workcontract:'file',payslip:'receipt',bluecard:'shield',jobticket:'train',movejob:'suitcase',worktax:'receipt',enroll:'book',studenthealth:'heart',blocked:'bank',semesterticket:'train',studentpermit:'file',uniaccess:'book',studentwork:'wallet',studenthousing:'home',familypermit:'family',familyinsurance:'shield',childcare:'family',familybenefits:'wallet',familytax:'receipt'};
 const fbReturnIcons={decision:'globe',employment:'file',housing:'home',utilities:'bulb',internet:'wifi',transport:'train',insurance:'shield',broadcast:'news',bank:'bank',documents:'folder',shipping:'suitcase',mail:'message',abmeldung:'building',handover:'key',lastsalary:'receipt',residencetitle:'file',flight:'plane',indiabank:'bank',indiatax:'receipt',germantax:'receipt',investments:'chart',pension:'wallet',healthindia:'heart',foreignassets:'globe',security:'shield',employergoodbye:'file',drvstatus:'calendar',prstatus:'shield',university:'book',studentinsurance:'heart',studentloans:'bank'};
@@ -330,7 +330,9 @@ const rules=[
  {pattern:/fee|cost|processing|waiting time/,route:'immigration/fees',label:'Fees and processing'},
  {pattern:/travel|absence|abroad|family|spouse|children/,route:'immigration/travel',label:'Travel and family implications'},
  {pattern:/residence permit|visa|immigration|work permit/,route:'immigration/stages',label:'Residence permits overview'},
- {pattern:/tax class|steuerklasse|salary|net pay|payslip/,route:'taxclasses',label:'Salary and tax class guide'},
+ {pattern:/tax class|steuerklasse|married tax/,route:'taxclasses',label:'Tax classes and couple salaries'},
+ {pattern:/salary|net pay|take home|payslip|brutto|netto|gross pay|monthly pay/,route:'salary',label:'Monthly salary calculator'},
+ {pattern:/expenses|spending|budget|financial management|money manager|savings/,route:'budget',label:'Personal finance manager'},
  {pattern:/health insurance|krankenkasse/,route:'healthcompare',label:'Health insurance comparison'},
  {pattern:/rent|moving|newcomer|arriv|anmeldung/,route:'journey/newcomer',label:'Moving to Germany checklist'},
  {pattern:/india|nre|nro|transfer|cross border/,route:'cross',label:'Germany–India guidance'},
@@ -351,8 +353,8 @@ const starts=[
 ['tax','receipt','Preparing a tax return?','Record expenses, explore eligible categories and learn what to keep.','Open tax workspace']
 ];
 const everyday=[
-['language','language','Understand German letters','Plain-language help with difficult official terms.','Explore language help'],
-['budget','wallet','Plan your monthly money','Build a clearer picture of spending and savings.','Open money planner'],
+['salary','wallet','Calculate take-home salary','Estimate your monthly net pay and understand deductions.','Calculate salary'],['language','language','Understand German letters','Plain-language help with difficult official terms.','Explore language help'],
+['budget','wallet','Manage monthly expenses','Track transactions, monthly spending and savings.','Open finance manager'],
 ['invest','chart','Explore investments','Learn about growth scenarios and financial risks.','Explore investing'],
 ['news','news','Keep up with changes','Curated expat updates with links to official sources.','See expat updates'],
 ['healthcompare','heart','Compare health insurers','See verified 2026 rates, benefits and 2027 scenarios.','Compare insurance'],['feedback','message','Help improve FinBridge','Tell us what needs explaining or fixing.','Share feedback'],
@@ -370,6 +372,7 @@ expatNewsPreview()+
 '<div class="sectionhead"><h2>Popular guides</h2><a class="biglink" href="#discover">All guides →</a></div>'+cards(articles.slice(0,3))
 }
 const searchableTools=[
+{id:'salary',title:'German gross-to-net salary calculator',summary:'Estimate regular monthly net pay after German wage tax and social insurance.',keywords:'salary brutto netto gross net take home payslip payroll wage lohnsteuer monthly pay'},
 {id:'immigration',title:'German residence permits, Blue Card, permanent residence and citizenship',summary:'Compare residence titles, settlement-permit routes, naturalisation requirements and documents with official sources.',keywords:'blue card germany residency permanent residence settlement niederlassungserlaubnis citizenship naturalisation einburgerung immigration visa b1 a1'},
 {id:'location',title:'Location-aware Germany and India guides',summary:'Choose your country and German federal state or allow the browser to detect your state.',keywords:'location geolocation bundesland federal state place nearby current location germany india state steuer kirchensteuer tax geography'},
 {id:'healthcompare',title:'Health insurance comparison (GKV)',summary:'Compare TK, Barmer, DAK, hkk, HEK or Audi BKK by contribution, salary, verified benefits, travel vaccines and 2027 scenarios.',keywords:'krankenkasse krankenversicherung gesundheitsversicherung wechsel zusatzbeitrag beitragssatz 2027 2026 insurance health benefits tk barmer dak hkk hek audi bkk osteopathie zahnreinigung reiseimpfung versicherung wechseln'},
@@ -788,6 +791,44 @@ return title('PREPARE YOUR RETURN','What could I claim on my German tax return?'
 '<div class="card" style="margin-top:18px"><h3>Need help choosing tax class?</h3><p>Understand I–VI, III/V, IV/IV and IV/IV with factor, plus a salary-based planning illustration.</p><a class="button secondary" href="#taxclasses">Open tax-class guide →</a></div>'+'<div class="card" style="margin-top:18px"><h3>Living in two places for work?</h3><p>See our separate 2026 double-household guide and expense screening worksheet.</p><a class="button secondary" href="#doublehousehold">Explore double-household expenses →</a></div>'+'<div class="sectionhead"><h2>Prepare your own expense list</h2></div><div class="hero"><div><h2>Keep your records organized.</h2><p>Add amounts and receipt references to the local workspace. It will not file or submit anything to the tax office.</p></div><a href="#tax" class="button invert">Open tax workspace →</a></div>'
 }
 
+
+function salaryPage(){
+const p=state.salaryInputs||{};
+const num=(v,d)=>Number.isFinite(Number(v))?Number(v):d;
+const options=(items,value)=>items.map(([k,l])=>'<option value="'+escapeHTML(k)+'" '+(String(value)===String(k)?'selected':'')+'>'+escapeHTML(l)+'</option>').join('');
+return title('SALARY / GERMANY','Monthly take-home salary','Estimate a regular 2026 German employee payslip using FinBridge’s existing wage-tax model.')+privacyNote('saved')+
+'<div class="note">Supports regular employment with statutory public health insurance. Private insurance, special deductions, irregular bonuses, employer benefits and mini-jobs require separate calculation. Estimate only, not an official payslip.</div>'+
+'<div class="grid two"><div class="card"><h3>Salary inputs</h3><form id="salaryForm" class="formgrid">'+
+'<label class="field">Monthly gross salary (€)<input name="gross" type="number" required min="0" max="80000" step="10" value="'+num(p.gross,4000)+'"></label>'+
+'<label class="field">Tax class<select name="taxClass">'+options([1,2,3,4,5,6].map(n=>[n,'Class '+n]),p.taxClass||1)+'</select></label>'+
+'<label class="field">Federal state<select name="state">'+options(fbStates.map(row=>[row[0],row[0]]),p.state||fbGeoState.state||'Hesse (Hessen)')+'</select></label>'+
+'<label class="field">Health-insurer additional rate (%)<input name="rate" type="number" required min="0" max="6" step=".01" value="'+num(p.rate,2.9)+'"></label>'+
+'<label class="field">Care insurance<select name="care">'+options([['none','Childless, 23+'],['under23','Under age 23 / no childless surcharge'],['one','1 child'],['two','2 eligible children under 25'],['three','3 eligible children under 25'],['four','4 eligible children under 25'],['five','5+ eligible children under 25']],p.care||'none')+'</select></label>'+
+'<label class="field">Church tax<select name="church">'+options([['no','No'],['yes','Yes']],p.church||'no')+'</select></label>'+
+'<label class="field">Annual irregular gross bonuses (€)<input name="bonus" type="number" min="0" max="300000" step="10" value="'+num(p.bonus,0)+'"></label>'+
+'<div><button class="button">Calculate monthly net →</button></div></form></div><div class="card"><h3>Normal month — estimated</h3><div class="result" id="salaryResult" aria-live="polite">Calculating…</div></div></div>'+
+'<div class="card" style="margin-top:16px"><h3>Annual bonuses and collective agreements</h3><p>IG Metall performance allowances, holiday pay, Christmas bonuses, T-ZUG and other special payments need their own payroll treatment. Include recurring monthly allowances in gross salary; do not add one-time bonuses to the regular monthly net estimate. This calculator displays bonus gross separately, rather than inventing a net bonus amount.</p><p>For couples, <a href="#taxclasses">compare tax classes and partner pay →</a></p></div>'+
+'<div class="note">2026 illustration. Confirm with your payslip and the <a target="_blank" rel="noopener noreferrer" href="https://www.bmf-steuerrechner.de/">official BMF payroll tax calculator ↗</a>. Income tax assessment and salary withholding are not the same.</div>';
+}
+let salaryRequestSeq=0;
+async function salaryCalculate(){
+const f=document.getElementById('salaryForm'),out=document.getElementById('salaryResult');if(!f||!out)return;
+const d=new FormData(f),p={gross:Number(d.get('gross')),taxClass:Number(d.get('taxClass')),state:String(d.get('state')),rate:Number(d.get('rate')),care:String(d.get('care')),church:String(d.get('church')),bonus:Number(d.get('bonus'))};
+if(!Number.isFinite(p.gross)||p.gross<0||p.gross>80000||!Number.isFinite(p.rate)||p.rate<0||p.rate>6||!Number.isFinite(p.bonus)||p.bonus<0||p.bonus>300000){out.textContent='Check your salary and rate inputs.';return}
+const seq=++salaryRequestSeq;out.textContent='Calculating…';
+try{
+const calc=await loadTaxClassPayroll();if(seq!==salaryRequestSeq||!document.getElementById('salaryForm'))return;
+const annual=p.gross*12,person={gross:annual,rate:p.rate,care:p.care,church:p.church==='yes'};
+const social=taxClassSocial2026(annual,p.state,p.rate,p.care),tax=taxClassWithholding(calc,person,p.state,p.taxClass);
+const net=(annual-social.total-tax.all)/12;if(!Number.isFinite(net))throw Error('Invalid payroll output');
+state.salaryInputs=p;state.salaryEstimatedNet=Math.round(net*100)/100;save();
+const row=(name,v)=>'<div class="listrow"><span>'+name+'</span><b>'+money(v)+'</b></div>';
+out.innerHTML='<div class="kicker">Net paid in a typical month</div><div class="stat">'+money(net)+'</div>'+
+row('Gross monthly',p.gross)+row('Wage tax',-tax.wage/12)+row('Solidarity surcharge',-tax.solz/12)+row('Church tax',-tax.church/12)+
+row('Pension insurance',-social.pension/12)+row('Unemployment insurance',-social.unemployment/12)+row('Health insurance',-social.health/12)+row('Long-term care',-social.care/12)+
+'<p class="muted">Estimated regular annual net: '+money(net*12)+'. Extra annual gross bonuses: '+money(p.bonus)+' (excluded from regular-month net).</p><button type="button" class="button secondary" id="salaryToBudget">Use estimated net in budget →</button>';
+}catch(e){out.textContent='Estimate unavailable: '+e.message+'. Check official BMF payroll tax guidance instead.'}
+}
 function budget(){const b=state.budget;const out=Number(b.housing)+Number(b.food)+Number(b.transport)+Number(b.other)+Number(b.india),left=Number(b.income)-out;return title('PERSONAL FINANCES','Budget and savings planner','Adjust your estimated monthly cash flow. No account connection or external data transfer.')+'<div class="grid two"><div class="card"><div class="kicker">Monthly unallocated amount</div><div class="stat">'+money(left)+'</div><p>'+Math.round(Number(b.income)?left/b.income*100:0)+'% of your net income</p></div><div class="card"><div class="kicker">Illustrative 3-month expense reserve</div><div class="stat">'+money(out*3)+'</div><p>A starting scenario, not a personalized emergency-fund target.</p></div></div><div class="sectionhead"><h2>Monthly cash flow</h2></div><form class="card formgrid" id="budgetForm">'+[['income','Monthly net income'],['housing','Rent, utilities, housing'],['food','Groceries and essentials'],['transport','Travel and transport'],['other','Other regular expenses'],['india','Family support and transfers']].map(([k,v])=>'<label class="field">'+v+' (€)<input name="'+k+'" type="number" min="0" step="1" value="'+Number(b[k]||0)+'" required/></label>').join('')+'<div><button class="button">Update plan</button></div></form><div class="note">Annual insurance premiums, taxes, holidays and irregular expenses may need separate reserves. Include them before committing the surplus to investments.</div>'}
 function invest(){return title('LONG-TERM PLANNING','Investment growth explorer','Compare different return assumptions. These are mathematical examples, not forecasts or investment recommendations.')+privacyNote('temporary')+'<form class="card formgrid" id="investmentForm"><label class="field">Initial investment (€)<input name="initial" type="number" min="0" value="2000"/></label><label class="field">Monthly contribution (€)<input name="monthly" type="number" min="0" value="300"/></label><label class="field">Duration (years)<input name="years" type="number" min="1" max="60" value="15"/></label><label class="field">Assumed annual return (%)<input name="rate" type="number" min="-20" max="30" step=".1" value="5"/></label><div><button class="button">Calculate scenario</button></div></form><div class="result" id="investmentResult">Enter assumptions and select Calculate scenario.</div><div class="sectionhead"><h2>Related guides</h2></div>'+cards(articles.filter(x=>['etf','property'].includes(x.id)))}
 
@@ -1221,7 +1262,7 @@ const [page,id]=hash.split('/');
 let content='';
 switch(page){
 case 'overview':content=overview();break;case 'location':content=fbLocationPage();break;case 'news':content=newsPage();break;case 'discover':content=discover($('#search')?.value||'');break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
-case 'guide':content=guide(id);break;case 'term':content=termPage(id);break;case 'parentsguide':content=parentsGuide();break;case 'tax':content=tax();break;case 'taxguide':content=taxguide();break;case 'taxclasses':content=taxClasses();break;case 'healthcompare':content=healthCompare();break;case 'doublehousehold':content=doubleHousehold();break;case 'budget':content=budget();break;
+case 'guide':content=guide(id);break;case 'term':content=termPage(id);break;case 'parentsguide':content=parentsGuide();break;case 'tax':content=tax();break;case 'taxguide':content=taxguide();break;case 'taxclasses':content=taxClasses();break;case 'salary':content=salaryPage();break;case 'healthcompare':content=healthCompare();break;case 'doublehousehold':content=doubleHousehold();break;case 'budget':content=budget();break;
 case 'invest':content=invest();break;case 'immigration':content=immigrationGuide();break;case 'cross':content=cross();break;case 'gold':content=goldGuide();break;case 'residency':content=residency();break;
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
@@ -1231,7 +1272,7 @@ if(page==='immigration'&&id)requestAnimationFrame(()=>fbJumpToImmigrationSection
 fbUpdateLocationHeader();
 if(page==='taxclasses'&&fbGeoState.country==='Germany'&&fbGeoState.state){const field=document.querySelector('#taxClassForm [name=state]');if(field)field.value=fbGeoState.state;}
 if(page==='feedback')setupFeedbackWidget();
-if(page==='immigration')fbImmigrationToolResult();
+if(page==='immigration')fbImmigrationToolResult();if(page==='salary')salaryCalculate();
 if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleHousehold();if(page==='taxclasses'){updateTaxHealthOption();renderTaxClassResults();}if(page==='healthcompare')renderHealthCompare();
 $('#breadcrumb').textContent=page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
 document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
@@ -1277,6 +1318,7 @@ if(e.target.id==='feedbackForm'){
 if(e.target.id==='languageSearchForm'){e.preventDefault();const q=String(new FormData(e.target).get('query')||'').trim();document.getElementById('languageResults').innerHTML=glossaryMatches(q)}
 if(e.target.id==='letterExplainForm'){e.preventDefault();const x=String(new FormData(e.target).get('letter')||'').trim();document.getElementById('letterExplanation').innerHTML=explainLetter(x)}
 if(e.target.id==='expenseForm'){e.preventDefault();try{const record=calculateExpense(new FormData(e.target));if(!Array.isArray(state.expenses))state.expenses=[];state.expenses.push(record);save();render();updateExpensePreview()}catch(error){document.getElementById('expensePreview').textContent=error.message}}
+if(e.target.id==='salaryForm'){e.preventDefault();await salaryCalculate();return}
 if(e.target.id==='budgetForm'){e.preventDefault();state.budget=Object.fromEntries([...new FormData(e.target)].map(([k,v])=>[k,Number(v)]));save();render()}
 if(e.target.id==='investmentForm'){e.preventDefault();const f=new FormData(e.target),initial=Number(f.get('initial')),monthly=Number(f.get('monthly')),years=Number(f.get('years')),rate=Number(f.get('rate'))/100/12;let value=initial;for(let i=0;i<years*12;i++)value=value*(1+rate)+monthly;const invested=initial+monthly*years*12;$('#investmentResult').innerHTML='<div class="grid two"><div><div class="kicker">Illustrative future value</div><div class="stat">'+money(value)+'</div></div><div><div class="kicker">Total contributions</div><div class="stat">'+money(invested)+'</div></div></div><p class="muted">Assumes constant monthly compounding with end-of-month contributions; excludes taxes, fees, inflation and currency movements. Real markets vary.</p>'}
 if(e.target.id==='daysForm'){e.preventDefault();const f=new FormData(e.target),days=Number(f.get('days')),year=String(f.get('year')||'selected year');if(!Number.isInteger(days)||days<0||days>366){$('#daysResult').textContent='Enter whole days between 0 and 366.';return;}$('#daysResult').textContent=days>=182?'For financial year '+year+', '+days+' days meets the standard 182-day Indian residence test. Whether the person is ordinarily resident (ROR) or not ordinarily resident (RNOR) depends on additional rules and prior years.':'For financial year '+year+', '+days+' days is below the standard 182-day test, but this does not prove non-resident status. The general 60 days plus 365 days in the previous four years test and special rules for certain Indian citizens/PIOs may apply. Check official criteria.'}
@@ -1290,6 +1332,7 @@ const rm=e.target.closest('[data-delete-expense]');if(rm){state.expenses.splice(
 if(e.target.dataset.saveinsight!==undefined){const i=Number(e.target.dataset.saveinsight);state.savedInsights=state.savedInsights||[];state.savedInsights=state.savedInsights.includes(i)?state.savedInsights.filter(x=>x!==i):[...state.savedInsights,i];save();render()}
 if(e.target.dataset.dismissinsight!==undefined){const i=Number(e.target.dataset.dismissinsight);state.dismissedInsights=[...(state.dismissedInsights||[]),i];save();render()}
 if(e.target.dataset.unsaveinsight!==undefined){state.savedInsights=(state.savedInsights||[]).filter(x=>x!==Number(e.target.dataset.unsaveinsight));save();render()}
+if(e.target.id==='salaryToBudget'){if(!Number.isFinite(state.salaryEstimatedNet))return;state.budget.income=state.salaryEstimatedNet;save();location.hash='#budget';return}
 if(e.target.id==='recalculateExpense'){updateExpensePreview()}
 if(e.target.id==='resetInsights'){state.dismissedInsights=[];save();render()}
 if(e.target.id==='pensionCheck'){const m=Number($('#pensionMonths').value);$('#pensionResult').textContent=m>=60?'60 or more German contribution months: pension rights and voluntary insurance eligibility may affect refund possibilities. Obtain an individual DRV assessment.':'Fewer than 60 months: a refund may be possible in some circumstances after waiting periods, but nationality, residence, insurance rights and agreements must be assessed by DRV.'}

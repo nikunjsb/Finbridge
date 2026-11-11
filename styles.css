@@ -125,3 +125,48 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 .tax-payroll-table small{display:block;margin-top:5px;color:#737373;font-weight:400;font-size:11px;line-height:1.4}
 .tax-payroll-table td{font-variant-numeric:tabular-nums}
 @media(max-width:700px){#taxClassForm .grid.two{grid-template-columns:1fr}.tax-payroll-table{min-width:610px}}
+
+/* Compact question navigation and responsive guide improvements, Nov 2026 */
+.fb-hero-main{flex:1;min-width:0}
+.fb-question-search{margin-top:12px;max-width:570px;display:flex;align-items:stretch;gap:0;border:1px solid #d9e0e1;border-radius:10px;overflow:hidden;background:#fff}
+.fb-question-search input{width:100%;min-width:0;flex:1;border:0;background:#fff;color:#202424;padding:11px 13px;font-size:14px}
+.fb-question-search input:focus{outline:2px solid #879d98;outline-offset:-2px}
+.fb-question-search button{border:0;border-radius:0;min-width:44px;justify-content:center;font-size:20px;padding:8px 12px;background:#edf0ef;color:#202424}
+.fb-question-search button:hover{background:#dce7e3}
+.fb-hero-status{color:#fff;font-size:12px;margin-top:6px}
+.fb-hero-status:empty{display:none}
+.fb-hero-journey{flex-shrink:0}
+.fb-guide-index{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+.fb-guide-index a{border:1px solid #dce2df;background:#f8faf9;color:#334b45;padding:8px 11px;border-radius:999px;font-size:12px;font-weight:650}
+.fb-guide-index a:hover,.fb-guide-index a:focus-visible{border-color:#57756c}
+.fb-immigration-tool{margin:14px 0 25px}
+.fb-immigration-tool .formgrid{margin-top:14px}
+.fb-immigration-tool .result{margin-top:15px}
+.fb-immigration-source{display:inline-block;margin-top:8px}
+[id^="fbImmigration-"]{scroll-margin-top:20px}
+#fbImmigration-professions .card,#fbImmigration-alternatives .card{height:100%}
+@media(max-width:700px){
+ .fb-hero{padding:19px 17px;display:block}
+ .fb-hero h2{font-size:24px}
+ .fb-hero p{margin:6px 0 0}
+ .fb-question-search{margin-top:10px}
+ .fb-hero-journey{display:inline-flex;margin-top:12px;padding:8px 11px}
+ .fb-feature-card{min-height:0;padding:16px}
+ .fb-card-symbol{width:34px;height:34px;margin-bottom:9px}
+ .fb-card-symbol .fb-icon{width:18px;height:18px}
+ .notice-controls button{width:30px;height:30px}
+ .notice-controls button:not(:last-child){display:none}
+ .notice-strip{gap:8px;padding:9px 11px;margin:12px 12px 0;min-height:0}
+ .notice-label{display:none}
+ .notice-body{font-size:12px;display:block}
+ .notice-body a{display:inline-block;margin-top:4px}
+ .content{padding-top:18px}
+ .fb-guide-index{gap:6px}
+ .fb-guide-index a{padding:8px 10px}
+ .fb-immigration-tool .formgrid{grid-template-columns:1fr}
+}
+@media(max-width:380px){
+ .fb-hero h2{font-size:21px}
+ .notice-controls{display:none}
+ .fb-feature-card{padding:14px}
+}

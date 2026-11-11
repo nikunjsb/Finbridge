@@ -15,6 +15,7 @@ const save=()=>localStorage.setItem(storageKey,JSON.stringify(state));
 const sections=[
 ['overview','Overview','◧','START HERE'],
 ['discover','Explore topics','⌕','START HERE'],
+['healthcare','Healthcare professionals','✚','START HERE'],
 ['journeys','Life journeys','◇','START HERE'],
 ['news','Expat updates','▤','START HERE'],
 ['salary','Monthly take-home pay','€','WORK & MONEY'],
@@ -27,7 +28,6 @@ const sections=[
 ['immigration','Residency, PR & citizenship','▣','LIVING IN GERMANY'],
 ['healthaccess','Healthcare in Germany','✚','LIVING IN GERMANY'],
 ['healthcompare','Health insurance comparison','♡','LIVING IN GERMANY'],
-['healthcare','Healthcare professionals','✚','LIVING IN GERMANY'],
 ['language','Language Bridge','文','LIVING IN GERMANY'],
 ['location','My location & guidance','◎','LIVING IN GERMANY'],
 ['cross','Germany ↔ India','⇄','CROSS-BORDER'],

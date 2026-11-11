@@ -174,6 +174,7 @@ const fbStates=[
 ['Baden-Württemberg','Baden-Württemberg'],['Bavaria (Bayern)','Bayern'],['Berlin','Berlin'],['Brandenburg','Brandenburg'],['Bremen','Bremen'],['Hamburg','Hamburg'],['Hesse (Hessen)','Hessen'],['Lower Saxony (Niedersachsen)','Niedersachsen'],['Mecklenburg-Vorpommern','Mecklenburg-Vorpommern'],['North Rhine-Westphalia','Nordrhein-Westfalen'],['Rhineland-Palatinate','Rheinland-Pfalz'],['Saarland','Saarland'],['Saxony (Sachsen)','Sachsen'],['Saxony-Anhalt','Sachsen-Anhalt'],['Schleswig-Holstein','Schleswig-Holstein'],['Thuringia (Thüringen)','Thüringen']];
 const fbStateCode={'DE-BW':'Baden-Württemberg','DE-BY':'Bavaria (Bayern)','DE-BE':'Berlin','DE-BB':'Brandenburg','DE-HB':'Bremen','DE-HH':'Hamburg','DE-HE':'Hesse (Hessen)','DE-NI':'Lower Saxony (Niedersachsen)','DE-MV':'Mecklenburg-Vorpommern','DE-NW':'North Rhine-Westphalia','DE-RP':'Rhineland-Palatinate','DE-SL':'Saarland','DE-SN':'Saxony (Sachsen)','DE-ST':'Saxony-Anhalt','DE-SH':'Schleswig-Holstein','DE-TH':'Thuringia (Thüringen)'};
 let fbGeoRequestActive=false;
+let fbGeoCheckStatus='pending'; // awaiting native browser location response
 function fbLocationLabel(){return fbGeoState.country==='Germany'?(fbGeoState.state||'Germany'):fbGeoState.country||'Choose location'}
 function fbSaveLocation(country,state,source){
 fbGeoState={country,state:country==='Germany'?state:'',source};
@@ -197,6 +198,13 @@ if(!response.ok)throw Error('German state boundary map is unavailable');
 const geo=await response.json();
 const match=geo.features.find(f=>fbPointInGeometry(lon,lat,f.geometry));
 return match?fbStateCode[match.properties.id]||'':null;
+}
+function fbTaxLocationSuggestion(){
+ if(!['denied','outside','unavailable'].includes(fbGeoCheckStatus))return '';
+ // If a location has been explicitly selected, the relevant calculator already has its state input.
+ if(fbGeoState.country==='Germany'&&fbGeoState.state&&fbGeoState.source==='manual')return '';
+ const explanation=fbGeoCheckStatus==='denied'?'Location access was declined or blocked.':fbGeoCheckStatus==='outside'?'Your current position was not identified inside Germany.':'Your current location could not be determined.';
+ return '<div class="note fb-tax-location-suggestion" role="status"><b>Choose your location manually.</b> '+explanation+' For German tax and salary estimates, select the relevant German federal state; your current physical location is not necessarily your tax residence. <a class="biglink" href="#location">Choose country and state →</a></div>';
 }
 function fbLocationStatus(message){
 const target=document.getElementById('fbLocationStatus');
@@ -231,23 +239,28 @@ try{
 }
 function fbUseDeviceLocation({navigate=false}={}){
 if(fbGeoRequestActive)return;
-if(!navigator.geolocation){fbLocationStatus('Your browser does not support device location. Select a country and state manually.');return}
-fbGeoRequestActive=true;fbLocationStatus('Waiting for your browser location permission…');
+if(!navigator.geolocation){fbGeoCheckStatus='unavailable';fbLocationStatus('Your browser does not support device location. Select a country and state manually.');render();return}
+fbGeoRequestActive=true;fbGeoCheckStatus='pending';fbLocationStatus('Waiting for your browser location permission…');
 navigator.geolocation.getCurrentPosition(async position=>{
 try{
 const lat=position.coords.latitude,lon=position.coords.longitude;
 const state=await fbDetectGermanState(lat,lon);
 if(state){
+fbGeoCheckStatus='resolved';
 fbSaveLocation('Germany',state,'device');fbLocationStatus('Detected '+state+'. You can correct this location manually.');
 fbUpdateLocationHeader();if(navigate)fbGoToLocationGuide();else render();
 }else{
-fbLocationStatus('We could not identify a German federal state. Choose your country manually below. Precise coordinates were not stored.');
+fbGeoCheckStatus='outside';
+fbLocationStatus('We could not identify a German federal state. Choose your country and relevant German state manually. Precise coordinates were not stored.');
+render();
 }
-}catch(err){fbLocationStatus('Location was permitted, but state detection failed. Choose manually.')}
+}catch(err){fbGeoCheckStatus='unavailable';fbLocationStatus('Location was permitted, but state detection failed. Choose manually.');render()}
 finally{fbGeoRequestActive=false}
 },err=>{
 fbGeoRequestActive=false;
+fbGeoCheckStatus=err.code===1?'denied':'unavailable';
 fbLocationStatus(err.code===1?'Location permission was declined or blocked. You can choose manually or change browser site permissions.':err.code===3?'Location timed out. Try again or choose manually.':'Device location is unavailable. Choose manually.');
+render();
 },{enableHighAccuracy:false,timeout:12000,maximumAge:600000});
 }
 
@@ -1544,7 +1557,7 @@ case 'invest':content=invest();break;case 'healthcare':content=fbHealthcareGuide
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }
-$('#content').innerHTML=content+(Object.hasOwn(fbAiTopics,page)?fbAiWidget(page):'');
+$('#content').innerHTML=(['tax','salary','taxclasses','doublehousehold','healthcompare'].includes(page)?fbTaxLocationSuggestion():'')+content+(Object.hasOwn(fbAiTopics,page)?fbAiWidget(page):'');
 if(Object.hasOwn(fbAiTopics,page))fbAiRender(page);
 if(page==='immigration'&&id)requestAnimationFrame(()=>fbJumpToImmigrationSection(id));
 fbUpdateLocationHeader();
@@ -1573,7 +1586,7 @@ if(matched)location.hash='#'+matched.route;
 else{fbDiscoverQuery=question.slice(0,200);location.hash='#discover';if(location.hash==='#discover')render();}
 return;
 }
-if(e.target.id==='fbLocationForm'){e.preventDefault();const values=new FormData(e.target),country=String(values.get('country')),state=String(values.get('state'));if(country==='Germany'&&!state){fbLocationStatus('Choose a federal state before saving.');return}fbSaveLocation(country,state,'manual');fbUpdateLocationHeader();const recorded=await fbRecordManualLocation(country,state);if(!recorded)console.warn('Manual place selected locally; server analytics did not confirm save.');fbGoToLocationGuide();return}
+if(e.target.id==='fbLocationForm'){e.preventDefault();const values=new FormData(e.target),country=String(values.get('country')),state=String(values.get('state'));if(country==='Germany'&&!state){fbLocationStatus('Choose a federal state before saving.');return}fbSaveLocation(country,state,'manual');fbGeoCheckStatus='resolved';fbUpdateLocationHeader();const recorded=await fbRecordManualLocation(country,state);if(!recorded)console.warn('Manual place selected locally; server analytics did not confirm save.');fbGoToLocationGuide();return}
 if(e.target.id==='doubleHouseholdForm'){e.preventDefault();updateDoubleHousehold();return;}if(e.target.id==='taxClassForm'){e.preventDefault();renderTaxClassResults();return;}if(e.target.id==='healthCompareForm'){e.preventDefault();renderHealthCompare();return;}
 if(e.target.id==='feedbackForm'){
  e.preventDefault();

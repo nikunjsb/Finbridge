@@ -259,3 +259,11 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  #fbHealthResult{padding:14px}
  #fbHealthResult li{font-size:12px}
 }
+
+/* Single-search navigation: streamlined header and search within Explore Topics */
+.top .tools{display:flex;align-items:center;justify-content:flex-end;gap:18px;min-width:0;margin-left:auto}
+.top .tools #fbLocationButton{display:inline-flex;align-items:center;justify-content:center;white-space:normal;text-align:right;padding:9px 13px;border:1px solid #dce1df;border-radius:9px;max-width:min(360px,55vw);line-height:1.4}
+.fb-discover-search{display:flex;align-items:stretch;gap:9px;margin:14px 0 18px}
+.fb-discover-search input{min-width:0;flex:1;border:1px solid #d9dfe0;border-radius:9px;padding:11px 13px;font-size:14px}
+.fb-discover-search button{white-space:nowrap;flex-shrink:0}
+@media(max-width:700px){.top{display:flex;align-items:center;gap:12px;justify-content:space-between}.top .tools{margin-left:auto}.top .tools #fbLocationButton{max-width:56vw;padding:8px 9px;font-size:11px}.fb-discover-search{flex-wrap:wrap}.fb-discover-search input{flex-basis:100%;width:100%}.fb-discover-search button{flex:1;justify-content:center}}

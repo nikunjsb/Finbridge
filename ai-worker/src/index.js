@@ -3,6 +3,11 @@
 const ORIGIN='https://nikunjsb.github.io';
 const MODEL='@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const sources={
+ healthcare:[
+  ['Official recognition finder','https://www.anerkennung-in-deutschland.de/en/interest/finder/profession'],
+  ['German Medical Association','https://www.bundesaerztekammer.de/en/work-and-training-in-germany/recognition'],
+  ['Nursing recognition','https://www.make-it-in-germany.com/en/working-in-germany/job-search-application/professions-in-demand/nursing'],
+  ['Medical language rules by state','https://www.marburger-bund.de/bundesverband/service/auslaendische-aerzte/foreign-physicians/anforderungen-deutschkenntnisse']],
  immigration:[
   ['German naturalisation','https://www.einbuergerung.de/'],
   ['Citizenship Act §10','https://www.gesetze-im-internet.de/stag/__10.html'],
@@ -22,6 +27,7 @@ const sources={
   ['Federal Ministry of Finance','https://www.bundesfinanzministerium.de/']]
 };
 const guidance={
+ healthcare:'Healthcare regulated professions require profession-specific qualification recognition, a licence or state permission to use a protected professional title and a separate immigration/work route. German doctor Approbation is separate from recognition of Facharzt specialty training; temporary Berufserlaubnis may be limited by state or position. Doctors usually need B2 general and a C1-oriented medical Fachsprachprüfung; registered nurses generally need B2. Other healthcare professions have their own rules; never assume the requirements of one apply to another. Relevant state authority determined using official recognition finder with exact reference occupation and intended work location. Do not invent specific authority names, alternative evidence, medical qualifications, certificates, deadlines or exam acceptance. Employer offer or visa does not replace professional permission. No personal eligibility determinations.',
  immigration:'FinBridge explains temporary residence vs settlement permit vs naturalisation. Blue Card settlement permit: 27 qualifying months with A1 or 21 with B1, subject to other requirements. Standard naturalisation: generally 5 years legal habitual residence and B1 plus other legal conditions. An EU Blue Card may qualify as a residence title without first getting PR. A manual selection or salary alone never proves eligibility. The relevant authority decides required evidence, including any alternative documents. Verify currently enacted laws and effective dates.',
  salary:'FinBridge has a 2026 regular employee gross-to-net estimate. It uses wage tax, solidarity/church tax and capped statutory pension, unemployment, health and long-term-care contributions. Normal monthly net excludes one-off bonuses and is not guaranteed. Tax classes mostly change monthly withholding, not final jointly assessed tax. The visitor may be privately insured or have special payroll treatment; do not invent exact net pay from incomplete information.',
  budget:'FinBridge stores dated expense and additional-income transactions locally in the browser. Base monthly income comes from the budget plan; one-off additional income is counted separately. Recurring budget targets are not automatically actual transactions. Spending totals and remaining money reflect what was entered, not an actual bank balance. Never ask for account numbers or import private transaction records into this chat.',

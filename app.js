@@ -1067,7 +1067,10 @@ const fbHealthcareLinks={
  docs:['Recognition procedure and documents','https://www.anerkennung-in-deutschland.de/html/en/getting-recognition.php'],
  doctors:['German Medical Association: medical licensing and specialist recognition','https://www.bundesaerztekammer.de/en/work-and-training-in-germany/recognition'],
  doctorStates:['Doctors: state-by-state German language examination rules (Oct 2026)','https://www.marburger-bund.de/bundesverband/service/auslaendische-aerzte/foreign-physicians/anforderungen-deutschkenntnisse'],
- nurse:['Federal information: nursing recognition and adaptation options','https://www.make-it-in-germany.com/en/working-in-germany/job-search-application/professions-in-demand/nursing'],
+ nurse:['Federal information: nursing recognition and adaptation options','https://www.make-it-in-germany.com/en/looking-for-foreign-professionals/entering/admission-labour-market/nursing-and-care-professionals'],
+ dentist:['Official dentist recognition example','https://www.anerkennung-in-deutschland.de/en/interest/finder/result?arrangement=Nein&location=47619&nationality=Drittstaat&profession=447&qualification=&whereabouts=null&zipSearch=0'],
+ pharmacist:['Official pharmacist recognition example','https://www.anerkennung-in-deutschland.de/en/interest/finder/result?arrangement=Nein&location=47619&nationality=Drittstaat&profession=349&qualification=&whereabouts=null&zipSearch=0'],
+ physio:['Official physiotherapist recognition profile','https://www.anerkennung-in-deutschland.de/en/interest/finder/profession/365'],
  visa:['Visa for qualified professionals','https://www.make-it-in-germany.com/en/visa-recognition/visa-types/qualified-professionals'],
  recognitionVisa:['Residence for recognition partnership','https://www.make-it-in-germany.com/en/visa-recognition/visa-types/recognition-partnership'],
  profilter:['Official state and occupation authority directory','https://www.anerkennung-in-deutschland.de/en/pro/profi-filter']
@@ -1075,7 +1078,7 @@ const fbHealthcareLinks={
 function fbHealthcareOptions(items){return items.map(([v,l])=>'<option value="'+escapeHTML(v)+'">'+escapeHTML(l)+'</option>').join('')}
 function fbHealthcareGuide(){
 const profession=Object.entries(fbHealthcareRoles).map(([key,v])=>[key,v[0]]);
-const stateOpts=fbStates.map(([k,v])=>[k,v]);
+const stateOpts=fbStates.map(([label,value])=>[value,label]);
 const official=(key)=>'<a href="'+escapeHTML(fbHealthcareLinks[key][1])+'" target="_blank" rel="noopener noreferrer" class="biglink">'+escapeHTML(fbHealthcareLinks[key][0])+' ↗</a>';
 return title('GERMANY / HEALTHCARE','Healthcare professions: recognition, licences and visas','Choose your exact healthcare role, location and current situation to see the proper sequence, document checklist and official recognition authority finder. Updated 11 November 2026.')+
 '<div class="note"><b>Important:</b> Recognition of the qualification, permission to practise, permission to use a protected title, recognition of specialist training, and permission to live/work in Germany are separate decisions. This tool gives an evidence-based route, not an individual eligibility or licensing decision.</div>'+
@@ -1094,7 +1097,7 @@ return title('GERMANY / HEALTHCARE','Healthcare professions: recognition, licenc
 official('finder')+' '+official('profilter')+' '+official('doctorStates')+'</div>'+
 '<div class="sectionhead"><h2>Understanding the different decisions</h2></div>'+
 '<div class="grid two"><div class="card"><h3>Doctor, surgeon or medical specialist</h3><p>Full medical Approbation and temporary Berufserlaubnis are different. Recognition of a foreign Facharzt/surgical specialty is a further step through the relevant Landesärztekammer; it is not automatically covered by the basic medical licence.</p>'+official('doctors')+'</div>'+
-'<div class="card"><h3>Nursing and allied health</h3><p>Registered nursing, nursing assistants, midwives, radiographers, laboratory technologists and therapy professions have separate German reference occupations. Some routes allow an adaptation period or knowledge examination after an equivalence assessment.</p>'+official('nurse')+'</div></div>'+
+'<div class="card"><h3>Nursing and allied health</h3><p>Registered nursing, nursing assistants, midwives, radiographers, laboratory technologists and therapy professions have separate German reference occupations. Some routes allow an adaptation period or knowledge examination after an equivalence assessment.</p>'+official('nurse')+' '+official('physio')+'</div></div>'+
 '<div class="sectionhead"><h2>Questions to verify before submitting</h2></div>'+
 '<div class="card"><ul><li>Is the professional title regulated, and which exact German reference occupation matches the training?</li><li>Which state authority processes the primary qualification, professional licence and, if applicable, specialty recognition?</li><li>Does your original qualification fall under automatic recognition, an individual equivalence assessment or an aptitude/knowledge examination?</li><li>What German and professional-language evidence is accepted, and must the test be taken at a named chamber?</li><li>Which certified translations, validity periods, identity and good-standing evidence are required?</li><li>Do you need a residence permit for employment, a recognition measure or a recognition partnership?</li><li>What is the official fee and current application processing information for this exact office?</li></ul>'+
 '<p><b>Costs and salaries:</b> Medical salaries vary by hospital tariff agreement, grade, specialty, seniority, shifts and employer. Recognition and exam fees vary by state and profession. Do not use an EU Blue Card minimum as a promise of actual take-home pay.</p>'+
@@ -1104,7 +1107,7 @@ function fbHealthcareResult(){
 const out=document.getElementById('fbHealthResult');if(!out)return;
 const get=id=>document.getElementById(id)?.value||'';
 const role=fbHealthcareRoles[get('fbHealthRole')]||fbHealthcareRoles.physician,type=role[1],state=get('fbHealthState'),origin=get('fbHealthOrigin'),situation=get('fbHealthSituation'),language=get('fbHealthGerman'),specialty=get('fbHealthSpecialty');
-const stateName=fbStates.find(x=>x[0]===state)?.[1]||'your intended federal state';
+const stateName=fbStates.find(x=>x[1]===state)?.[0]||'your intended federal state';
 const isDoctor=['physician','specialist'].includes(type),isDental=['dentist','dental_specialist'].includes(type),isNurse=['nurse','nurse_specialist'].includes(type);
 const specialtyWrap=document.getElementById('fbHealthSpecialtyWrap');if(specialtyWrap)specialtyWrap.hidden=!isDoctor;const missing=get('fbHealthMissing');
 const regulated=!['psychologist','research','assistant'].includes(type);
@@ -1114,10 +1117,11 @@ if(origin==='third')steps.push('Check individual recognition of the non-EU/EEA/S
 if(origin==='eu')steps.push('Check whether the specific EU/EEA/Swiss qualification meets automatic recognition criteria. Automatic recognition is occupation- and qualification-dependent and does not bypass other licence conditions.');
 if(origin==='germany')steps.push('Check whether your German qualification already grants the relevant professional status or whether the official licence still must be issued.');
 if(isDoctor)steps.push('Contact the state medical licensing authority for Approbation or, where appropriate, a limited temporary Berufserlaubnis. General B2 German plus medical professional language at around C1 is usually required; verify the state-approved examination.');
-else if(isDental)steps.push('Contact the state dentistry licensing authority for dental Approbation. Verify dental professional German language examination and equivalence criteria; do not use physician-only exam rules.');
+else if(isDental)steps.push('Contact the state dentistry licensing authority for dental Approbation. General German B2 and usually a C1-level dental Fachsprachprüfung are required, subject to state-approved exceptions; verify the approved examination and equivalence criteria.');
 else if(isNurse)steps.push('Registered nursing normally requires qualification recognition, B2 German and professional authorisation. Deficits may lead to adaptation or a knowledge test; an assistant role is not the same as registered nursing.');
-else if(type==='pharmacist'||type==='psychotherapist')steps.push('Confirm the distinct profession-specific Approbation and language/examination pathway with the responsible state authority.');
-else if(regulated)steps.push('Confirm the profession-specific recognition, language, medical-fitness and good-conduct requirements. Requirements for nurses/doctors must not be copied automatically to this profession.');
+else if(type==='pharmacist')steps.push('Pharmacists require their own Approbation. General German B2 and usually a C1-level pharmacy Fachsprachprüfung are required; confirm the approved examination and exceptions with the state authority.');
+else if(type==='psychotherapist')steps.push('Confirm the distinct psychotherapist Approbation pathway and language examinations with the competent state authority; a psychology degree alone does not authorise psychotherapy.');
+else if(regulated)steps.push('Confirm profession-specific recognition, language, medical-fitness and good-conduct requirements. Physiotherapy, for example, needs permission to use a protected title, not medical Approbation. Do not copy doctors’ or nurses’ requirements to another profession.');
 else steps.push('Clarify whether this role is regulated or non-regulated and whether recognition is needed for the visa or employer, rather than assuming a clinical licence is required.');
 if((isDoctor||isDental)&&specialty)steps.push('You selected '+specialty+'. After obtaining the appropriate primary licence, ask the responsible state professional chamber about recognition of foreign specialist training. This is separate from the Approbation.');
 if(situation==='offer')steps.push('Ask the employer for a signed contract or offer, accurate job duties, and support with recognition or immigration documentation. A job offer does not replace a professional licence.');
@@ -1130,6 +1134,8 @@ if(situation==='abroad')steps.push('Start from the competent authority and quali
 if(!['b2','c1','professional'].includes(language)&&isDoctor)steps.push('Language priority: develop B2 general German and prepare for the relevant approved medical Fachsprachprüfung; this is separate from any medical knowledge exam.');
 if(!['b2','c1','professional'].includes(language)&&isNurse)steps.push('Language priority: work towards the normally required B2 level for full nursing recognition.');
 steps.push('Check the correct national-visa/residence category. For regulated patient-facing work, having permission to enter Germany or an employer partnership is not equivalent to full professional authorisation.');
+if(isNurse)steps.push('Registered nurses should compare fully recognised skilled-worker employment with recognition measures under Section 16d. The EU Blue Card is not the nursing route.');
+if(origin==='third'&&regulated)steps.push('Recognition partnerships and recognition-measures residence permits can support entry in qualifying cases but do not independently authorise unrestricted clinical practice. Confirm permitted duties.');
 const docs=[
 'Passport or accepted identity evidence; name-change/civil-status records where relevant',
 'Original qualification award, degree/diploma, transcripts, detailed modules, training hours and clinical-placement records',
@@ -1158,7 +1164,7 @@ out.innerHTML='<h3>'+escapeHTML(role[0])+' — '+escapeHTML(stateName)+'</h3>'+
 '<h4>Your next steps</h4><ol>'+steps.map(x=>'<li>'+escapeHTML(x)+'</li>').join('')+'</ol>'+
 '<h4>Documents to prepare or ask about</h4><p class="muted">This is a preparation list, not a declaration that every item is mandatory or that a substitute will be accepted. Ask the authority which versions and dates are required.</p><ul>'+docs.map(x=>'<li>'+escapeHTML(x)+'</li>').join('')+'</ul>'+
 (missing!=='none'&&missingHelp[missing]?'<h4>When evidence is missing</h4><p>'+escapeHTML(missingHelp[missing])+'</p>':'')+
-'<h4>Official verification and contact</h4>'+official('finder')+' '+official('profilter')+' '+(isDoctor?official('doctors')+' '+official('doctorStates'):isNurse?official('nurse'):'')+' '+official('docs')+' '+official('visa')+' '+official('recognitionVisa')+
+'<h4>Official verification and contact</h4>'+official('finder')+' '+official('profilter')+' '+(isDoctor?official('doctors')+' '+official('doctorStates'):isNurse?official('nurse'):'')+' '+(isDental?official('dentist'):type==='pharmacist'?official('pharmacist'):get('fbHealthRole')==='physiotherapist'?official('physio'):'')+' '+official('docs')+' '+official('visa')+' '+official('recognitionVisa')+
 '<p class="muted" style="margin-top:12px">Your role, qualification country, recognition decision, employer and exact work address can change the result. Official decisions, permitted language-test providers, deadlines and fees must be confirmed directly with the designated office.</p>';
 }
 
@@ -1563,6 +1569,10 @@ if(Object.hasOwn(fbAiTopics,page))fbAiRender(page);
 if(page==='immigration'&&id)requestAnimationFrame(()=>fbJumpToImmigrationSection(id));
 fbUpdateLocationHeader();
 if(page==='taxclasses'&&fbGeoState.country==='Germany'&&fbGeoState.state){const field=document.querySelector('#taxClassForm [name=state]');if(field)field.value=fbGeoState.state;}
+if(page==='healthcare'){
+ const stateField=document.getElementById('fbHealthState');
+ if(stateField&&fbGeoState.country==='Germany'&&fbGeoState.state&&[...stateField.options].some(option=>option.value===fbGeoState.state))stateField.value=fbGeoState.state;
+}
 if(page==='feedback')setupFeedbackWidget();
 if(page==='immigration')fbImmigrationToolResult();if(page==='healthcare')fbHealthcareResult();if(page==='salary')salaryCalculate();
 if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleHousehold();if(page==='taxclasses'){updateTaxHealthOption();renderTaxClassResults();}if(page==='healthcompare')renderHealthCompare();

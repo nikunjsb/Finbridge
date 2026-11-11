@@ -202,39 +202,45 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  #salaryResult{padding:12px}
 }
 
-/* FinBridge small guide-level AI assistant: collapsed until opened */
-.fb-ai-card{margin:24px 0;padding:0;overflow:hidden}
-.fb-ai-card details>summary{display:flex;justify-content:space-between;align-items:center;gap:10px;list-style:none;cursor:pointer;padding:16px 20px;font-weight:750}
+/* FinBridge AI: compact expandable conversation with fixed message viewport */
+.fb-ai-card{margin:20px 0;padding:0;overflow:hidden}
+.fb-ai-card details>summary{display:flex;justify-content:space-between;align-items:center;gap:10px;list-style:none;cursor:pointer;padding:14px 18px;font-weight:750}
 .fb-ai-card details>summary::-webkit-details-marker{display:none}
-.fb-ai-heading{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px}
-.fb-ai-heading small{font-size:12px;color:#777;font-weight:450}
-.fb-ai-chevron{font-size:21px;color:#666}
+.fb-ai-heading{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:14px}
+.fb-ai-heading small{font-size:11px;color:#777;font-weight:450}
+.fb-ai-chevron{font-size:20px;color:#666}
 .fb-ai-card details[open] .fb-ai-chevron{transform:rotate(180deg)}
-.fb-ai-body{padding:0 20px 18px}
-.fb-ai-body>.muted{font-size:12px}
-.fb-ai-input{display:flex;gap:7px;align-items:stretch}
+.fb-ai-body{padding:0 18px 16px;display:flex;flex-direction:column;min-width:0}
+.fb-ai-body>.muted{font-size:11px;line-height:1.5;margin:0 0 8px}
+.fb-ai-conversation{display:flex;flex-direction:column;gap:10px;height:min(310px,45vh);min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:8px 5px 9px 0;border-top:1px solid #edf0ef;scroll-behavior:auto}
+.fb-ai-conversation:empty{display:none}
+.fb-ai-conversation:not(:empty){margin:0 0 10px}
+.fb-ai-input{display:flex;gap:6px;align-items:stretch}
 .fb-ai-input input{min-width:0;flex:1;width:100%;border:1px solid #d9dfe0;border-radius:9px;padding:10px 12px;font-size:14px}
-.fb-ai-input button{flex:0 0 auto}
-.fb-ai-conversation{display:flex;flex-direction:column;gap:11px;margin-top:14px;max-height:380px;overflow-y:auto}
-.fb-ai-message{padding:12px 14px;border:1px solid #e3e7e7;border-radius:12px;max-width:100%;overflow-wrap:anywhere}
-.fb-ai-message b{font-size:12px}
-.fb-ai-message p{font-size:13px;white-space:pre-wrap;color:#333;line-height:1.65;margin:6px 0 0}
+.fb-ai-input button{flex:0 0 42px;min-width:42px;min-height:42px;padding:6px 9px;display:inline-flex;align-items:center;justify-content:center;font-size:17px}
+.fb-ai-input button[disabled]{opacity:.65}
+.fb-ai-message{padding:11px 12px;border:1px solid #e3e7e7;border-radius:12px;max-width:100%;overflow-wrap:anywhere;flex:0 0 auto}
+.fb-ai-message b{font-size:11px}
+.fb-ai-message p{font-size:13px;white-space:pre-wrap;color:#333;line-height:1.55;margin:5px 0 0}
 .fb-ai-user{background:#f1f5f3;align-self:flex-end;max-width:92%}
 .fb-ai-assistant{background:#fafafa}
 .fb-ai-sources{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
 .fb-ai-sources a{font-size:11px;color:#345a50;text-decoration:underline}
-.fb-ai-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}
+.fb-ai-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px}
 .fb-ai-footer .muted{font-size:11px}
 .fb-ai-footer button{white-space:nowrap}
 @media(max-width:700px){
- .fb-ai-card details>summary{padding:13px 14px}
- .fb-ai-heading{font-size:14px}
- .fb-ai-heading small{display:block;flex-basis:100%;margin-left:25px}
- .fb-ai-body{padding:0 13px 13px}
- .fb-ai-input button{padding:9px 12px}
+ .fb-ai-card details>summary{padding:12px 13px}
+ .fb-ai-heading{font-size:13px}
+ .fb-ai-heading small{display:block;flex-basis:100%;margin-left:23px}
+ .fb-ai-body{padding:0 12px 12px}
+ .fb-ai-conversation{height:min(230px,36vh);gap:8px}
+ .fb-ai-message{padding:9px 10px}
+ .fb-ai-message p{font-size:12px;line-height:1.5}
+ .fb-ai-input button{flex-basis:42px}
  .fb-ai-footer{align-items:flex-start}
 }
-
+@media(prefers-reduced-motion:reduce){.fb-ai-card details[open] .fb-ai-chevron{transition:none}}
 /* Healthcare recognition pathway finder */
 .fb-healthcare-tool{margin:16px 0 24px}
 .fb-healthcare-tool .formgrid{margin:14px 0;grid-template-columns:repeat(2,minmax(0,1fr))}

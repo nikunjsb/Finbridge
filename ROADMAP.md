@@ -15,12 +15,14 @@ Updated: 2026-11-12. Status: public beta / in progress. This plan distinguishes 
 | P8 | Performance & accessibility | Keyboard, screen readers, contrast and mobile/error states | Narrow-screen money-guidance checks complete; wider accessibility/performance audit pending |
 | P9 | Public beta operations | Reliable releases and preserved tester access | GitHub Pages live; domain/hosting work deferred until 22 November 2026 |
 | P10 | Feedback and learning loop | Private feedback review and actionable, deduplicated findings | Private repository read access verified; daily QA includes feedback through 19 December; owner analytics review awaits live report verification |
+| P11 | Tax-saving guidance and tools | Guided opportunities, evidence checks, year-specific estimates and independent reference cases | Requested 12 November; planned in [TAX_SAVINGS_ROADMAP.md](TAX_SAVINGS_ROADMAP.md). Extend existing claim/workspace guides; implementation pending |
 
 ## Current implementation inventory
 - The site includes the money self-check, detailed payslip guide, family-support preparation, double-household evidence and departure document packs.
 - Location-trial and topic-insights endpoints are configured separately from AI and feedback. Topic analytics remains off by default for each visitor.
 - Local tests exercise 14-day location expiry and the latest 30 UTC-date Insights cleanup using the actual SQL schemas. They do not verify that a deployed Cloudflare cron ran.
 - The 6 November proposal list in `ROADMAP_2026-11-07.md` is historical, not a current list of unfinished features.
+- The dedicated tax-saving backlog separates existing guides from the remaining screening/calculator work; see [TAX_SAVINGS_ROADMAP.md](TAX_SAVINGS_ROADMAP.md).
 
 ## Monitoring coverage
 - FinBridge Release QA: daily around 08:30 Europe/Berlin. Inspect code, public site and regressions; also review private `nikunjsb/finbridge-feedback` through 19 December 2026. Keep private submissions out of public reports/code.
@@ -49,7 +51,7 @@ Updated: 2026-11-12. Status: public beta / in progress. This plan distinguishes 
 ## Next work, with hosting deferred
 1. Verify deployed Cloudflare cron executions, binding/log settings and retained-row counts using authenticated owner access.
 2. Prepare operator-specific public contact/identity details for the privacy/operator notices; do not invent or expose a private home address.
-3. Add independent financial-calculator reference cases and wider accessibility checks.
+3. Work through the [tax-saving priorities](TAX_SAVINGS_ROADMAP.md): guided claim finder, work expenses, relocation/double households, parent support and household services, with independent calculator reference cases and wider accessibility checks.
 4. Build protected owner reporting from the aggregate queries, with server-side authentication before exposing any report endpoint.
 5. Expand Germany–India residency/account scenarios and the transfer-cost worksheet using official sources.
 6. Revisit domain/hosting on 22 November, preserving the tester link and user backups.

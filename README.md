@@ -18,7 +18,7 @@ Serve the repository as a static HTTP site (e.g. `python -m http.server 8000`), 
 - Public code must never contain API credentials, secret tokens or personally identifiable visitor data.
 
 ## Product planning and tracking
-- [P0–P10 roadmap](ROADMAP.md)
+- [P0–P11 roadmap](ROADMAP.md)
 - [Issues and improvement backlog](https://github.com/nikunjsb/Finbridge/issues)
 - Scheduled public-site release QA and content-gap reviews help identify issues; they do not replace live interactive browser testing.
 - The daily Release QA report also reviews the separate private feedback repository through 19 December 2026. The older standalone feedback task stays paused to fit the five-active-task limit. Private feedback must not be copied into public issues or commits.

@@ -1338,8 +1338,7 @@ const newcomerGroups=[
 ['childcare','Investigate Kita, schools and registration','Ask your local city about daycare applications, school enrollment, language support and waiting lists.'],
 ['familybenefits','Review Kindergeld and relevant benefits','Benefits depend on personal and residence circumstances, and may have cross-border conditions.'],
 ['familytax','Review family tax options','Tax class, marriage registration and joint filing can affect payroll and annual tax calculations; verify current rules.']
-]}];
-
+]},
 {id:'jobseeker',name:'Job seeker / Opportunity Card',items:[
 ['js_status','Check job-search residence conditions','Check visa validity, permitted work or trial jobs, and transition requirements after an offer.'],
 ['js_money','Confirm living funds and insurance','Plan job-search costs and suitable health cover.'],

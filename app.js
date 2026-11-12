@@ -864,6 +864,15 @@ return title('PREPARE YOUR RETURN','What could I claim on my German tax return?'
 }
 
 
+const salaryTaxClassNotes={
+1:'Class I: Generally for single, divorced, or permanently separated employees.',
+2:'Class II: For eligible single parents who qualify for the tax relief amount.',
+3:'Class III: For eligible married couples or registered partners; often paired with Class V.',
+4:'Class IV: Standard choice for married couples or registered partners who are both employed; a factor method may also be available.',
+5:'Class V: Used by one partner when the other uses Class III; generally higher monthly withholding.',
+6:'Class VI: For a second or additional employment relationship; typically higher withholding.'
+};
+function salaryTaxClassDescription(value){return escapeHTML(salaryTaxClassNotes[Number(value)]||salaryTaxClassNotes[1])+' Tax class affects monthly wage-tax withholding, not necessarily your final annual income tax. <a href="#taxclasses">Compare tax classes →</a>';}
 function salaryPage(){
 const p=state.salaryInputs||{};
 const num=(v,d)=>Number.isFinite(Number(v))?Number(v):d;
@@ -872,7 +881,8 @@ return title('SALARY / GERMANY','Monthly take-home salary','Estimate a regular 2
 '<div class="note">Supports regular employment with statutory public health insurance. Private insurance, special deductions, irregular bonuses, employer benefits and mini-jobs require separate calculation. Estimate only, not an official payslip.</div>'+
 '<div class="grid two"><div class="card"><h3>Salary inputs</h3><form id="salaryForm" class="formgrid">'+
 '<label class="field">Monthly gross salary (€)<input name="gross" type="number" required min="0" max="80000" step=".01" value="'+num(p.gross,4000)+'"></label>'+
-'<label class="field">Tax class<select name="taxClass">'+options([1,2,3,4,5,6].map(n=>[n,'Class '+n]),p.taxClass||1)+'</select></label>'+
+'<label class="field">Tax class<select name="taxClass" aria-describedby="salaryTaxClassHint">'+options([1,2,3,4,5,6].map(n=>[n,'Class '+n]),p.taxClass||1)+'</select></label>'+
+'<div class="note" id="salaryTaxClassHint" aria-live="polite" style="margin:0 0 12px;grid-column:1/-1">'+salaryTaxClassDescription(p.taxClass||1)+'</div>'+
 '<label class="field">Federal state<select name="state">'+options(fbStates.map(row=>[row[0],row[0]]),p.state||fbGeoState.state||'Hesse (Hessen)')+'</select></label>'+
 '<label class="field">Health-insurer additional rate (%)<input name="rate" type="number" required min="0" max="6" step=".01" value="'+num(p.rate,2.9)+'"></label>'+
 '<label class="field">Care insurance<select name="care">'+options([['none','Childless, 23+'],['under23','Under age 23 / no childless surcharge'],['one','1 child'],['two','2 eligible children under 25'],['three','3 eligible children under 25'],['four','4 eligible children under 25'],['five','5+ eligible children under 25']],p.care||'none')+'</select></label>'+
@@ -1647,7 +1657,7 @@ $('#breadcrumb').textContent=page==='guide'?'Guide / '+(articles.find(x=>x.id===
 document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
 }
 window.addEventListener('hashchange',()=>{render();if(!location.hash.startsWith('#immigration/'))window.scrollTo(0,0)});
-document.addEventListener('change',e=>{if(e.target.id==='financeMonth'){if(/^\d{4}-\d{2}$/.test(e.target.value)){state.financeViewMonth=e.target.value;save();render()}return}if(e.target.matches('#fbImmigrationGoal,#fbImmigrationProfession,#fbImmigrationMissing'))fbImmigrationToolResult();if(e.target.matches('#fbHealthRole,#fbHealthState,#fbHealthOrigin,#fbHealthSituation,#fbHealthGerman,#fbHealthSpecialty,#fbHealthMissing'))fbHealthcareResult();if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
+document.addEventListener('change',e=>{if(e.target.matches('#salaryForm select[name="taxClass"]')){const hint=document.getElementById('salaryTaxClassHint');if(hint)hint.innerHTML=salaryTaxClassDescription(e.target.value);return;}if(e.target.id==='financeMonth'){if(/^\d{4}-\d{2}$/.test(e.target.value)){state.financeViewMonth=e.target.value;save();render()}return}if(e.target.matches('#fbImmigrationGoal,#fbImmigrationProfession,#fbImmigrationMissing'))fbImmigrationToolResult();if(e.target.matches('#fbHealthRole,#fbHealthState,#fbHealthOrigin,#fbHealthSituation,#fbHealthGerman,#fbHealthSpecialty,#fbHealthMissing'))fbHealthcareResult();if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#doubleHouseholdForm'))updateDoubleHousehold();if(e.target.closest('#taxClassForm'))renderTaxClassResults();if(e.target.closest('#healthCompareForm'))renderHealthCompare()});
 document.addEventListener('submit',async e=>{
 if(e.target.id==='fbAiForm'){e.preventDefault();await fbAiAsk(e.target);return}

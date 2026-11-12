@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS insight_daily (
 );
 CREATE INDEX IF NOT EXISTS insight_daily_date ON insight_daily(day);
 -- Run daily via D1 scheduled cleanup or a separate protected cron handler.
--- DELETE FROM insight_daily WHERE day < date('now','-30 day');
+-- DELETE FROM insight_daily WHERE day < date('now','-29 days');

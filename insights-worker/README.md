@@ -25,6 +25,11 @@ Allowed outcomes: matched/unmatched (searches), success/error (AI).
 
 Only summarized totals are suitable for the owner dashboard. The backend lacks a public GET endpoint intentionally.
 
+Read-only owner queries are available in [report.sql](report.sql) for the authenticated Insights D1 console. They summarize daily topics, unmatched searches, AI errors and rows awaiting cleanup, without returning question text or visitor records. The protected dashboard itself remains planned.
+
+## Source verification — 12 November 2026
+The repository test suite exercises browser opt-in/withdrawal, strict event fields, origin/method/size/rate checks, SQLite aggregation, failed writes and the 30-date retention boundary. External service calls are mocked. These results do not establish that the deployed Cloudflare cron ran, that its bindings/log settings match the repository, or that all live provider settings were reviewed. Verify those separately through authenticated owner access. A GitHub source commit does not redeploy this Worker.
+
 ## Testing checklist
 - No data transmitted before opt-in or after withdrawal.
 - No raw text, previous AI messages, financial entries or precise location anywhere in the request.

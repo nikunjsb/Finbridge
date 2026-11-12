@@ -2,6 +2,8 @@
 
 This directory contains a **Cloudflare Worker**. Its source can be public, but feedback is stored as issues in a **separate private GitHub repository**.
 
+**Status checked 12 November 2026:** the frontend contains the dedicated Worker endpoint and Turnstile site key. Connected GitHub access to the private feedback repository and its open issue list was verified. The daily Release QA report now reviews that repository through 19 December 2026; the older standalone review stays paused to fit the five-active-task limit. Local tests cover consent, anti-spam failure and successful/failed private issue storage with mocked external requests. A fresh live visitor submission was not performed in this check.
+
 ## One-time setup (repository owner)
 
 1. Create a **private** repository named `finbridge-feedback` under `nikunjsb` and enable GitHub Issues. Do not create it as public.
@@ -15,6 +17,6 @@ This directory contains a **Cloudflare Worker**. Its source can be public, but f
 
 The Worker accepts JSON POST with `kind`, `area`, `title`, `details`, `benefit`, `consent:true`, and `turnstileToken`. Rate-limiting is set as an additional safeguard; verify availability and quota on your Cloudflare plan. The browser's `Origin` is checked for CORS, but it is not authentication; Turnstile, rate-limiting and scoped GitHub credentials provide abuse controls.
 
-No sensitive user documents or reply email addresses should be collected in GitHub issues. The frontend must disclose that submissions are handled by Cloudflare and GitHub, and explain data retention and deletion before launch. Existing public GitHub Issues review automation **will not** automatically include this private repository; update the review task only after granting access to the private repo.
+No sensitive user documents or reply email addresses should be collected in GitHub issues. The frontend must disclose that submissions are handled by Cloudflare and GitHub, and explain data retention and deletion. Private feedback is reviewed through the connected private repository; public issue scans alone do not include those reports.
 
 **Deployment status:** This source code alone does not deploy a Worker, create a private repo or make feedback operational.

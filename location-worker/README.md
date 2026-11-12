@@ -1,10 +1,10 @@
-# FinBridge opt-in location trial — prepared, not deployed
+# FinBridge location trial — configured; live retention verification pending
 
-**Status:** The location-trial backend is only in GitHub source code. It is not deployed to Cloudflare and cannot store coordinates yet. `location-config.js` deliberately has an empty URL, so the location-sharing button is disabled. **Do not paste a guessed Worker URL into the config.** The existing feedback Worker is separate and must not be reused.
+**Status checked 12 November 2026:** `location-config.js` points to the dedicated Worker, and `wrangler.jsonc` contains the D1 binding and daily 03:00 UTC cleanup schedule. The owner previously completed the dashboard setup. Local tests exercise recording, daily deduplication, deletion, aggregate tables and expiry cleanup using the actual SQL schema. The deployed Cloudflare version, runtime bindings, logs and cron execution were not independently inspected in this check. The feedback Worker remains separate.
 
-## What records would contain
+## Collection modes and stored records
 
-For people who separately check the trial opt-in checkbox and press **Share location for trial**:
+The normal automatic browser-permission check determines a German state locally. Precise trial upload is initiated by the separately described **Share my location** button, using the native browser permission control. The UI explains the 14-day storage before that action. Trial records contain:
 - A randomly generated pseudonymous browser ID (stored in localStorage to reduce repeat counts);
 - GPS/device latitude and longitude, accuracy radius, timestamp;
 - The visitor's selected country and German state (if any);
@@ -12,16 +12,17 @@ For people who separately check the trial opt-in checkbox and press **Share loca
 
 The database deliberately does not store IP address, name, account, browser fingerprint, or user agent. The Worker uses IP temporarily for rate limiting only. Cloudflare may process normal service/security request logs independently.
 
-The source accepts one event per consenting browser every 24 hours, with automatic 14-day purge by a Cloudflare scheduled Worker. The location page has a **Delete my trial records** control which uses the browser's random identifier to remove records. No public database-reading endpoint is provided. **One browser is not one person**; coordinate proximity is not a visitor identifier. Trial records are not stored in the feedback GitHub repository or public GitHub Pages and do not appear in Web Analytics.
+The source accepts one precise event per consenting browser every 24 hours, with 14-day expiry and a scheduled cleanup handler. The Privacy & backup clear-data action requests deletion using the browser's random identifier before clearing local records. No public database-reading endpoint is provided. **One browser is not one person**; coordinate proximity is not a visitor identifier. Separate tables count approximate network locations and manual selections without GPS coordinates or browser identifiers. The `finbridge_all_locations` view hides expired rows before cleanup runs.
 
-## Activation checklist
+## Provisioning reference
+These steps describe setup/re-provisioning, not a claim that the configured service is still undeployed.
 
-1. Confirm your legal basis, GDPR notice and retention schedule for server-side **precise** geolocation. The browser's geolocation prompt authorizes access by the page, *not* consent to submit/store the location. The page therefore requires a **separate explicit opt-in checkbox** and action.
-2. In the existing Cloudflare account, create a **D1** database named `finbridge-location-trial`.
-3. Replace `REPLACE_WITH_YOUR_CLOUDFLARE_D1_DATABASE_ID` in `location-worker/wrangler.jsonc` with the actual ID from Cloudflare.
+1. Keep local state detection and the explicit trial-sharing action clear in the UI and privacy notice. Keep the retention explanation beside the sharing action.
+2. Verify the existing D1 database and its `DB` binding in Cloudflare; use the existing database rather than creating a duplicate.
+3. Confirm that the database ID in `location-worker/wrangler.jsonc` matches the deployed binding.
 4. From the `location-worker` directory, run `npx wrangler d1 execute finbridge-location-trial --remote --file=./schema.sql`, then `npx wrangler deploy`. Check the configured dedicated rate limiter binding and scheduled cron trigger.
-5. Verify that records from authenticated test requests are created, duplicate events within a day are not added, deletion works, and old records expire. Configure appropriate WAF/bot protection and restricted D1 dashboard access. Note that browser CORS is not security authentication and a direct caller could forge an opt-in payload.
-6. Set the **exact actual deployed Worker URL** in `location-config.js`. Redeploy FinBridge after testing, making the trial button available.
+5. With controlled test data, verify recording, deduplication, deletion and expiry in the deployed service. Check rate limiting and restricted D1 dashboard access. Browser CORS is not caller authentication.
+6. Confirm that `location-config.js` matches the actual deployed Worker URL after any service change.
 7. Review collected statistics via **private** Cloudflare D1 SQL/dashboard access, not a publicly readable API. Example query:
 
 ```sql
@@ -34,6 +35,8 @@ ORDER BY day DESC, unique_browsers DESC;
 ```
 
 Location accuracy is not assured; IP-derived city and coordinate-based location can disagree. This feature cannot reliably identify individuals.
+
+For owner-only aggregate checks without coordinates or browser identifiers, run [report.sql](report.sql) in the authenticated location D1 console. It includes expired-row counts for each table. Run source tests with `node --test tests/*.test.mjs` from the repository root. A GitHub source commit does not redeploy this Cloudflare Worker.
 
 ## Geographic data used for normal guidance
 

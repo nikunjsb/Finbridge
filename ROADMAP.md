@@ -1,37 +1,44 @@
 # FinBridge — Product roadmap and release gates
 
-Updated: 2026-11-11. Status: public beta / in progress. This plan distinguishes observed completion from unverified readiness. “P” indicates sequence and priority, not a promise that the step is done.
+Updated: 2026-11-12. Status: public beta / in progress. This plan distinguishes implementation, local verification and live-service verification. “P” indicates a workstream, not a promise that the entire phase is done.
 
 | Phase | Workstream | Exit criteria | Status |
 |---|---|---|---|
-| P0 | Desktop/mobile UX smoke tests | Owner checks homepage, navigation, search, AI, salary and location on both screen sizes after releases | Owner reports checked; repeat after major changes |
-| P1 | Release quality & traceability | Scheduled QA for GitHub commits and deployment; documented regression checklist and issue history | Two scheduled monitors created; browser E2E pending |
-| P2 | Privacy & trust baseline | Accurate privacy/AI/location notices, clear feedback handling, no secret keys in public assets, verified contact details | Needs review; current privacy text partly outdated |
-| P3 | Anonymous topic insights | Explicit opt-in, no raw search/chat text, aggregate events only, no user/session identifier, 30-day retention, disable and delete controls | In design; **disabled until deployed and tested** |
-| P4 | Private analytics dashboard | Owner-authenticated aggregated reports, no public database access; trend/no-result counts | Planned |
-| P5 | Content accuracy | Audit legal, healthcare and tax claims against official dated sources; track last checked and jurisdiction | Ongoing |
-| P6 | Journey completeness | Newcomer, work, health professional, Blue Card, PR, citizenship, India-Germany cross-border, departure | Ongoing |
-| P7 | Financial tool QA | Boundary tests for tax class, salary, insurance and budget; clear assumptions and relevant tax years | Planned |
-| P8 | Performance & accessibility | Keyboard, screen readers, contrast, mobile layout, CWV and error states | Planned |
-| P9 | Public beta operations | Domain/hosting assessment; rollback and change log; backups and issue triage | Current GitHub Pages live; migration not required for beta |
-| P10 | Growth and learning loop | Monthly aggregated insight review, deduped backlog, prioritization and release notes | Planned; contingent on privacy-safe analytics |
+| P0 | Desktop/mobile UX smoke tests | Critical journeys checked on both screen sizes after relevant changes | Money-check/payslip links, saved choices, reset, evidence counters and a 390px viewport checked on 12 November; full-site regression continues |
+| P1 | Release quality & traceability | Scheduled QA, deployment checks and repeatable tests | Release QA and hourly monitoring active; 24 local tests pass; news automation carries the release interlock |
+| P2 | Privacy & trust baseline | Accurate service notices and operator/contact information | Service disclosures exist and stale setup notes are reconciled; operator-specific details and full review remain pending |
+| P3 | Optional topic insights | Explicit opt-in, fixed enums, aggregate-only rows and 30 UTC-date retention | Worker/D1 setup previously confirmed; frontend configured and off by default per visitor. Local tests pass; live cron/log verification remains pending |
+| P4 | Private analytics dashboard | Owner-authenticated reports; no public database access | Read-only D1 aggregate queries ready; protected dashboard UI and authenticated reporting still planned |
+| P5 | Content accuracy | Dated, jurisdiction-relevant official sources | Money guidance, pension refund, German-course and fund-exit-tax updates reviewed on 12 November; wider audit continues |
+| P6 | Journey completeness | Relevant newcomer, healthcare, immigration and cross-border paths | Nine newcomer profiles, healthcare recognition and departure journeys implemented; fuller residency/account scenarios planned |
+| P7 | Financial tool QA | Independent boundary/reference tests for salary, insurance and budget | Calculators implemented; broad financial reference-case suite pending |
+| P8 | Performance & accessibility | Keyboard, screen readers, contrast and mobile/error states | Narrow-screen money-guidance checks complete; wider accessibility/performance audit pending |
+| P9 | Public beta operations | Reliable releases and preserved tester access | GitHub Pages live; domain/hosting work deferred until 22 November 2026 |
+| P10 | Feedback and learning loop | Private feedback review and actionable, deduplicated findings | Private repository read access verified; daily QA includes feedback through 19 December; owner analytics review awaits live report verification |
+
+## Current implementation inventory
+- The site includes the money self-check, detailed payslip guide, family-support preparation, double-household evidence and departure document packs.
+- Location-trial and topic-insights endpoints are configured separately from AI and feedback. Topic analytics remains off by default for each visitor.
+- Local tests exercise 14-day location expiry and the latest 30 UTC-date Insights cleanup using the actual SQL schemas. They do not verify that a deployed Cloudflare cron ran.
+- The 6 November proposal list in `ROADMAP_2026-11-07.md` is historical, not a current list of unfinished features.
 
 ## Monitoring coverage
-- FinBridge Release QA: daily around 08:30 Europe/Berlin. Inspect code, public site and regressions; log only verifiable findings.
+- FinBridge Release QA: daily around 08:30 Europe/Berlin. Inspect code, public site and regressions; also review private `nikunjsb/finbridge-feedback` through 19 December 2026. Keep private submissions out of public reports/code.
 - FinBridge Content Gaps: Mondays around 09:30 Europe/Berlin.
-- Existing FinBridge feedback review: daily.
-- Existing Germany expat news watch: twice daily.
+- The corrected standalone feedback review is paused; feedback is consolidated into Release QA to stay within five active tasks.
+- Germany expat news watch: twice daily, with previous-deployment verification before any commit.
+- Hosting discussion reminder: 22 November 2026; no automatic domain purchase, DNS change or migration.
 - Scheduled checks **cannot** see private Cloudflare D1 dashboards or browser-only transactions without a separately authorized integration. They must not claim real user telemetry without evidence.
 
 ## Design rules for visitor insights
 1. **No raw text:** Never send or store search queries, AI prompts, replies, history or free-text feedback.
 2. **Allowlisted enums:** Only the category (e.g. immigration, tax, healthcare, salary, money, cross-border, other), interaction type (overview_search, library_search, ai_question), and broad outcome (matched, unmatched, success, error).
 3. **Explicit opt-in** off by default; the choice stays on device, visitors can switch it off; describe the categories and processor before collection.
-4. **Separation:** New `finbridge-insights` Worker and new D1 database, not location-trial, AI or feedback bindings.
+4. **Separation:** Dedicated `finbridge-insights` Worker and D1 database; keep location-trial, AI and feedback bindings separate.
 5. **Privacy by design:** Do not write IP addresses, UA, referrers, geolocation or client IDs to D1; use a short retention policy for daily aggregates. Avoid logging request bodies.
 6. **Abuse protection:** Validate origin and request payload, limit request sizes, rate-limit, and secure admin reports (not by CORS alone). Never expose a public admin API.
 7. **Meaningful reporting:** Topic interest counts, no-match counts and AI failure counts. Avoid overinterpreting analytics of opt-in users as all visitors.
-8. **Deployment gate:** Frontend `insightsEndpoint` stays blank and emits nothing until privacy review, Cloudflare configuration and live tests pass.
+8. **Current frontend gate:** The configured endpoint emits no topic events until the visitor opts in. Preserve opt-out/withdrawal behavior; verify production settings and retention before broad promotion.
 
 ## Issue process
 - One issue per confirmed problem or coherent workstream.
@@ -39,9 +46,10 @@ Updated: 2026-11-11. Status: public beta / in progress. This plan distinguishes 
 - Mark fixed only after code + published site verification, not merely after committing.
 - Monitoring findings should update existing issues first to avoid duplicates.
 
-## Recommended release sequence
-1. Fix known privacy disclosure mismatch and regression tests.
-2. Prepare opt-in aggregated event collector without shipping enabled tracking.
-3. Configure isolated Cloudflare Worker + D1; review consent and notices.
-4. Enable in a small controlled pilot, then build protected reporting.
-5. Review results monthly and prioritize content updates.
+## Next work, with hosting deferred
+1. Verify deployed Cloudflare cron executions, binding/log settings and retained-row counts using authenticated owner access.
+2. Prepare operator-specific public contact/identity details for the privacy/operator notices; do not invent or expose a private home address.
+3. Add independent financial-calculator reference cases and wider accessibility checks.
+4. Build protected owner reporting from the aggregate queries, with server-side authentication before exposing any report endpoint.
+5. Expand Germany–India residency/account scenarios and the transfer-cost worksheet using official sources.
+6. Revisit domain/hosting on 22 November, preserving the tester link and user backups.

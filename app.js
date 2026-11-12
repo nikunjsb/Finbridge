@@ -1174,6 +1174,18 @@ official('finder')+' '+official('profilter')+' '+official('doctorStates')+'</div
 '<div class="sectionhead"><h2>Understanding the different decisions</h2></div>'+
 '<div class="grid two"><div class="card"><h3>Doctor, surgeon or medical specialist</h3><p>Full medical Approbation and temporary Berufserlaubnis are different. Recognition of a foreign Facharzt/surgical specialty is a further step through the relevant Landesärztekammer; it is not automatically covered by the basic medical licence.</p>'+official('doctors')+'</div>'+
 '<div class="card"><h3>Nursing and allied health</h3><p>Registered nursing, nursing assistants, midwives, radiographers, laboratory technologists and therapy professions have separate German reference occupations. Some routes allow an adaptation period or knowledge examination after an equivalence assessment.</p>'+official('nurse')+' '+official('physio')+'</div></div>'+
+'<div class="sectionhead"><h2>Recognition explained: six practical steps</h2></div>'+
+'<div class="grid two">'+
+'<div class="card"><h3>1. Match the profession</h3><p>Start with the exact German reference profession and responsible authority. Doctors, nurses, physiotherapists, pharmacists and assistants follow different rules.</p>'+official('finder')+'</div>'+
+'<div class="card"><h3>2. Qualification vs professional licence</h3><p>Recognition of a diploma, permission to use a protected title, professional Approbation or Berufserlaubnis, and immigration permission are different decisions. A job offer is not a clinical licence.</p>'+official('docs')+'</div>'+
+'<div class="card"><h3>3. German-language evidence</h3><p>General German and profession-specific language examinations are different. For physicians, general B2 and a medical language assessment around C1 are common; registered nurses generally need B2. Confirm the requirements with your state authority.</p>'+official('doctorStates')+'</div>'+
+'<div class="card"><h3>4. Differences in training</h3><p>If the authority finds substantial differences, an adaptation period or knowledge examination may be an option depending on profession, qualification origin and official decision. Do not assume everyone follows the same examination pathway.</p>'+official('docs')+'</div>'+
+'<div class="card"><h3>5. Typical documents</h3><p>Prepare identity documents, degree and detailed training content, home-country registration or good standing, CV, experience records, language evidence and, where requested, certified translations, fitness and conduct documents. Requirements vary by authority.</p>'+official('finder')+'</div>'+
+'<div class="card"><h3>6. Employment and visa</h3><p>Check which duties are legally permitted while recognition is pending. Confirm the correct employment or recognition residence route and never begin restricted patient-care work solely on an employment offer.</p>'+official('visa')+' '+official('recognitionVisa')+'</div></div>'+
+'<div class="sectionhead"><h2>For doctors and surgeons: general and specialist licensing</h2></div>'+
+'<div class="card guidebody"><p><b>Approbation</b> is the full medical licence. <b>Berufserlaubnis</b> is a limited temporary permission subject to conditions. A foreign medical specialist must separately check <b>Facharzt</b> recognition with the relevant Landesärztekammer; an overseas consultant or surgeon title does not automatically become a German specialist title.</p><p>Before accepting a hospital role, ask whether the intended duties and title are allowed under your current permission, whether supervision is required, and how recognition, specialist assessment, examinations and pay grade are handled.</p>'+official('doctors')+'</div>'+
+'<div class="sectionhead"><h2>Frequently asked questions</h2></div>'+
+'<div class="card guidebody"><p><b>Can I start from abroad?</b> Many recognition applications can be initiated from abroad. The competent authority and visa route remain separate.</p><p><b>Does passing B2 mean I can treat patients?</b> No, language proof alone is not professional authorisation.</p><p><b>Does doctor Approbation automatically recognise my specialty?</b> No, specialist recognition requires a separate review.</p><p><b>Are nurses and care assistants the same role?</b> No, titles, regulated responsibilities and licensing can differ.</p><p><b>What if there are training gaps?</b> Follow the written authority decision on possible knowledge tests or adaptation routes.</p><p class="muted">Reviewed November 2026. Always use the competent state authority for your exact profession and circumstances.</p></div>'+
 '<div class="sectionhead"><h2>Questions to verify before submitting</h2></div>'+
 '<div class="card"><ul><li>Is the professional title regulated, and which exact German reference occupation matches the training?</li><li>Which state authority processes the primary qualification, professional licence and, if applicable, specialty recognition?</li><li>Does your original qualification fall under automatic recognition, an individual equivalence assessment or an aptitude/knowledge examination?</li><li>What German and professional-language evidence is accepted, and must the test be taken at a named chamber?</li><li>Which certified translations, validity periods, identity and good-standing evidence are required?</li><li>Do you need a residence permit for employment, a recognition measure or a recognition partnership?</li><li>What is the official fee and current application processing information for this exact office?</li></ul>'+
 '<p><b>Costs and salaries:</b> Medical salaries vary by hospital tariff agreement, grade, specialty, seniority, shifts and employer. Recognition and exam fees vary by state and profession. Do not use an EU Blue Card minimum as a promise of actual take-home pay.</p>'+
@@ -1327,6 +1339,51 @@ const newcomerGroups=[
 ['familybenefits','Review Kindergeld and relevant benefits','Benefits depend on personal and residence circumstances, and may have cross-border conditions.'],
 ['familytax','Review family tax options','Tax class, marriage registration and joint filing can affect payroll and annual tax calculations; verify current rules.']
 ]}];
+
+{id:'jobseeker',name:'Job seeker / Opportunity Card',items:[
+['js_status','Check job-search residence conditions','Check visa validity, permitted work or trial jobs, and transition requirements after an offer.'],
+['js_money','Confirm living funds and insurance','Plan job-search costs and suitable health cover.'],
+['js_apply','Prepare applications and qualifications','Review German CV expectations, recognition and employer requirements.']
+]},
+{id:'spouse',name:'Spouse / family reunification',items:[
+['sp_residence','Check family residence status','Review your own permit, family documents and conditions for employment.'],
+['sp_insurance','Arrange health insurance','Check family-insurance eligibility or separate cover.'],
+['sp_language','Explore German and integration courses','Check local courses and any individual participation requirements.']
+]},
+{id:'ausbildung',name:'Vocational training / Ausbildung',items:[
+['az_contract','Check training contract and residence title','Confirm workplace, start date, training permission and insurance.'],
+['az_school','Organise vocational school','Arrange Berufsschule attendance, travel and materials.'],
+['az_budget','Plan monthly trainee budget','Include training income, housing and transportation.']
+]},
+{id:'researcher',name:'Researcher / PhD candidate',items:[
+['phd_status','Clarify researcher, employee or student status','A scholarship, employment contract or student enrolment can lead to different requirements.'],
+['phd_onboard','Complete institute onboarding','Check hosting arrangements, university access and start dates.'],
+['phd_cover','Review funding and insurance','Verify scholarship or payroll arrangements and health coverage.']
+]},
+{id:'entrepreneur',name:'Self-employed / entrepreneur',items:[
+['se_permission','Check permission for self-employment','Your nationality and residence title may affect which business activities are allowed.'],
+['se_register','Check trade and tax registration','Determine whether Gewerbe, freelance tax registration or a professional chamber applies.'],
+['se_cover','Plan insurance, invoicing and records','Review health insurance, liability insurance if relevant, VAT and bookkeeping.']
+]},
+{id:'eu',name:'EU / EEA citizen',items:[
+['eu_rights','Review EU/EEA freedom-of-movement rules','Most EU/EEA citizens follow different residence rules than third-country nationals.'],
+['eu_tax','Arrange tax and employment registrations','Set up payroll, health coverage and social insurance where applicable.'],
+['eu_family','Check family-member documentation','Non-EU family members may need separate documents.']
+]},
+{id:'other',name:'Other / not sure yet',items:[
+['ot_route','Find the correct residence pathway','Consult official immigration guidance for your specific purpose.'],
+['ot_office','Check the competent authority and deadlines','Confirm local appointments and documents.']
+]}
+];
+const newcomerOptions=[['employee','Employee / skilled professional'],['student','University student'],['jobseeker','Job seeker / Opportunity Card'],['spouse','Spouse / family reunification'],['ausbildung','Vocational training (Ausbildung)'],['researcher','Researcher / PhD candidate'],['entrepreneur','Self-employed / entrepreneur'],['eu','EU / EEA citizen'],['other','Other / not sure yet']];
+const newcomerPhases=[['before','Before arrival'],['week','First 7 days'],['month','First 30 days'],['quarter','First 90 days'],['later','Later / when applicable']];
+const newcomerPhaseIds={
+before:['housing','bank','insurance','residence','budget','workcontract','bluecard','movejob','enroll','studenthealth','blocked','studentpermit','studenthousing','js_status','js_money','js_apply','sp_residence','sp_insurance','az_contract','phd_status','phd_onboard','phd_cover','se_permission','se_cover','eu_rights','ot_route'],
+week:['confirmation','anmeldung','sim','transport','electric','semesterticket','uniaccess','az_school','ot_office'],
+month:['internet','broadcast','taxid','payslip','jobticket','studentwork','sp_language','az_budget','se_register','eu_tax','eu_family','familypermit','familyinsurance','childcare'],
+quarter:['worktax','familybenefits','familytax']
+};
+function newcomerPhaseFor(id){for(const [phase,ids] of Object.entries(newcomerPhaseIds)){if(ids.includes(id))return phase;}return 'later';}
 const returnIndiaGroups=[
 {id:'prepare',name:'Before leaving Germany — 2 to 3 months',items:[
 ['decision','Confirm whether your return is permanent or temporary','Taxes, insurance, bank arrangements and German residence permits depend on whether you keep a home or employment in Germany.'],
@@ -1404,13 +1461,19 @@ const newcomerLinks=[
 ['Federal tax administration — moving expenses guidance','https://esth.bundesfinanzministerium.de/lsth/2026/A-Einkommensteuergesetz/II-Einkommen-2-24b/4-Ueberschuss-d-Einnahmen-ueber-die-Werbungsk-8-9a/Paragraf-9/r-9-9.html']
 ];
 function newcomerJourney(){
- const audience=state.newcomerAudience||'employee';
- const enabled=newcomerGroups.filter(g=>g.id==='essentials'||g.id===audience||(audience==='family'&&g.id==='employee'));
- const count=enabled.reduce((n,g)=>n+g.items.length,0);
- const done=enabled.reduce((n,g)=>n+g.items.filter(x=>state['newcomer:'+x[0]]).length,0);
+ const audience=newcomerOptions.some(x=>x[0]===state.newcomerAudience)?state.newcomerAudience:'employee';
+ const companions=['alone','partner','children'].includes(state.newcomerCompanions)?state.newcomerCompanions:'alone';
+ const familyTasks=companions==='alone'?[]:newcomerGroups.find(g=>g.id==='family').items.filter(x=>companions==='children'||!['childcare','familybenefits'].includes(x[0]));
+ const enabled=[...newcomerGroups.filter(g=>g.id==='essentials'||g.id===audience),...(familyTasks.length?[{id:'family',name:'Family arrangements',items:familyTasks}]:[])];
+ const allTasks=enabled.flatMap(g=>g.items);
+ const count=allTasks.length;
+ const done=allTasks.filter(x=>state['newcomer:'+x[0]]).length;
  return '<a href="#journeys" class="biglink">← All journeys</a><div style="margin-top:24px">'+title('LIFE JOURNEY / FIRST 90 DAYS','Just arrived in Germany','A practical checklist for arriving, settling in, arranging services and preparing important documents. Choose the situation that matches you.')+'</div>'+
- '<div class="card"><label class="field">I am arriving as<select id="newcomerAudience">'+[['employee','An employee / skilled worker'],['student','A student'],['family','A worker moving with family']].map(([id,label])=>'<option value="'+id+'" '+(audience===id?'selected':'')+'>'+label+'</option>').join('')+'</select></label><div class="row" style="justify-content:flex-start;gap:10px;margin-top:15px"><span class="pill">'+done+' of '+count+' completed</span><span class="muted">Saved in this browser only</span></div></div>'+privacyNote('saved')+
- enabled.map(group=>'<div class="sectionhead"><h2>'+escapeHTML(group.name)+'</h2><span class="pill">'+group.items.filter(x=>state['newcomer:'+x[0]]).length+' / '+group.items.length+'</span></div><div class="card fb-journey-card">'+fbSteps(group.items,'newcomer',fbNewcomerIcons)+'</div>').join('')+
+ '<div class="card"><div class="grid two"><label class="field">I am arriving as<select id="newcomerAudience">'+newcomerOptions.map(([id,label])=>'<option value="'+id+'" '+(audience===id?'selected':'')+'>'+escapeHTML(label)+'</option>').join('')+'</select></label>'+
+ '<label class="field">Who is moving with me?<select id="newcomerCompanions">'+[['alone','Just me'],['partner','With my partner'],['children','With children / family']].map(([id,label])=>'<option value="'+id+'" '+(companions===id?'selected':'')+'>'+label+'</option>').join('')+'</select></label></div>'+
+ '<p class="muted" style="font-size:13px">The phases below are suggested planning windows, not guaranteed legal deadlines. Check your specific residence title and local authority guidance.</p>'+
+ '<div class="row" style="justify-content:flex-start;gap:10px;margin-top:15px"><span class="pill">'+done+' of '+count+' completed</span><span class="muted">Saved in this browser only</span></div></div>'+privacyNote('saved')+
+ newcomerPhases.map(([phase,label])=>{const items=allTasks.filter(x=>newcomerPhaseFor(x[0])===phase);if(!items.length)return '';return '<div class="sectionhead"><h2>'+label+'</h2><span class="pill">'+items.filter(x=>state['newcomer:'+x[0]]).length+' / '+items.length+'</span></div><div class="card fb-journey-card">'+fbSteps(items,'newcomer',fbNewcomerIcons)+'</div>';}).join('')+
  '<div class="sectionhead"><h2>Moving from India to Germany: can moving costs reduce tax?</h2></div>'+
  '<div class="card guidebody"><p><b>Possibly, for a job-related move.</b> German 2026 income-tax guidance (LStR R 9.9) recognizes qualifying employee relocation expenses when a move is professionally motivated, including certain moves from abroad to Germany. The German rules draw on the Bundesumzugskostengesetz and Auslandsumzugskostenverordnung. This is not an automatic refund, and the applicable allowances and actual costs need careful review.</p>'+
  '<p><b>What to document:</b> offer/contract and starting date; flight and transport costs; moving company, luggage and shipment invoices; eligible travel and housing-related costs; relevant exchange rates; and each employer reimbursement. Personal shopping, furniture purchases and unrelated private expenses are not automatically eligible.</p>'+
@@ -1742,6 +1805,7 @@ if(e.target.id==='goldScenario'){const x={bar:'Investment bars and coins: verify
 if(e.target.matches('[data-parentstask]')){state['parents:'+e.target.dataset.parentstask]=e.target.checked;save()}
 if(e.target.matches('[data-journey]')){state['j:'+e.target.dataset.journey]=e.target.checked;save()}
 if(e.target.id==='newcomerAudience'){state.newcomerAudience=e.target.value;save();render()}
+if(e.target.id==='newcomerCompanions'){state.newcomerCompanions=e.target.value;save();render()}
 if(e.target.id==='returnAudience'){state.returnAudience=e.target.value;save();render()}
 if(e.target.matches('[data-return-task]')){state['return:'+e.target.dataset.returnTask]=e.target.checked;save();render()}
 if(e.target.matches('[data-newcomer-task]')){state['newcomer:'+e.target.dataset.newcomerTask]=e.target.checked;save();render()}

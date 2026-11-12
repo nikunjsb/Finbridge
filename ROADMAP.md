@@ -26,7 +26,7 @@ Updated: 2026-11-12. Status: public beta / in progress. This plan distinguishes 
 
 ## Monitoring coverage
 - FinBridge Release QA: daily around 08:30 Europe/Berlin. Inspect code, public site and regressions; also review private `nikunjsb/finbridge-feedback` through 19 December 2026. Keep private submissions out of public reports/code.
-- FinBridge Content Gaps: Mondays around 09:30 Europe/Berlin.
+- FinBridge Pending & Releases: daily around 09:30 Europe/Berlin. Maintain [pending work and release destinations](RELEASE_PLAN.md); retain the original content-gap review on Mondays. Update records for evidenced changes and distinguish confirmed/proposed/unscheduled dates.
 - The corrected standalone feedback review is paused; feedback is consolidated into Release QA to stay within five active tasks.
 - Germany expat news watch: twice daily, with previous-deployment verification before any commit.
 - Hosting discussion reminder: 22 November 2026; no automatic domain purchase, DNS change or migration.
@@ -49,6 +49,8 @@ Updated: 2026-11-12. Status: public beta / in progress. This plan distinguishes 
 - Monitoring findings should update existing issues first to avoid duplicates.
 
 ## Next work, with hosting deferred
+See [RELEASE_PLAN.md](RELEASE_PLAN.md) for the pending queue, proposed release order, dependencies and destinations. Hosting is the only dated review milestone; other feature dates are not yet scheduled.
+
 1. Verify deployed Cloudflare cron executions, binding/log settings and retained-row counts using authenticated owner access.
 2. Prepare operator-specific public contact/identity details for the privacy/operator notices; do not invent or expose a private home address.
 3. Work through the [tax-saving priorities](TAX_SAVINGS_ROADMAP.md): guided claim finder, work expenses, relocation/double households, parent support and household services, with independent calculator reference cases and wider accessibility checks.

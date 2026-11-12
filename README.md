@@ -25,6 +25,13 @@ Serve the repository as a static HTTP site (e.g. `python -m http.server 8000`), 
 ## Hosting and deployment
 The production beta runs on **GitHub Pages**, not Cloudflare Pages. It is a static site; the AI, location, feedback and future insights endpoints are independent Cloudflare Workers. A later custom domain or hosting move requires updating allowed origins in Workers and warning users that localStorage does not migrate across domains.
 
+Before creating or pushing a release commit, read the current `main` head and its Pages workflow. Proceed only after the previous head has a successful deployment and no Pages deployment is queued or in progress. Combine related edits into one tested release; wait for its deployment before another commit. Recheck the branch head immediately before writing so concurrent work is preserved.
+
+## Money and paperwork review
+The money check offers sixteen locally saved document checks and the next three actions. It links the payslip explainer, tax preparation, family support, second-household evidence, insurance and departure guides. Checklist answers and evidence flags use the existing browser-only backup and clear-data controls; documents are not uploaded.
+
+Run the focused checks with `node --test tests/money-guidance.test.mjs`. Editorial decisions and primary sources for this addition are recorded in [the 12 November content review](REVIEWS/2026-11-12-money-guidance.md).
+
 ## Disclaimer
 FinBridge provides general educational information and estimated calculations, not personal tax, immigration, legal, financial or medical advice. Verify current official rules and sources before acting. No tax filing or investment transactions are performed.
 

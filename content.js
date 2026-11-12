@@ -37,9 +37,18 @@ export const extraArticles = [
       "Classify first degree versus subsequent education.",
       "Document tuition, exam fees, travel and materials.",
       "Identify whether costs are work-related or special expenses.",
-      "Check whether loss carryforward is available."
+      "Check whether loss carryforward is available.",
+      "Distinguish general German learning from a specific professional course; keep the syllabus and evidence of the professional purpose."
     ],
-    "caution": "Language courses and private learning are not automatically deductible."
+    "caution": "General German-language learning by a foreign resident in Germany is normally treated as a personal living expense. Needing German for work does not automatically make a general course deductible. Profession-specific training requires separate assessment.",
+    "sources": [
+      [
+        "BMF LStH 2026: Deutschkurs and professional education",
+        "https://lsth.bundesfinanzministerium.de/lsth/2026/A-Einkommensteuergesetz/II-Einkommen-2-24b/4-Ueberschuss-d-Einnahmen-ueber-die-Werbungsk-8-9a/Paragraf-9/inhalt.html"
+      ]
+    ],
+    "reviewed": "12 November 2026",
+    "applicability": "2026 guidance; review the course purpose and the rules for the filing year."
   },
   {
     "id": "moving",
@@ -107,9 +116,18 @@ export const extraArticles = [
       "Collect annual broker tax statements.",
       "Track domestic and foreign dividends, sales, and fund distributions.",
       "Check exemption orders and available loss offsets.",
-      "Review foreign withholding credits and fund taxation."
+      "Review foreign withholding credits and fund taxation.",
+      "Before leaving Germany, review Investment Tax Act section 19(3): certain fund holdings can be subject to exit taxation, including where acquisition costs reach EUR 500,000 in a single fund. A separate 1% holding test and other statutory conditions also matter."
     ],
-    "caution": "Accumulating ETFs are not always free of current German tax."
+    "caution": "Accumulating ETFs are not always free of current German tax. An ordinary brokerage account is not a blanket exemption from exit taxation; review the relevant holdings and residence history before departure.",
+    "sources": [
+      [
+        "Investment Tax Act section 19, including exit taxation",
+        "https://www.gesetze-im-internet.de/invstg_2018/__19.html"
+      ]
+    ],
+    "reviewed": "12 November 2026",
+    "applicability": "Current fund-tax rules; departure cases require an individual review."
   },
   {
     "id": "indianinterest",
@@ -231,11 +249,19 @@ export const extraArticles = [
     "overview": "German statutory pension rights, occupational retirement plans and private capital have different portability, taxation and risk characteristics.",
     "checks": [
       "Request statutory pension information.",
-      "List employer pension and private contracts.",
+      "List employer-pension and private contracts. Ask about actual employer contributions, fees, payout conditions and what happens when you change employer or leave Germany.",
       "Identify likely retirement country and spending currency.",
-      "Consider inflation, healthcare and cross-border pension tax."
+      "Consider inflation, healthcare and cross-border pension tax.",
+      "For a regulated profession, identify any professional pension institution and employment-specific statutory-pension exemption. Do not apply statutory pension refund rules to every pension product."
     ],
-    "caution": "A pension-refund decision can permanently affect future entitlements."
+    "caution": "A pension-refund decision can permanently affect future entitlements.",
+    "sources": [
+      [
+        "DRV: statutory pension exemption for professional pension members",
+        "https://rvrecht.deutsche-rentenversicherung.de/SharedDocs/rvRecht/01_GRA_SGB/06_SGB_VI/pp_0001_25/gra_sgb006_p_0006.html"
+      ]
+    ],
+    "reviewed": "12 November 2026"
   },
   {
     "id": "products",
@@ -362,5 +388,37 @@ export const extraArticles = [
       "Report suspected fraud to the bank and relevant authorities."
     ],
     "caution": "A professional-looking page is not evidence it is legitimate."
+  },
+  {
+    "id": "arrival-tax",
+    "name": "Tax returns in your arrival or departure year",
+    "cat": "German tax",
+    "summary": "Part-year employment, foreign income, filing obligations and the documents to keep.",
+    "overview": "Payroll withholding and the annual tax assessment use different time periods. Starting or ending German employment during a year can change the result. Income earned abroad in the same year may affect the German tax rate under the progression rules, even where that income is not itself taxed in Germany. A part-year stay does not guarantee a refund.",
+    "checks": [
+      "List your German residence and employment dates, homes retained and foreign income for the same calendar year; registration dates alone do not resolve tax residence.",
+      "Collect each employer’s Lohnsteuerbescheinigung, foreign payslips and tax statements, plus relevant expense and reimbursement records.",
+      "Check whether a return is mandatory under the applicable rules. Voluntary filing windows do not extend a mandatory filing deadline.",
+      "For a voluntary return, check the four-year filing window and the relevant year-end deadline with ELSTER or the tax office. Review older years separately.",
+      "Separate income deductions from direct tax reductions and amounts already included by payroll. For illustration, an eligible EUR 100 deduction at a 30% marginal rate has an approximate EUR 30 tax effect before the rest of the assessment; it is not an automatic EUR 100 refund.",
+      "If you leave Germany, retain access to tax correspondence and final statements. Obtain advice where both countries claim tax residence or foreign-income treatment is unclear."
+    ],
+    "caution": "A refund is a possible assessment result, not a payment guaranteed for each year worked. Foreign income and other circumstances can also create a payment due.",
+    "sources": [
+      [
+        "Income Tax Act section 32b: progression rules",
+        "https://www.gesetze-im-internet.de/estg/__32b.html"
+      ],
+      [
+        "Income Tax Act section 46: assessment of employees",
+        "https://www.gesetze-im-internet.de/estg/__46.html"
+      ],
+      [
+        "ELSTER: income-tax returns and filing information",
+        "https://www.elster.de/eportal/infoseite/privatpersonen"
+      ]
+    ],
+    "reviewed": "12 November 2026",
+    "applicability": "General preparation guidance; check deadlines and rules for each filing year."
   }
 ];

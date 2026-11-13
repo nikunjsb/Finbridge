@@ -2,7 +2,7 @@
 
 ## Scope
 
-Owner-selected checklist items 1, 2, 4, 9, 10, 11, 12 and 13. Implementation is prepared; successful publication and browser verification must be recorded before marking these items complete. Existing GitHub Pages tester URL is retained. Cloudflare live operations and the wider accessibility/performance audit are scheduled for Sunday 15 November in the existing Release QA task; hosting remains a 22 November review.
+Owner-selected checklist items 1, 2, 4, 9, 10, 11, 12 and 13. Implementation is deployed and the selected items are verified complete; the remaining scope and numerical exclusions below are still tracked. Existing GitHub Pages tester URL is retained. Cloudflare live operations and the wider accessibility/performance audit are scheduled for Sunday 15 November in the existing Release QA task; hosting remains a 22 November review.
 
 The new `#taxplan/finder` area connects existing guides rather than replacing them. It includes self-reported opportunity status, insurance/pension evidence and duplicate review, ordinary donations, qualifying domestic childcare, family/student/part-year preparation, seven Germany–India scenarios, manually entered transfer quotes and adviser exports. The expanded `#residency` screen handles current-year/preceding-year tests, visitor/employment exceptions, deemed residence and RNOR; it does not establish German, FEMA or treaty residence.
 
@@ -32,6 +32,8 @@ Independently observed in the [Bavarian tax authority calculator](https://www.lf
 | €50,000 | Joint splitting | €5,700 | €5,700 |
 | €49,230 | Single | €10,278 | €10,278 |
 
+A further synthetic payroll case was independently checked in the [official BMF 2026 payroll calculator](https://www.bmf-steuerrechner.de/bl/bl2026/eingabeformbl2026.xhtml): €4,000 monthly gross, class I, statutory insurance, 2.9% additional health rate, childless care surcharge outside Saxony, no church tax/allowances. BMF returned €524.50 wage tax and €0 solidarity/church tax, matching the existing public salary tool. The tool’s separately calculated social shares lead to €2,605.50 monthly net for this example. This single payroll case does not validate all classes or special pay.
+
 Thus €2,000 qualifying ordinary employment expenses above an already-accounted-for €1,230 allowance add €770 of deduction in this specific illustration, changing tariff tax by €270, not €2,000. Additional bracket boundaries were independently worked from the statute using Python Decimal and stored as fixed test expectations.
 
 The suite also checks donation/childcare caps, missing evidence, reimbursements, unsupported assessments, 120/182-day and prior-year residence cases, CSV/year isolation and escaped previews. Financial examples include one-way commuting (€1,710 in 2026 and €1,470 in 2024/25 for 30 km × 150 days), home-office cap, 2026 social-insurance ceilings/child/Saxony shares, published premium examples, the €7,210 double-household example and independently evaluated annuity values.
@@ -40,7 +42,7 @@ Social-rate sources: [BMAS 2026 ceilings](https://www.bmas.de/DE/Service/Gesetze
 
 ## Verification limits and follow-up
 
-- Local server/browser preview was unavailable in this environment; published-site interaction must be checked after deployment.
+- Local server/browser preview was unavailable in this environment; published-site interaction was verified after deployment, as recorded below.
 - The reference suite is focused regression coverage, not an independent audit of every payroll class, factor, bonus, benefit or cross-border scenario. The external PAP implementation retains its existing published-sample check; broader payroll reference coverage remains in P7.
 - The tariff-effect screen refuses uncertain/part-year/foreign-progression/special-tariff cases, unverified deductions and household-wide employee-allowance shortcuts. It excludes Soli, church tax, child-benefit comparisons, direct credits and refunds.
 - Source tests do not prove deployed Cloudflare bindings, retention cron execution or real-user behaviour. Those checks remain pending for Sunday and may require owner access.
@@ -48,4 +50,20 @@ Social-rate sources: [BMAS 2026 ceilings](https://www.bmas.de/DE/Service/Gesetze
 
 ## Publication evidence
 
-Awaiting successful deployment and live browser checks. Do not mark selected tasks complete from the source tests alone.
+Feature commit: `8e753ad8af4ad5d358bb8ad4cf856cafd1aeadf9`. [GitHub Pages deployment](https://github.com/nikunjsb/Finbridge/actions/runs/43398676203) completed successfully on 13 November at **10:13 CET**. No workflow was cancelled or retriggered. The previous head had a successful deployment and no active Pages run before this feature commit.
+
+The browser first loaded the previous `20261112money1` application. A normal reload after deployment, without clearing the browser cache, loaded `app.js?v=6777156d3e20`, displayed build `58b29cf43e83`, and showed the new planner navigation. The salary example still returned €2,605.50 net and €524.50 wage tax. The couple comparison rendered IV/IV, III/V and factor results after the payroll module loaded; investment and commuting flows also rendered results.
+
+Live synthetic preparation checks:
+- Employee finder plus student, spouse/family, newcomer and returnee starting links; relevant/review/not-indicated categories rendered.
+- Insurance/pension certificate review showed net own payments and prefilled-duplicate warnings, with no invented deductible premium.
+- Ordinary donation example: €12,000 paid, €1,000 refunded, €50,000 income base and €2,000 other donations produced an €8,000 candidate. Missing receipt switched to unassessed review.
+- Childcare example: €7,000 total payments less €500 excluded costs and €500 reimbursements produced the €4,800 combined per-child candidate.
+- Initial-education and arrival/departure paths rendered their separate conditions and official references.
+- The supported €50,000/€2,000 employment-expense tariff example showed €770 extra deduction and €270 tariff effect; the complex-assessment selection removed the numerical estimate and required adviser review.
+- Investment-tax guidance and two manually entered transfer quotes rendered; a €1,000 debit example produced ₹89,450 versus ₹89,000 and a ₹450 difference.
+- Indian 60+365 and higher-income 120-day visitor cases produced separate ordinary-resident/RNOR screening text, with the correct law-year label.
+- TXT and CSV controls produced completed browser downloads. The empty-workspace TXT included the correct 2026 year and adviser questions; CSV included receipt/date/basis columns. Switching to 2025 updated the pack. Populated and mixed-year export content is covered by fixed automated fixtures; no personal expense records were created for live testing.
+- Ask wording and the return-journey card matched the requested corrections. Optional AI/feedback/Cloudflare backends were not exercised as part of this release.
+
+These checks complete the selected release items, not the deferred Sunday audit or all possible financial/legal cases. The pending checklist and issue remain open for TS02–TS06, wider QA, owner reporting, operator notices and the hosting review.

@@ -2,16 +2,18 @@
 
 Owner selection: 13 November 2026. IDs match the eighteen-item chat checklist. Check an item only after its implementation and relevant published-site verification. The wider roadmap can retain additional coverage even when a bounded release item is complete.
 
-## Current release — implemented, awaiting publication and live verification
+## Completed and verified — 13 November 2026
 
-- [ ] **1. Asset versions:** dependency-based versions, repeatable freshness check and shipped-build footer prepared.
-- [ ] **2. Page wording:** local search versus contextual AI explained; return card no longer promises four steps.
-- [ ] **4. Guided tax opportunity finder:** employee, student, family, newcomer and returnee starting points; evidence and review statuses.
-- [ ] **9. Insurance, pension and donation checks:** certificate/prefilled/duplicate review, net personal spending and supported ordinary donation screening.
-- [ ] **10. Family, student and part-year paths:** assessment, childcare, initial/subsequent education and arrival/departure preparation.
-- [ ] **11. Germany–India guidance:** tax/residence/RNOR, banking redesignation, income/investment literacy, gifts/assets, return and transfer-quote comparison.
-- [ ] **12. Adviser exports and supported tax-effect estimates:** year-filtered TXT/CSV/print packs, private receipt/date/basis fields and guarded 2026 tariff illustrations.
-- [ ] **13. Calculator reference checks:** 64 passing local checks, including 40 new planning/reference tests and three independently observed official tariff outputs. Broader individual payroll/financial coverage remains in QA.
+- [x] **1. Asset versions:** dependency-based versions, repeatable freshness check and shipped-build footer verified on a normal reload.
+- [x] **2. Page wording:** local search versus contextual AI explained; return card no longer promises four steps.
+- [x] **4. Guided tax opportunity finder:** employee, student, family, newcomer and returnee starting points; evidence and review statuses.
+- [x] **9. Insurance, pension and donation checks:** certificate/prefilled/duplicate review, net personal spending and supported ordinary donation screening.
+- [x] **10. Family, student and part-year paths:** assessment, childcare, initial/subsequent education and arrival/departure preparation.
+- [x] **11. Germany–India guidance:** tax/residence/RNOR, banking redesignation, income/investment literacy, gifts/assets, return and transfer-quote comparison.
+- [x] **12. Adviser exports and supported tax-effect estimates:** year-filtered TXT/CSV/print packs, private receipt/date/basis fields and guarded 2026 tariff illustrations.
+- [x] **13. Calculator reference checks:** 64 passing local checks, including 40 new planning/reference tests and three independently observed official tariff outputs plus one official payroll example. Broader individual payroll/financial coverage remains in QA.
+
+Feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbridge/commit/8e753ad8af4ad5d358bb8ad4cf856cafd1aeadf9) passed [Pages deployment](https://github.com/nikunjsb/Finbridge/actions/runs/43398676203) at **10:13 CET**. Live checks verified the planner, review states, downloads/year selection and key existing calculators. See the release review for scope and limits.
 
 ## Scheduled for Sunday, 15 November 2026
 

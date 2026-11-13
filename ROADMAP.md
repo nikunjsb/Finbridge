@@ -15,10 +15,10 @@ Updated: 2026-11-13. Status: public beta / in progress. This plan distinguishes 
 | P8 | Performance & accessibility | Keyboard, screen readers, contrast and mobile/error states | Narrow-screen money-guidance checks complete; wider accessibility/performance audit scheduled for Sunday 15 November |
 | P9 | Public beta operations | Reliable releases and preserved tester access | GitHub Pages live; domain/hosting work deferred until 22 November 2026 |
 | P10 | Feedback and learning loop | Private feedback review and actionable, deduplicated findings | Private repository read access verified; daily QA includes feedback through 19 December; owner analytics review awaits live report verification |
-| P11 | Tax-saving guidance and tools | Guided opportunities, evidence checks, year-specific estimates and independent reference cases | Selected TS01/TS07–TS10 preparation features implemented on 13 November, awaiting publication/live checks; TS02–TS06 extensions remain pending. See [selected checklist](PENDING_TASKS.md) and [tax roadmap](TAX_SAVINGS_ROADMAP.md) |
+| P11 | Tax-saving guidance and tools | Guided opportunities, evidence checks, year-specific estimates and independent reference cases | Selected TS01/TS07–TS10 preparation features deployed and live-verified on 13 November; TS02–TS06 extensions remain pending. See [selected checklist](PENDING_TASKS.md) and [tax roadmap](TAX_SAVINGS_ROADMAP.md) |
 
 ## Current implementation inventory
-- The 13 November selected tax-preparation release is implemented and has 64 passing local checks; publication/live verification is still required before completion. See [review](REVIEWS/2026-11-13-tax-planning.md).
+- The 13 November selected tax-preparation release is deployed and live-verified with 64 passing local checks. See [review](REVIEWS/2026-11-13-tax-planning.md).
 - The site includes the money self-check, detailed payslip guide, family-support preparation, double-household evidence and departure document packs.
 - Location-trial and topic-insights endpoints are configured separately from AI and feedback. Topic analytics remains off by default for each visitor.
 - Local tests exercise 14-day location expiry and the latest 30 UTC-date Insights cleanup using the actual SQL schemas. They do not verify that a deployed Cloudflare cron ran.

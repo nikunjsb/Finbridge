@@ -1,6 +1,6 @@
 # FinBridge pending work and release plan
 
-Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. Implementation and 64 local checks are complete; publication/live verification is pending. Other feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
+Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The feature release is deployed and the selected items are verified complete; 64 local checks pass. Other feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
 
 ## Where updates are released
 
@@ -13,11 +13,14 @@ Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 
 
 Keep the existing tester URL working. Domain, DNS and hosting migration work is deferred until 22 November.
 
+## Completed release — 13 November 2026
+
+**TAX-PREP-1 / checklist items 1, 2, 4, 9–13** is deployed and live-verified. Feature commit `8e753ad8af4ad5d358bb8ad4cf856cafd1aeadf9`; [successful Pages run](https://github.com/nikunjsb/Finbridge/actions/runs/43398676203) completed at 10:13 CET. The site served app version `6777156d3e20` / build `58b29cf43e83` after a normal reload from the previous cached build. Planner/check/path flows, bounded tariff estimates, residence/transfer examples, TXT/CSV download/year filtering and key calculator regressions were checked. [Detailed evidence](REVIEWS/2026-11-13-tax-planning.md).
+
 ## Pending queue
 
 | ID | Pending work | Status / next requirement | Proposed release position | Target date | Destination |
 |---|---|---|---|---|---|
-| TAX-PREP-1 | Selected checklist items 1, 2, 4, 9–13: preparation tools, exports, references, asset/wording fixes (TS01, TS07–TS10) | Implemented; awaiting successful publication/live checks | Current owner-selected release | 13 November 2026 — implementation/release target | Existing public website |
 | TAX-A | Deeper work-expense screening (TS02–TS03) | Pending; existing calculator regressions pass, but dated attendance, depreciation and reimbursement improvements remain | Next proposed visitor-feature release | Not scheduled | Existing public website |
 | TAX-B | Relocation/double households, parent-support screening and household-services checker (TS04–TS06) | Planned extensions of existing guides; requires sourced eligibility/calculation cases | Following tax-tools release | Not scheduled | Existing public website |
 | QA-FIN | Wider individual payroll, special-expense and complex treaty/foreign-tax reference coverage | Focused preparation models/reference suite implemented; wider coverage remains | Further validation with relevant releases | Not scheduled | Repository checks and public website |
@@ -25,7 +28,7 @@ Keep the existing tester URL working. Domain, DNS and hosting migration work is 
 | OWNER | Protected analytics dashboard | Planned; owner authentication and protected reporting path needed. Read-only D1 console queries are ready | Separate private-service release | Not scheduled | Private reporting service; endpoint to be agreed |
 | PRIVACY | Complete operator-specific public identity/contact notices | Awaiting the owner's chosen public operator/contact details and review | Public information update once supplied | Not scheduled | Existing public website |
 | QA | Full desktop/mobile, accessibility and performance checks | Wider audit added to existing Sunday Release QA; release-specific functional checks remain required now | Scheduled audit; fixes depend on findings | 15 November 2026 — scheduled check | Repository checks and public website fixes |
-| CONTENT | Wider immigration/healthcare source review and further case coverage | Residence/account scenarios, investment literacy and two-quote transfer worksheet implemented in TAX-PREP-1; wider audit continues | Following visitor-feature releases | Not scheduled | Existing public website |
+| CONTENT | Wider immigration/healthcare source review and further case coverage | Residence/account scenarios, investment literacy and two-quote transfer worksheet delivered in TAX-PREP-1; wider audit continues | Following visitor-feature releases | Not scheduled | Existing public website |
 | HOSTING | Revisit AtlasEveryday/domain/hosting and tester-link continuity | Deferred; reminder set | Planning review only | 22 November 2026 — confirmed review | Hosting/domain choice remains to be agreed |
 
 Tax details and individual completion criteria: [tax-saving roadmap](TAX_SAVINGS_ROADMAP.md) and [issue #6](https://github.com/nikunjsb/Finbridge/issues/6). The monitor must retain the incomplete TS IDs when a tax group is partly finished.
@@ -37,9 +40,9 @@ The eighteen-item task checklist is maintained in [PENDING_TASKS.md](PENDING_TAS
 ## Completion baseline
 
 - Money self-check, detailed payslip explainer, family-support preparation and double-household/departure evidence checklists are implemented; they should not reappear as wholly unbuilt tasks.
-- The service/money-guidance suite has 24 passing local tests. Those tests do not prove that a deployed Cloudflare cron ran.
+- The combined suite has 64 passing local tests, including the 24 previous money/service tests. Those tests do not prove that a deployed Cloudflare cron ran.
 - Private feedback review is included in daily Release QA through 19 December 2026. The older standalone feedback task stays paused within the five-active-task limit.
-- Selected tax preparation features are implemented but await publication/live verification. TS02–TS06 remain planned. Creating an issue or passing source tests does not mean a feature has shipped.
+- TS01 and TS07–TS10 preparation features are deployed and live-verified in TAX-PREP-1. TS02–TS06 remain planned. The bounded tariff model is not a full tax assessment; broader reference coverage remains in QA.
 
 ## Daily monitor rules
 

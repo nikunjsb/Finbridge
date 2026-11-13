@@ -21,6 +21,7 @@ Keep the existing tester URL working. Domain, DNS and hosting migration work is 
 
 | ID | Pending work | Status / next requirement | Proposed release position | Target date | Destination |
 |---|---|---|---|---|---|
+| SEC | Security review/hardening: browser data and imports, CSP/headers, dependencies, Worker abuse controls and repository/account protection | Planned; see SECURITY_PLAN.md and checklist item 19. Review Sunday findings; verify access and release readiness | Owner-selected security work session | 20 November 2026 — scheduled work; release depends on verification | Repository/public site; separate Workers/settings where authorized |
 | TAX-A | Deeper work-expense screening (TS02–TS03) | Pending; existing calculator regressions pass, but dated attendance, depreciation and reimbursement improvements remain | Next proposed visitor-feature release | Not scheduled | Existing public website |
 | TAX-B | Relocation/double households, parent-support screening and household-services checker (TS04–TS06) | Planned extensions of existing guides; requires sourced eligibility/calculation cases | Following tax-tools release | Not scheduled | Existing public website |
 | QA-FIN | Wider individual payroll, special-expense and complex treaty/foreign-tax reference coverage | Focused preparation models/reference suite implemented; wider coverage remains | Further validation with relevant releases | Not scheduled | Repository checks and public website |
@@ -35,7 +36,7 @@ Tax details and individual completion criteria: [tax-saving roadmap](TAX_SAVINGS
 
 Related work: [privacy/release QA #2](https://github.com/nikunjsb/Finbridge/issues/2), [Insights verification #3](https://github.com/nikunjsb/Finbridge/issues/3), [private dashboard #4](https://github.com/nikunjsb/Finbridge/issues/4), [content/calculator/accessibility work #5](https://github.com/nikunjsb/Finbridge/issues/5), and [immigration guidance #1](https://github.com/nikunjsb/Finbridge/issues/1).
 
-The eighteen-item task checklist is maintained in [PENDING_TASKS.md](PENDING_TASKS.md); only verified items are checked.
+The selected-task checklist is maintained in [PENDING_TASKS.md](PENDING_TASKS.md); only verified items are checked.
 
 ## Completion baseline
 

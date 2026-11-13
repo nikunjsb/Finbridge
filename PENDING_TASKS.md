@@ -1,6 +1,6 @@
 # FinBridge selected-task checklist
 
-Owner selection: 13 November 2026. IDs match the eighteen-item chat checklist. Check an item only after its implementation and relevant published-site verification. The wider roadmap can retain additional coverage even when a bounded release item is complete.
+Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist; item 19 records the security work approved on 13 November. Check an item only after its implementation and relevant published-site verification. The wider roadmap can retain additional coverage even when a bounded release item is complete.
 
 ## Completed and verified — 13 November 2026
 
@@ -19,6 +19,10 @@ Feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbridge/commit/8e7
 
 - [ ] **15. Cloudflare verification:** deployed versions/bindings, logging, cron executions and retention. Authenticated owner evidence is still required; local tests do not complete this task.
 - [ ] **14. Wider accessibility and performance checks:** keyboard, screen-reader names, contrast, reflow/mobile, load size and error states. Added to the existing Sunday Release QA run.
+
+## Scheduled for Friday, 20 November 2026
+
+- [ ] **19. Security review and hardening:** backup/import and rendering safety, browser policy/headers, third-party scripts, Worker validation/rate limits, repository protection and secret/account controls. Assigned to Friday’s existing Release QA run. [Scope and completion criteria](SECURITY_PLAN.md). Account access and verified deployment may leave some items blocked; the date is a work target, not a security certification.
 
 ## Other pending work
 

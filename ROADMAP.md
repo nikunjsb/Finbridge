@@ -17,6 +17,10 @@ Updated: 2026-11-13. Status: public beta / in progress. This plan distinguishes 
 | P10 | Feedback and learning loop | Private feedback review and actionable, deduplicated findings | Private repository read access verified; daily QA includes feedback through 19 December; owner analytics review awaits live report verification |
 | P11 | Tax-saving guidance and tools | Guided opportunities, evidence checks, year-specific estimates and independent reference cases | Selected TS01/TS07–TS10 preparation features deployed and live-verified on 13 November; TS02–TS06 extensions remain pending. See [selected checklist](PENDING_TASKS.md) and [tax roadmap](TAX_SAVINGS_ROADMAP.md) |
 
+## Security work — scheduled 20 November
+
+The owner assigned a dedicated security review/hardening session to Friday 20 November 2026, through the existing Release QA task. [SECURITY_PLAN.md](SECURITY_PLAN.md) and checklist item 19 track the scope, evidence and blockers. Existing functional checks are not a full security audit. Sunday 15 November operations/accessibility checks and the 22 November hosting review retain their dates.
+
 ## Current implementation inventory
 - The 13 November selected tax-preparation release is deployed and live-verified with 64 passing local checks. See [review](REVIEWS/2026-11-13-tax-planning.md).
 - The site includes the money self-check, detailed payslip guide, family-support preparation, double-household evidence and departure document packs.

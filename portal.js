@@ -43,7 +43,7 @@ export const portalTopics = [
       ['budget', 'Plan your monthly spending', 'Bring regular costs, transactions and savings goals together.']
     ],
     guides: ['salary', 'commute', 'homeoffice', 'equipment', 'training', 'insurance-tax', 'etf', 'capitaltax'],
-    tools: [['salary', 'Take-home salary', 'Estimate a regular monthly German employee payslip.', 'wallet'], ['taxclasses', 'Tax classes & salary', 'Compare the supported withholding scenarios.', 'family'], ['taxplan/finder', 'Tax preparation planner', 'Review opportunities, evidence and adviser exports.', 'receipt'], ['invest', 'Investment scenarios', 'Explore illustrative growth, fees and risks.', 'chart']],
+    tools: [['salary', 'Take-home salary', 'Estimate a regular monthly German employee payslip.', 'wallet'], ['taxclasses', 'Tax classes & salary', 'Compare the supported withholding scenarios.', 'family'], ['taxplan/finder', 'Tax preparation planner', 'Review opportunities, evidence and adviser exports.', 'receipt'], ['invest', 'Investment & savings planner', 'Explore goals, contributions, fees, inflation and saved comparisons.', 'chart']],
     sources: [['ELSTER', 'https://www.elster.de/'], ['Federal Ministry of Finance', 'https://www.bundesfinanzministerium.de/'], ['BaFin', 'https://www.bafin.de/']],
     keywords: 'salary work money pay payroll tax deductions commuting budget saving investing brutto netto steuerklasse'
   },
@@ -88,7 +88,7 @@ export const portalTopics = [
       ['settings', 'Manage your saved entries', 'Review privacy controls and export a local backup when needed.']
     ],
     guides: ['salary', 'commute', 'moving', 'residency'],
-    tools: [['salary', 'Monthly take-home pay', 'Regular 2026 employee payslip estimates.', 'wallet'], ['taxclasses', 'Tax classes & salary', 'Supported household withholding comparisons.', 'family'], ['tax', 'Tax expense workspace', 'Commuting, home office and work-expense candidates.', 'receipt'], ['doublehousehold', 'Double-household costs', 'A bounded worksheet for eligible cost components.', 'home'], ['budget', 'Budget & goals', 'Monthly planning and local transaction records.', 'wallet'], ['taxplan/export', 'Adviser preparation pack', 'Year-filtered text, CSV and print exports.', 'folder']],
+    tools: [['salary', 'Monthly take-home pay', 'Regular 2026 employee payslip estimates.', 'wallet'], ['taxclasses', 'Tax classes & salary', 'Supported household withholding comparisons.', 'family'], ['tax', 'Tax expense workspace', 'Commuting, home office and work-expense candidates.', 'receipt'], ['doublehousehold', 'Double-household costs', 'A bounded worksheet for eligible cost components.', 'home'], ['invest', 'Investment & savings planner', 'Goals, growth assumptions, fees, inflation and saved comparisons.', 'chart'], ['budget', 'Budget & goals', 'Monthly planning and local transaction records.', 'wallet'], ['taxplan/export', 'Adviser preparation pack', 'Year-filtered text, CSV and print exports.', 'folder']],
     sources: [['German Income Tax Act', 'https://www.gesetze-im-internet.de/estg/'], ['Federal Ministry of Finance', 'https://www.bundesfinanzministerium.de/']],
     keywords: 'calculators checklists tools salary tax planner budget commute double household adviser export'
   }

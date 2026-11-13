@@ -14,6 +14,13 @@ The homepage brings a featured arrival guide, three reviewed news updates, four 
 
 `portal.js` owns this presentation and navigation. The existing article library, calculators, checklist storage and separate services continue to supply the underlying features. News headlines use the existing reviewed news collection and link to the relevant item on the updates page. Search includes the topic hubs. Illustrations are inline SVG; no additional third-party scripts or tracking are needed for the portal.
 
+## Investment and savings planner
+`investment-core.js` models initial/monthly contributions, fixed year-end top-ups, annual changes to monthly deposits, beginning/end timing, ongoing balance fees, percentage charges on contributions, inflation, three growth assumptions and a savings-goal calculation. Optional EUR/INR conversion uses a visitor-entered goal-date quote. `investment-planner.js` provides the chart, yearly figures, CSV export, investment-type explainers and explicit browser-local saving for inputs and up to three comparisons.
+
+The new model uses **effective annual growth**, converted to monthly factors, and separately compounded fee and inflation factors. It replaces the old four-input UI; the earlier `investmentProjection` helper and its historical nominal-rate checks remain available to existing consumers. The new planner is before tax and does not model varying market paths, withdrawals, pensions, property financing or cross-currency contributions. It has no live market/FX feed and does not assign product-specific returns. Its sources, assumptions and limits are visible in the page.
+
+The current local suite has **91 passing checks**, including **27 investment checks** using independent closed-form/manual reference cases, input validation and safe CSV/rendering examples. Broader browser and operational audits retain their separate scope.
+
 ## Run locally
 Serve the repository as a static HTTP site (e.g. `python -m http.server 8000`), then open the local URL. JavaScript module imports may not work properly when `index.html` is opened with `file://`. No application build command is required.
 

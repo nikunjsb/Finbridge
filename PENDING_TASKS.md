@@ -2,7 +2,7 @@
 
 Public website name: **AtlasEveryday — Germany · Deutschland** (approved 13 November 2026). Existing FinBridge repository/service identifiers and the tester link are retained; the scheduled security, Sunday and hosting work below keeps its existing scope.
 
-Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist; item 19 records the security work and item 20 the homepage/topic organization approved on 13 November. Check an item only after its implementation and relevant published-site verification. The wider roadmap can retain additional coverage even when a bounded release item is complete.
+Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist; items 19–21 record the security work, homepage/topic organization and investment-planner expansion approved on 13 November. Check an item only after its implementation and relevant published-site verification. The wider roadmap can retain additional coverage even when a bounded release item is complete.
 
 ## Completed and verified — 13 November 2026
 
@@ -18,6 +18,10 @@ Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist;
 - [x] **20. Homepage and topic organization:** featured arrival guide, reviewed updates, four life stages, six topic hubs, guide cards and connected tools/official sources. Published and live-verified; desktop/mobile, search and keyboard checks passed. [Release evidence](REVIEWS/2026-11-13-portal-navigation.md).
 
 Tax-planning feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbridge/commit/8e753ad8af4ad5d358bb8ad4cf856cafd1aeadf9) passed [Pages deployment](https://github.com/nikunjsb/Finbridge/actions/runs/43398676203) at **10:13 CET**. Live checks verified the planner, review states, downloads/year selection and key existing calculators. See the release review for scope and limits.
+
+## Awaiting publication verification
+
+- [ ] **21. Broader investment and savings planner:** goals, contribution increases/top-ups, fees, inflation, three growth assumptions, EUR/INR illustrations, saved comparisons, yearly CSV and investment-type guidance. Implemented with 27 new reference/validation checks (91 total); preview checks passed for desktop/mobile, saving, comparisons, goals, currency, CSV and backup inclusion. Awaiting successful Pages publication and live verification.
 
 ## Scheduled for Sunday, 15 November 2026
 

@@ -1,4 +1,4 @@
-import { taxSources, taxEffect, donationCheck, childcareCheck, insuranceCheck, indianResidency, transferQuote, adviserText, taxRecordsCSV, recordsForYear, preparationEvidence } from './tax-rules.js?v=69742cf391ec';
+import { taxSources, taxEffect, donationCheck, childcareCheck, insuranceCheck, indianResidency, transferQuote, adviserText, taxRecordsCSV, recordsForYear, preparationEvidence } from './tax-rules.js?v=628bf4e06e8d';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const euro = value => new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }).format(value);
@@ -187,8 +187,8 @@ export function mountTaxPlanning({ state, save }) {
     if (button.dataset.taxSave === 'effect' && currentEffect) { state.taxEffect = currentEffect; save(); status('Tariff illustration saved on this device.'); }
     if (button.dataset.taxExport) {
       const selected = root.querySelector('[name=packYear]').value;
-      if (button.dataset.taxExport === 'text') download(adviserText(state, selected), 'finbridge-adviser-' + selected + '.txt', 'text/plain;charset=utf-8');
-      if (button.dataset.taxExport === 'csv') download(taxRecordsCSV(state.expenses, selected), 'finbridge-tax-records-' + selected + '.csv', 'text/csv;charset=utf-8');
+      if (button.dataset.taxExport === 'text') download(adviserText(state, selected), 'atlaseveryday-adviser-' + selected + '.txt', 'text/plain;charset=utf-8');
+      if (button.dataset.taxExport === 'csv') download(taxRecordsCSV(state.expenses, selected), 'atlaseveryday-tax-records-' + selected + '.csv', 'text/csv;charset=utf-8');
       if (button.dataset.taxExport === 'print') window.print();
     }
   });

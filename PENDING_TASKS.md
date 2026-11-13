@@ -1,4 +1,6 @@
-# FinBridge selected-task checklist
+# AtlasEveryday selected-task checklist
+
+Public website name: **AtlasEveryday — Germany · Deutschland** (approved 13 November 2026). Existing FinBridge repository/service identifiers and the tester link are retained; the scheduled security, Sunday and hosting work below keeps its existing scope.
 
 Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist; item 19 records the security work approved on 13 November. Check an item only after its implementation and relevant published-site verification. The wider roadmap can retain additional coverage even when a bounded release item is complete.
 

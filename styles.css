@@ -286,6 +286,12 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  .fb-feature-card{min-height:154px}
 }
 
+/* Keep the public name readable in both sidebar widths. */
+.brand{gap:8px;padding-left:4px;padding-right:4px}
+.brand .mark{flex-shrink:0;width:32px}
+.brand .brand-name{min-width:0;font-size:18px;letter-spacing:-.55px;white-space:nowrap}
+.brand small{font-size:8px;letter-spacing:1.2px}
+
 /* Sidebar toggle: desktop collapsible; mobile drawer with backdrop */
 .fb-header-left{display:flex;align-items:center;min-width:0;gap:13px}
 .fb-menu-toggle{width:39px;height:39px;flex:0 0 39px;border:1px solid #dedede;border-radius:10px;background:#fff;color:#303536;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:8px}

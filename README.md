@@ -1,18 +1,20 @@
-# FinBridge
+# AtlasEveryday
+
+**Germany · Deutschland** — public website name. The existing `nikunjsb/Finbridge` repository, tester URL, browser-storage keys and service endpoints are retained for continuity.
 
 **Your guide to life in Germany** — practical information about arriving, working, managing money, residence/citizenship, healthcare-profession recognition, and decisions between Germany and India.
 
 **Live public beta:** https://nikunjsb.github.io/Finbridge/
 
 ## Current status
-FinBridge is a publicly accessible beta, hosted on GitHub Pages. It includes an interactive home page, guide search, arrival/departure journeys, salary and tax class calculators, budget and expense planning, healthcare recognition, immigration guidance and contextual FinBridge AI powered by a separate Cloudflare Worker. These are educational tools, not individualized legal, tax or medical advice.
+AtlasEveryday is a publicly accessible beta, hosted on GitHub Pages. It includes an interactive home page, guide search, arrival/departure journeys, salary and tax class calculators, budget and expense planning, healthcare recognition, immigration guidance and contextual AtlasEveryday AI powered by a separate Cloudflare Worker. These are educational tools, not individualized legal, tax or medical advice.
 
 ## Run locally
 Serve the repository as a static HTTP site (e.g. `python -m http.server 8000`), then open the local URL. JavaScript module imports may not work properly when `index.html` is opened with `file://`. No application build command is required.
 
 ## Privacy and integrations
-- Finance and planning entries are stored in your browser using localStorage; export a backup before switching devices, browsers or domains. They are not automatically uploaded to FinBridge.
-- The contextual AI assistant sends the question, selected topic and a small number of previous chat turns to Cloudflare Workers AI **only when submitted**; avoid submitting private or sensitive information. FinBridge does not save AI transcripts to D1.
+- Finance and planning entries are stored in your browser using localStorage; export a backup before switching devices, browsers or domains. They are not automatically uploaded to AtlasEveryday.
+- The contextual AI assistant sends the question, selected topic and a small number of previous chat turns to Cloudflare Workers AI **only when submitted**; avoid submitting private or sensitive information. AtlasEveryday does not save AI transcripts to D1.
 - Other separate services include feedback and a limited location trial. The website also loads Cloudflare Web Analytics. See the in-app Privacy page for details and limitations.
 - `insights-worker/` is configured as a separate, opt-in-only category analytics pilot. Its endpoint is set; each visitor's analytics choice remains off by default. Events contain only allowlisted source/topic/outcome values. See `insights-worker/README.md` for verification limits.
 - Public code must never contain API credentials, secret tokens or personally identifiable visitor data.
@@ -50,7 +52,7 @@ Run all checks with `node --test tests/*.test.mjs` using Node with built-in `nod
 Read-only owner SQL reports are available at [Insights reports](insights-worker/report.sql) and [location reports](location-worker/report.sql). Run them in the appropriate authenticated D1 console. The private dashboard remains planned. See [operations verification](REVIEWS/2026-11-12-operations.md) for what was checked and what still needs live verification.
 
 ## Disclaimer
-FinBridge provides general educational information and estimated calculations, not personal tax, immigration, legal, financial or medical advice. Verify current official rules and sources before acting. No tax filing or investment transactions are performed.
+AtlasEveryday provides general educational information and estimated calculations, not personal tax, immigration, legal, financial or medical advice. Verify current official rules and sources before acting. No tax filing or investment transactions are performed.
 
 ## Contributing
 Open a GitHub issue to report a bug or missing content. Share relevant source links and reproduction steps, not personal details, salary records, passwords, account identifiers or private AI transcripts.

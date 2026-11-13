@@ -1,4 +1,6 @@
-# FinBridge pending work and release plan
+# AtlasEveryday pending work and release plan
+
+Public branding approved on 13 November 2026: **AtlasEveryday**, with the country label **Germany · Deutschland**. The header, page title, visitor copy and download labels use the new name. The existing repository, tester URL, browser-storage keys and separate service identifiers retain their FinBridge names for continuity. Germany–India guidance remains part of the site; domain/hosting review stays on 22 November.
 
 Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The feature release is deployed and the selected items are verified complete; 64 local checks pass. Other feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
 

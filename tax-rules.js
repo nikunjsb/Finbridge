@@ -188,7 +188,7 @@ export const preparationEvidence = [
 ];
 export function adviserText(state = {}, year = 2026) {
   const { selected, unassigned } = recordsForYear(state.expenses, year);
-  const lines = ['FINBRIDGE — ADVISER PREPARATION PACK', 'German tax year: ' + year, 'Preparation only. No tax return has been filed. Candidate deductions are not refunds.', 'Do not sum different tax categories or years. Keep original documents privately.', '', 'EVIDENCE CHECKLIST'];
+  const lines = ['ATLASEVERYDAY — ADVISER PREPARATION PACK', 'German tax year: ' + year, 'Preparation only. No tax return has been filed. Candidate deductions are not refunds.', 'Do not sum different tax categories or years. Keep original documents privately.', '', 'EVIDENCE CHECKLIST'];
   for (const [id, label] of preparationEvidence) lines.push((state.taxEvidence?.[year + ':' + id] === true ? '[x] ' : '[ ] ') + label);
   lines.push('', 'EXPENSE RECORDS FOR ' + year);
   for (const [index, r] of selected.entries()) lines.push((index + 1) + '. ' + cellText(r.category) + (r.item ? ' / ' + cellText(r.item) : ''), '  Payment date: ' + (r.paymentDate || 'not recorded') + '; actual spending EUR: ' + cellText(r.actual ?? r.amount ?? 'not recorded'), '  Candidate deduction EUR: ' + (typeof r.estimated === 'number' && Number.isFinite(r.estimated) ? r.estimated : 'not assessed'), '  Receipt: ' + (r.receiptRef || 'not recorded') + '; notes: ' + cellText(r.note), '  Basis: ' + cellText(r.details), '  Recorded inputs: ' + (r.basis && typeof r.basis === 'object' ? JSON.stringify(r.basis) : 'not recorded (older entry)'), '  Review: ' + cellText(r.warning));

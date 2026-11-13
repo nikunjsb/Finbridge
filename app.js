@@ -1,3 +1,4 @@
+import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=92847e50a804';
 import { taxPlanningPage, mountTaxPlanning, residenceScreenHTML } from './tax-planning.js?v=8310cde4853d';
 import { calculateExpenseCore } from './expense-rules.js?v=c37b87f51bc2';
 import { tariff2026 as taxClassESt2026 } from './tax-rules.js?v=628bf4e06e8d';
@@ -196,7 +197,7 @@ const expatNews=[
 {id:'bluecard2026',category:'Immigration',status:'In effect',effective:'2026',title:'EU Blue Card salary thresholds for 2026',summary:'The official skilled-worker portal lists €50,700 gross annual salary as the general 2026 threshold, with €45,934.20 for certain eligible shortage occupations, new entrants and qualifying IT specialists, subject to further requirements.',who:'Prospective Blue Card applicants and skilled workers',action:'Check your occupational category and recognition requirements before applying.',url:'https://www.make-it-in-germany.com/en/visa-recognition/visa-types/eu-blue-card',route:'#journey/newcomer'}
 ];
 function expatNewsCard(item,compact=false){
-return '<article class="card expat-news-card"><div class="expat-news-meta"><span class="tag">'+escapeHTML(item.category)+'</span><span class="expat-news-status">'+escapeHTML(item.status)+'</span><span class="muted">'+escapeHTML(item.effective)+'</span></div><h3>'+escapeHTML(item.title)+'</h3><p>'+escapeHTML(item.summary)+'</p>'+(compact?'':'<p><b>Who it affects:</b> '+escapeHTML(item.who)+'</p><p><b>What to do:</b> '+escapeHTML(item.action)+'</p>')+'<div class="expat-news-links"><a class="biglink" href="'+escapeHTML(item.route)+'">Related AtlasEveryday guide →</a><a class="biglink" href="'+escapeHTML(item.url)+'" target="_blank" rel="noopener noreferrer">Official source ↗</a></div></article>';
+return '<article id="fbNews-'+escapeHTML(item.id)+'" class="card expat-news-card"><div class="expat-news-meta"><span class="tag">'+escapeHTML(item.category)+'</span><span class="expat-news-status">'+escapeHTML(item.status)+'</span><span class="muted">'+escapeHTML(item.effective)+'</span></div><h3>'+escapeHTML(item.title)+'</h3><p>'+escapeHTML(item.summary)+'</p>'+(compact?'':'<p><b>Who it affects:</b> '+escapeHTML(item.who)+'</p><p><b>What to do:</b> '+escapeHTML(item.action)+'</p>')+'<div class="expat-news-links"><a class="biglink" href="'+escapeHTML(item.route)+'">Related AtlasEveryday guide →</a><a class="biglink" href="'+escapeHTML(item.url)+'" target="_blank" rel="noopener noreferrer">Official source ↗</a></div></article>';
 }
 function expatNewsPreview(){return '<div class="sectionhead expat-news-heading"><h2>Germany Expat Updates</h2><a class="biglink" href="#news">View all updates →</a></div><p class="muted expat-news-caption">Verified against official sources on '+expatNewsReviewed+'. Curated updates, not a live news feed.</p><div class="grid">'+expatNews.map(x=>expatNewsCard(x,true)).join('')+'</div>'}
 function newsPage(){return title('GERMANY / EXPAT NEWS','Germany Expat Updates','Practical rule changes and announcements that may matter for foreign residents, students, employees and families.')+'<div class="note"><b>Editorial status:</b> These are manually reviewed updates checked on '+expatNewsReviewed+'. This page does not pull live headlines or automatically detect new laws. Check the effective date and original official source before acting. “Announced” does not mean a rule is already in effect.</div><div class="grid">'+expatNews.map(x=>expatNewsCard(x)).join('')+'</div><div class="sectionhead"><h2>What we monitor</h2></div><div class="card"><p>Immigration and citizenship; income tax, salary and insurance; transport, rent and banking; student and family rules; and Germany–India cross-border developments. Only sufficiently sourced changes should be published as news.</p><a class="button secondary" href="#feedback">Suggest a news topic →</a></div>'}
@@ -387,30 +388,7 @@ const section=document.getElementById('fbImmigration-'+id);
 if(section){section.scrollIntoView({behavior:'smooth',block:'start'});section.setAttribute('tabindex','-1');section.focus({preventScroll:true})}
 }
 function overview(){
-const starts=[
-['journey/newcomer','suitcase','New to Germany?','A step-by-step plan for housing, registration, banking and daily life.','Start arrival guide'],
-['journey/return','arrow','Returning to India?','Organize contracts, documents and banking before your move.','Plan my return'],
-['cross','globe','Between Germany & India','Understand family support, accounts and cross-border decisions.','Explore Germany–India'],
-['tax','receipt','Preparing a tax return?','Record expenses, explore eligible categories and learn what to keep.','Open tax workspace']
-];
-const everyday=[
-['moneycheck','checklist','Check your money basics','Review sixteen practical points and find your next three actions.','Start my money check'],
-['salary','wallet','Calculate take-home salary','Estimate your monthly net pay and understand deductions.','Calculate salary'],['language','language','Understand German letters','Plain-language help with difficult official terms.','Explore language help'],
-['budget','wallet','Manage monthly expenses','Track transactions, monthly spending and savings.','Open finance manager'],
-['invest','chart','Explore investments','Learn about growth scenarios and financial risks.','Explore investing'],
-['news','news','Keep up with changes','Curated expat updates with links to official sources.','See expat updates'],
-['healthcompare','heart','Compare health insurers','See verified 2026 rates, benefits and 2027 scenarios.','Compare insurance'],['healthaccess','heart','Find a doctor or hospital','Understand the Hausarzt system, specialist appointments and urgent care.','Healthcare guide'],['feedback','message','Help improve AtlasEveryday','Tell us what needs explaining or fixing.','Share feedback'],
-['sources','shield','Verify information','Check primary sources and guidance limitations.','Check sources']
-];
-const tile=([id,icon,name,description,cta])=>'<a href="#'+id+'" class="card link fb-feature-card"><span class="fb-card-symbol">'+fbIcon(icon)+'</span><h3>'+escapeHTML(name)+'</h3><p>'+escapeHTML(description)+'</p><span class="arrow">'+escapeHTML(cta)+' '+fbIcon('arrow','fb-arrow')+'</span></a>';
-return title('ATLASEVERYDAY / YOUR LIFE, SIMPLIFIED','Make sense of life between Germany and India.','Practical help with moving, money, documents and everyday decisions — explained step by step.')+
-'<div class="hero fb-hero"><div class="fb-hero-main"><div class="eyebrow" style="color:#aaa">START WHERE YOU ARE</div><h2>What would you like to do today?</h2><p>Find the right guide or ask a question.</p><form id="fbOverviewQuestionForm" class="fb-question-search" role="search"><label class="sr" for="fbOverviewQuestion">Ask AtlasEveryday</label><input id="fbOverviewQuestion" name="question" maxlength="200" required placeholder="Ask about PR, tax, salary…" autocomplete="off"/><button class="button invert" type="submit" aria-label="Find matching guidance" title="Find guidance">→</button></form><div id="fbOverviewQuestionResult" role="status" class="fb-hero-status"></div></div><a href="#journeys" class="button invert fb-hero-journey">Explore life journeys →</a></div>'+
-'<div class="sectionhead"><h2>Choose your starting point</h2><span class="muted">Simple, guided next steps</span></div>'+
-'<div class="fb-feature-grid">'+starts.map(tile).join('')+'</div>'+
-expatNewsPreview()+
-'<div class="sectionhead"><h2>Everyday tools & help</h2><a class="biglink" href="#discover">All topics →</a></div>'+
-'<div class="fb-feature-grid">'+everyday.map(tile).join('')+'</div>'+
-'<div class="sectionhead"><h2>Popular guides</h2><a class="biglink" href="#discover">All guides →</a></div>'+cards(articles.slice(0,3))
+return portalHome({articles,news:expatNews,reviewed:expatNewsReviewed,icons:fbIcon});
 }
 const searchableTools=[
 {id:'taxplan/finder',title:'Tax preparation and opportunity finder',summary:'Guided opportunities, insurance and donation checks, family/student cases, Germany–India scenarios, adviser exports and supported 2026 tax-effect illustrations.',keywords:'tax saving opportunity deduction donations insurance pension childcare student first degree part year arrival departure receipts adviser export refund taxable income'},
@@ -429,6 +407,7 @@ const searchableTools=[
 {id:'residency',title:'German and Indian residency screening',summary:'Indian day-count tests, German tax residence and pension guidance.',keywords:'residency rnornr ror tax residence fema'},
 {id:'language',title:'Language Bridge',summary:'German financial terms, taxes, insurance, letters and explanations.',keywords:'german translation glossary steuerklasse lohnabrechnung'}
 ];
+searchableTools.push(...portalTopics.map(topic=>({id:'topic/'+topic.id,title:topic.label,summary:topic.description,keywords:topic.keywords})));
 function searchToolMatches(term){
 const stop=new Set(['how','do','does','my','me','i','we','you','what','which','is','the','a','an','of','in','to','for','with','if','or','and','on','get','can','should','would','about','please','tell','much','help','want']);
 const words=normalizeTerm(term).split(' ').filter(w=>w.length>=2&&!stop.has(w)&&! /^\d+$/.test(w));
@@ -449,7 +428,8 @@ const matched=filter?searchToolMatches(filter):searchableTools.slice(0,4);
 return title('KNOWLEDGE LIBRARY','Explore topics and tools','Search AtlasEveryday guides, calculators and German terminology. Try “PR”, “doctor”, “Steuerklasse”, “salary” or “NRE”.')+
 '<form id="fbDiscoverSearchForm" class="fb-discover-search" role="search"><label class="sr" for="fbDiscoverSearch">Search all AtlasEveryday topics</label><input id="fbDiscoverSearch" name="query" maxlength="200" placeholder="Search guides, tools and terms…" value="'+escapeHTML(filter)+'" autocomplete="off" required><button type="submit" class="button">Search →</button>'+(filter?'<button type="button" class="button secondary" id="fbDiscoverClear">Clear</button>':'')+'</form>'+
 '<div class="note">Searches are handled in your browser. Guides are educational and should be verified against current official rules.</div>'+
-(matched.length?'<div class="sectionhead"><h2>Tools and guided sections</h2></div><div class="grid two">'+matched.map(x=>'<a href="#'+x.id+'" class="card link"><span class="fb-card-symbol">'+fbIcon(x.id==='taxclasses'?'family':x.id==='doublehousehold'?'home':'book')+'</span><h3>'+escapeHTML(x.title)+'</h3><p>'+escapeHTML(x.summary)+'</p><span class="arrow">Open tool →</span></a>').join('')+'</div>':'')+
+(!filter?'<section class="atlas-portal" aria-label="Browse topic guides"><div class="atlas-section-heading"><h2>Browse by topic</h2></div>'+portalTopicCards(fbIcon)+'</section>':'')+
+(matched.length?'<div class="sectionhead"><h2>Tools and guided sections</h2></div><div class="grid two">'+matched.map(x=>'<a href="#'+x.id+'" class="card link"><span class="fb-card-symbol">'+fbIcon(x.id==='taxclasses'?'family':x.id==='doublehousehold'?'home':'book')+'</span><h3>'+escapeHTML(x.title)+'</h3><p>'+escapeHTML(x.summary)+'</p><span class="arrow">'+(x.id.startsWith('topic/')?'Explore topic →':'Open section →')+'</span></a>').join('')+'</div>':'')+
 (g.length?'<div class="sectionhead"><h2>German terminology matches</h2><a class="biglink" href="#language">Open Language Bridge →</a></div><div class="grid two">'+g.map(glossaryCard).join('')+'</div>':'')+
 '<div class="sectionhead"><h2>Guides and explainers</h2></div>'+
 (a.length?cards(a):'<div class="empty">No article matches this wording. Try a shorter term or open one of the tools above.</div>');
@@ -1686,6 +1666,7 @@ const [page,id]=hash.split('/');
 let content='';
 switch(page){
 case 'overview':content=overview();break;case 'location':content=fbLocationPage();break;case 'news':content=newsPage();break;case 'discover':content=discover(fbDiscoverQuery);break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
+case 'topic':content=portalTopicPage(id,articles,fbIcon);break;
 case 'taxplan':content=taxPlanningPage(id,state,{title});break;
 case 'moneycheck':content=moneyCheckPage(state.moneyCheck,{title});break;
 case 'guide':content=guide(id);break;case 'term':content=termPage(id);break;case 'parentsguide':content=parentsGuide();break;case 'tax':content=tax();break;case 'taxguide':content=taxguide();break;case 'taxclasses':content=taxClasses();break;case 'salary':content=salaryPage();break;case 'healthcompare':content=healthCompare();break;case 'doublehousehold':content=doubleHousehold();break;case 'budget':content=budget();break;
@@ -1696,6 +1677,7 @@ case 'sources':content=sources();break;case 'privacy':content=privacyPage();brea
 $('#content').innerHTML=(['tax','salary','taxclasses','doublehousehold','healthcompare'].includes(page)?fbTaxLocationSuggestion():'')+content+(Object.hasOwn(fbAiTopics,page)?fbAiWidget(page):'');
 if(Object.hasOwn(fbAiTopics,page))fbAiRender(page);
 if(page==='immigration'&&id)requestAnimationFrame(()=>fbJumpToImmigrationSection(id));
+if(page==='news'&&id)requestAnimationFrame(()=>document.getElementById('fbNews-'+id)?.scrollIntoView({block:'start'}));
 fbUpdateLocationHeader();
 if(page==='taxclasses'&&fbGeoState.country==='Germany'&&fbGeoState.state){const field=document.querySelector('#taxClassForm [name=state]');if(field)field.value=fbGeoState.state;}
 if(page==='healthcare'){
@@ -1707,8 +1689,8 @@ if(page==='taxplan'||page==='residency')mountTaxPlanning({state,save});
 if(page==='immigration')fbImmigrationToolResult();if(page==='healthcare')fbHealthcareResult();if(page==='salary')salaryCalculate();
 if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleHousehold();if(page==='taxclasses'){updateTaxHealthOption();renderTaxClassResults();}if(page==='healthcompare')renderHealthCompare();
 const locationTab=document.getElementById('fbLocationButton');if(locationTab)locationTab.hidden=(page==='overview');
-$('#breadcrumb').textContent=page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
-document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
+$('#breadcrumb').textContent=page==='topic'?'Topics / '+(portalTopics.find(topic=>topic.id===id)?.label||'Choose a topic'):page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
+document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'||page==='topic'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
 }
 window.addEventListener('hashchange',()=>{render();if(!location.hash.startsWith('#immigration/'))window.scrollTo(0,0)});
 document.addEventListener('change',e=>{if(e.target.matches('#salaryForm select[name="taxClass"]')){const hint=document.getElementById('salaryTaxClassHint');if(hint)hint.innerHTML=salaryTaxClassDescription(e.target.value);return;}if(e.target.id==='financeMonth'){if(/^\d{4}-\d{2}$/.test(e.target.value)){state.financeViewMonth=e.target.value;save();render()}return}if(e.target.matches('#fbImmigrationGoal,#fbImmigrationProfession,#fbImmigrationMissing'))fbImmigrationToolResult();if(e.target.matches('#fbHealthRole,#fbHealthState,#fbHealthOrigin,#fbHealthSituation,#fbHealthGerman,#fbHealthSpecialty,#fbHealthMissing'))fbHealthcareResult();if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});

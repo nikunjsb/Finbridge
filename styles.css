@@ -392,10 +392,10 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 .atlas-topic-card h3{font-size:16px;line-height:1.4;margin:0 0 8px;letter-spacing:-.2px}
 .atlas-topic-card p{font-size:12px;line-height:1.7;color:var(--atlas-muted);margin:0 0 19px}
 .atlas-topic-card .atlas-text-link{margin-top:auto}
-.atlas-tone-sage{--atlas-tint:#dfe9dd;--atlas-accent:#395d43}
-.atlas-tone-sand{--atlas-tint:#eee4d4;--atlas-accent:#775d34}
-.atlas-tone-blue{--atlas-tint:#dfe7ec;--atlas-accent:#3c6073}
-.atlas-tone-rose{--atlas-tint:#efe0dc;--atlas-accent:#81574b}
+.atlas-tone-sage,[data-accent="sage"],#content[data-page-tone="sage"]{--atlas-tint:#dfe9dd;--atlas-accent:#395d43;--atlas-wash:#f4f7f1;--atlas-rule:#cbd9c7}
+.atlas-tone-sand,[data-accent="sand"],#content[data-page-tone="sand"]{--atlas-tint:#eee4d4;--atlas-accent:#775d34;--atlas-wash:#faf6ee;--atlas-rule:#dfd2bc}
+.atlas-tone-blue,[data-accent="blue"],#content[data-page-tone="blue"]{--atlas-tint:#dfe7ec;--atlas-accent:#3c6073;--atlas-wash:#f2f6f8;--atlas-rule:#cad9e1}
+.atlas-tone-rose,[data-accent="rose"],#content[data-page-tone="rose"]{--atlas-tint:#efe0dc;--atlas-accent:#81574b;--atlas-wash:#fbf4f1;--atlas-rule:#e0cbc4}
 .atlas-tool-section{background:#edf0eb;border:1px solid #dce3d9;border-radius:14px;margin:34px 0;padding:24px}
 .atlas-tool-section .atlas-section-heading{margin:0 0 17px}
 .atlas-tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -513,6 +513,26 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 }
 
 /* Money review uses the existing card and navigation design. */
+/* Shared, restrained accents on the existing inner-page components. */
+#content.has-page-accents .page-kicker{display:inline-block;background:var(--atlas-tint);color:var(--atlas-accent);border:1px solid var(--atlas-rule);border-radius:6px;padding:5px 9px;font-size:10px;line-height:1.5;letter-spacing:1.5px}
+#content.has-page-accents .card[data-accent]{border-color:var(--atlas-rule)}
+#content.has-page-accents .card[data-accent]>h2:first-of-type,#content.has-page-accents .card[data-accent]>h3:first-of-type{border-inline-start:3px solid var(--atlas-accent);padding-inline-start:11px}
+#content.has-page-accents .card.link:hover{border-color:var(--atlas-accent)}
+#content.has-page-accents .fb-card-symbol{background:var(--atlas-tint);color:var(--atlas-accent);border-color:var(--atlas-rule)}
+#content.has-page-accents .card.link>.icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--atlas-tint);color:var(--atlas-accent);border-radius:11px;margin-bottom:16px}
+#content.has-page-accents .card.link>.icon .fb-icon{width:22px;height:22px}
+#content.has-page-accents .tag{display:inline-block;background:var(--atlas-tint);color:var(--atlas-accent);border-radius:5px;padding:4px 7px;line-height:1.5;margin-bottom:9px}
+#content.has-page-accents .pill{background:var(--atlas-wash);color:var(--atlas-accent);border-color:var(--atlas-rule)}
+#content.has-page-accents .result:not([role="alert"]):not(.error):not(.warning):not(.success){background:var(--atlas-wash);border-color:var(--atlas-rule)}
+#content.has-page-accents .note:not([role="alert"]):not(.error):not(.warning):not(.success){background:var(--atlas-wash);border-left-color:var(--atlas-accent)}
+#content.has-page-accents .fb-step[data-accent]:not(:has(input:checked)) .fb-step-icon{background:var(--atlas-tint);color:var(--atlas-accent);border-color:var(--atlas-rule)}
+#content.has-page-accents .fb-tax-choice[aria-pressed="true"]{background:var(--atlas-wash);border-color:var(--atlas-accent);box-shadow:inset 0 0 0 1px var(--atlas-accent)}
+#content.has-page-accents .fb-tax-choice:hover{border-color:var(--atlas-accent)}
+#content.has-page-accents .button.secondary{color:var(--atlas-accent);border-color:var(--atlas-rule)}
+#content.has-page-accents .button.secondary:hover{background:var(--atlas-wash);border-color:var(--atlas-accent)}
+#content.has-page-accents .fb-guide-index a{background:var(--atlas-wash);color:var(--atlas-accent);border-color:var(--atlas-rule)}
+#content.has-page-accents :is(input,select,textarea):focus-visible{outline:2px solid var(--atlas-accent);outline-offset:2px}
+#content.has-page-accents :is(.card.link,.fb-tax-choice,.button):focus-visible{outline:3px solid var(--atlas-accent);outline-offset:3px}
 .inv-workspace{--inv-green:#355a47;--inv-border:#dce4dc;color:#28372f}
 .inv-section-nav{display:flex;gap:9px;overflow-x:auto;padding:0 0 12px;margin:5px 0 17px}
 .inv-section-nav button{font-size:12px;font-weight:650;border:1px solid #d5dfd3;border-radius:20px;padding:9px 13px;white-space:nowrap;background:#f9fbf6;color:#34513f}

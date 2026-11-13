@@ -1,3 +1,4 @@
+import { applyPageAccents } from './page-accents.js?v=285944e4cde3';
 import { investmentPage, mountInvestmentPlanner } from './investment-planner.js?v=c53a7d77fe59';
 import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=d2ac5e007621';
 import { taxPlanningPage, mountTaxPlanning, residenceScreenHTML } from './tax-planning.js?v=8310cde4853d';
@@ -67,7 +68,7 @@ const articles=[
 ];
 articles.push(...extraArticles);
 const sourceLinks=[['German Income Tax Act','https://www.gesetze-im-internet.de/estg/'],['ELSTER','https://www.elster.de/'],['Federal Ministry of Finance','https://www.bundesfinanzministerium.de/'],['German Pension Insurance','https://www.deutsche-rentenversicherung.de/'],['Indian Income Tax Department','https://www.incometax.gov.in/'],['Reserve Bank of India','https://www.rbi.org.in/'],['SEBI','https://www.sebi.gov.in/'],['BaFin','https://www.bafin.de/']];
-const title=(k,h,d)=>'<div class="eyebrow">'+escapeHTML(k)+'</div><h1 class="h1">'+escapeHTML(h)+'</h1><p class="lead">'+escapeHTML(d)+'</p>';
+const title=(k,h,d)=>'<div class="eyebrow page-kicker">'+escapeHTML(k)+'</div><h1 class="h1">'+escapeHTML(h)+'</h1><p class="lead">'+escapeHTML(d)+'</p>';
 
 const fbIconShapes={
 home:'<path d="m3 10 9-7 9 7v10H3zM9 20v-7h6v7"/>',
@@ -115,7 +116,7 @@ const header=group!==previous?'<div class="navgroup">'+group+'</div>':'';previou
 return header+'<a class="navitem" data-nav="'+id+'" href="#'+id+'"><span class="sym">'+fbIcon(fbNavIcons[id]||'file')+'</span><span class="fb-nav-text">'+label+'</span></a>'
 }).join('');
 }
-function cards(list){return '<div class="grid">'+list.map(a=>'<a href="#guide/'+a.id+'" class="card link"><span class="icon">↗</span><div class="tag">'+escapeHTML(a.cat)+'</div><h3>'+escapeHTML(a.name)+'</h3><p>'+escapeHTML(a.summary)+'</p><span class="arrow">Read guide →</span></a>').join('')+'</div>'}
+function cards(list){return '<div class="grid">'+list.map(a=>'<a href="#guide/'+a.id+'" class="card link"><span class="icon">'+fbIcon('book')+'</span><div class="tag">'+escapeHTML(a.cat)+'</div><h3>'+escapeHTML(a.name)+'</h3><p>'+escapeHTML(a.summary)+'</p><span class="arrow">Read guide →</span></a>').join('')+'</div>'}
 
 const normalizeTerm = v => String(v||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/ä/g,'a').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ß/g,'ss').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const looseTerm = v => normalizeTerm(v).replace(/\s/g,'');
@@ -1695,6 +1696,7 @@ if(page==='tax')updateExpensePreview();if(page==='doublehousehold')updateDoubleH
 const locationTab=document.getElementById('fbLocationButton');if(locationTab)locationTab.hidden=(page==='overview');
 $('#breadcrumb').textContent=page==='topic'?'Topics / '+(portalTopics.find(topic=>topic.id===id)?.label||'Choose a topic'):page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
 document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'||page==='topic'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
+applyPageAccents($('#content'),page,id,portalTopics,articles);
 }
 window.addEventListener('hashchange',()=>{render();if(!location.hash.startsWith('#immigration/'))window.scrollTo(0,0)});
 document.addEventListener('change',e=>{if(e.target.matches('#salaryForm select[name="taxClass"]')){const hint=document.getElementById('salaryTaxClassHint');if(hint)hint.innerHTML=salaryTaxClassDescription(e.target.value);return;}if(e.target.id==='financeMonth'){if(/^\d{4}-\d{2}$/.test(e.target.value)){state.financeViewMonth=e.target.value;save();render()}return}if(e.target.matches('#fbImmigrationGoal,#fbImmigrationProfession,#fbImmigrationMissing'))fbImmigrationToolResult();if(e.target.matches('#fbHealthRole,#fbHealthState,#fbHealthOrigin,#fbHealthSituation,#fbHealthGerman,#fbHealthSpecialty,#fbHealthMissing'))fbHealthcareResult();if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});

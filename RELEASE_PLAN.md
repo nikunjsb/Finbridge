@@ -27,6 +27,7 @@ Keep the existing tester URL working. Domain, DNS and hosting migration work is 
 
 | ID | Pending work | Status / next requirement | Proposed release position | Target date | Destination |
 |---|---|---|---|---|---|
+| STYLE | Shared overview colour accents across inner pages (checklist item 22) | Implemented locally; 91 existing checks pass, all main routes reviewed, representative narrow layouts and contrast checked. Awaiting successful publication and live verification | Current owner-approved visual update | 13 November 2026 — release in progress | Existing public website |
 | SEC | Security review/hardening: browser data and imports, CSP/headers, dependencies, Worker abuse controls and repository/account protection | Planned; see SECURITY_PLAN.md and checklist item 19. Review Sunday findings; verify access and release readiness | Owner-selected security work session | 20 November 2026 — scheduled work; release depends on verification | Repository/public site; separate Workers/settings where authorized |
 | TAX-A | Deeper work-expense screening (TS02–TS03) | Pending; existing calculator regressions pass, but dated attendance, depreciation and reimbursement improvements remain | Next proposed visitor-feature release | Not scheduled | Existing public website |
 | TAX-B | Relocation/double households, parent-support screening and household-services checker (TS04–TS06) | Planned extensions of existing guides; requires sourced eligibility/calculation cases | Following tax-tools release | Not scheduled | Existing public website |

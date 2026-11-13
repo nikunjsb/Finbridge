@@ -54,6 +54,8 @@ Run `node tools/version-assets.mjs` after changing local JS/CSS and before commi
 Calculation references and verification limits are in [the 13 November review](REVIEWS/2026-11-13-tax-planning.md). Full mobile/accessibility/performance and authenticated Cloudflare checks are scheduled for the Sunday 15 November QA task.
 
 ## Money and paperwork review
+The overview's muted sage, sand, blue and rose palette is shared by inner-page cards, icons, labels, category selections and focus outlines through `page-accents.js`. Topic/route accents are presentation only; calculator logic, saved records and completion/warning states retain their existing behavior. Overview and topic layouts keep their original styling. Release status is recorded in the selected-task checklist.
+
 The money check offers sixteen locally saved document checks and the next three actions. It links the payslip explainer, tax preparation, family support, second-household evidence, insurance and departure guides. Checklist answers and evidence flags use the existing browser-only backup and clear-data controls; documents are not uploaded.
 
 Run the focused checks with `node --test tests/money-guidance.test.mjs`. Editorial decisions and primary sources for this addition are recorded in [the 12 November content review](REVIEWS/2026-11-12-money-guidance.md).

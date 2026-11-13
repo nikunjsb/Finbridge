@@ -2,7 +2,7 @@
 
 Public website name: **AtlasEveryday — Germany · Deutschland** (approved 13 November 2026). Existing FinBridge repository/service identifiers and the tester link are retained; the scheduled security, Sunday and hosting work below keeps its existing scope.
 
-Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist; items 19–21 record the security work, homepage/topic organization and investment-planner expansion approved on 13 November. Check an item only after its implementation and relevant published-site verification. The wider roadmap can retain additional coverage even when a bounded release item is complete.
+Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist; items 19–22 record the security work, homepage/topic organization, investment-planner expansion and shared colour accents approved on 13 November. Check an item only after its implementation and relevant published-site verification. The wider roadmap can retain additional coverage even when a bounded release item is complete.
 
 ## Completed and verified — 13 November 2026
 
@@ -32,6 +32,7 @@ Tax-planning feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbrid
 
 ## Other pending work
 
+- [ ] **22. Shared colour accents:** extend the overview's sage, sand, blue and rose to inner-page icons, cards, labels and selected controls. Implemented locally; awaiting successful publication and live verification before completion.
 - [ ] **3. Full desktop/mobile regression:** new release flows will be checked during publication; a complete whole-site regression remains with Sunday QA and future releases.
 - [ ] **5. Deeper work-expense planning:** dated attendance, reimbursements/overlaps, equipment/depreciation and training screening (TS02–TS03).
 - [ ] **6. Relocation/double-household extension:** full eligibility, actual flights, furnishings/meals and reimbursement handling (TS04).

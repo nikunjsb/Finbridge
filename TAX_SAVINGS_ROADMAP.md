@@ -1,10 +1,16 @@
 # FinBridge tax-saving workstream
 
-Requested: 12 November 2026. Status: planned improvements; this document does not mark the features below as implemented or establish eligibility for a tax claim. Hosting/domain work remains deferred until 22 November.
+Requested: 12 November 2026. Status: partial implementation on 13 November; selected preparation features await publication/live verification. The plan does not establish eligibility for a tax claim. Hosting/domain work remains deferred until 22 November.
 
 ## Build on the existing site
 
 Extend the money check (`#moneycheck`), claim categories (`#taxguide`), expense workspace (`#tax`), double-household worksheet (`#doublehousehold`), family-support guide (`#parentsguide`) and sourced topic articles. The money check, payslip explainer, evidence checklists and arrival/departure-year article already exist. The remaining work is deeper screening, calculations, examples and validation.
+
+## Selected implementation status — 13 November
+
+- TS01 and TS07–TS10: implemented as preparation/review tools, awaiting publication and live verification. Numerical scope is explicitly bounded; insurance/pension and complex treaty cases receive review rather than automatic eligibility or refund figures.
+- TS02–TS06: deeper work-expense, relocation, parent-support and household-service improvements remain pending. Regression tests of existing calculators do not complete those enhancements.
+- [Owner checklist](PENDING_TASKS.md) preserves the eighteen chat IDs; [release review](REVIEWS/2026-11-13-tax-planning.md) records sources and validation. Wider payroll, legal/source, accessibility and performance coverage remains separately tracked.
 
 ## First implementation priorities
 

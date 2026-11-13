@@ -20,6 +20,7 @@ Serve the repository as a static HTTP site (e.g. `python -m http.server 8000`), 
 ## Product planning and tracking
 - [P0–P11 roadmap](ROADMAP.md)
 - [Pending work and release plan](RELEASE_PLAN.md)
+- [Selected-task checklist](PENDING_TASKS.md)
 - [Issues and improvement backlog](https://github.com/nikunjsb/Finbridge/issues)
 - Scheduled public-site release QA and content-gap reviews help identify issues; they do not replace live interactive browser testing.
 - The daily Release QA report also reviews the separate private feedback repository through 19 December 2026. The older standalone feedback task stays paused to fit the five-active-task limit. Private feedback must not be copied into public issues or commits.
@@ -28,6 +29,15 @@ Serve the repository as a static HTTP site (e.g. `python -m http.server 8000`), 
 The production beta runs on **GitHub Pages**. It is a static site; the AI, location, feedback and insights endpoints are independent Cloudflare Workers. Domain/hosting work is deferred until **22 November 2026**, with the existing tester link preserved. A later custom-domain move requires reviewing Worker origins and providing a way for users to export their browser-only records.
 
 Before creating or pushing a release commit, read the current `main` head and its Pages workflow. Proceed only after the previous head has a successful deployment and no Pages deployment is queued or in progress. Combine related edits into one tested release; wait for its deployment before another commit. Recheck the branch head immediately before writing so concurrent work is preserved.
+
+## Tax preparation release
+The tax preparation planner (`#taxplan/finder`) includes a guided opportunity screen, insurance/pension review, ordinary donation and childcare checks, family/student/part-year paths, Germany–India scenarios, a manually entered transfer-quote comparison, and an adviser TXT/CSV/print pack. The expanded residence screen uses Indian current/prior-year tests and distinguishes the 1961/2025 Acts. Personal amounts and evidence references stay in the existing local backup controls.
+
+The 2026 tariff illustration requires taxable income and a verified extra deduction; unsupported/uncertain cases are referred for review. It excludes special tariffs, progression/foreign income, credits, benefits, church tax, solidarity surcharge and refunds. The insurance review deliberately does not treat spending as a deductible amount.
+
+Run `node tools/version-assets.mjs` after changing local JS/CSS and before committing; it versions all imported local modules and the top-level assets from their contents. `node tools/version-assets.mjs --check` must pass. The footer describes the shipped HTML/app build rather than querying a potentially newer GitHub head.
+
+Calculation references and verification limits are in [the 13 November review](REVIEWS/2026-11-13-tax-planning.md). Full mobile/accessibility/performance and authenticated Cloudflare checks are scheduled for the Sunday 15 November QA task.
 
 ## Money and paperwork review
 The money check offers sixteen locally saved document checks and the next three actions. It links the payslip explainer, tax preparation, family support, second-household evidence, insurance and departure guides. Checklist answers and evidence flags use the existing browser-only backup and clear-data controls; documents are not uploaded.

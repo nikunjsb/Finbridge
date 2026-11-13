@@ -346,3 +346,12 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  .fb-money-item select{max-width:100%}
  .fb-payslip-lines{grid-template-columns:minmax(0,1fr)}
 }
+
+/* Tax preparation tools share the site's existing cards and local controls. */
+#taxPlanning .result{margin:18px 0}#taxPlanning .field{min-width:0}#taxPlanning pre{max-width:100%}#taxPlanning .card a{overflow-wrap:anywhere}
+@media print{
+ body:has(#taxPackPreview) .sidebar,body:has(#taxPackPreview) .top,body:has(#taxPackPreview) .notice-strip,body:has(#taxPackPreview) footer,body:has(#taxPackPreview) .fb-nav-backdrop{display:none!important}
+ body:has(#taxPackPreview) .shell{display:block}body:has(#taxPackPreview) .main{margin:0;padding:0}body:has(#taxPackPreview) .content{max-width:none;padding:0}
+ #taxPlanning:has(#taxPackPreview)>:not(#taxPackBody),#taxPackBody>:not(details){display:none!important}
+ #taxPackBody details{display:block!important;box-shadow:none;border:0;padding:0}#taxPackBody summary{display:none}#taxPackPreview{font-size:10pt!important;white-space:pre-wrap;overflow-wrap:anywhere}
+}

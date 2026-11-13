@@ -19,6 +19,8 @@ Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist;
 
 - [x] **21. Broader investment and savings planner:** savings goals, annual contribution increases/top-ups, fees, inflation, three growth assumptions, manual EUR/INR, three saved comparisons, yearly CSV and eight investment-type explainers. Published and live-verified; 27 new checks pass (91 total), with desktop/mobile and export/persistence checks. [Release evidence](REVIEWS/2026-11-13-investment-planner.md).
 
+- [x] **22. Shared colour accents:** the overview's sage, sand, blue and rose now extend to inner-page cards, icons, labels, selected categories and focus outlines. Published and live-verified; main routes, representative mobile layouts and accent contrast checked; 91 existing tests pass. [Release evidence](REVIEWS/2026-11-13-page-colours.md).
+
 Tax-planning feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbridge/commit/8e753ad8af4ad5d358bb8ad4cf856cafd1aeadf9) passed [Pages deployment](https://github.com/nikunjsb/Finbridge/actions/runs/43398676203) at **10:13 CET**. Live checks verified the planner, review states, downloads/year selection and key existing calculators. See the release review for scope and limits.
 
 ## Scheduled for Sunday, 15 November 2026
@@ -32,7 +34,6 @@ Tax-planning feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbrid
 
 ## Other pending work
 
-- [ ] **22. Shared colour accents:** extend the overview's sage, sand, blue and rose to inner-page icons, cards, labels and selected controls. Implemented locally; awaiting successful publication and live verification before completion.
 - [ ] **3. Full desktop/mobile regression:** new release flows will be checked during publication; a complete whole-site regression remains with Sunday QA and future releases.
 - [ ] **5. Deeper work-expense planning:** dated attendance, reimbursements/overlaps, equipment/depreciation and training screening (TS02–TS03).
 - [ ] **6. Relocation/double-household extension:** full eligibility, actual flights, furnishings/meals and reimbursement handling (TS04).

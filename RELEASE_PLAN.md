@@ -2,7 +2,7 @@
 
 Public branding approved on 13 November 2026: **AtlasEveryday**, with the country label **Germany · Deutschland**. The header, page title, visitor copy and download labels use the new name. The existing repository, tester URL, browser-storage keys and separate service identifiers retain their FinBridge names for continuity. Germany–India guidance remains part of the site; domain/hosting review stays on 22 November.
 
-Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The feature release is deployed and the selected items are verified complete; 64 local checks pass. Other feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
+Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The selected tax-planning items are deployed and verified complete. That release passed 64 local checks; the current combined suite has 91, including 27 investment-planner checks. Other pending feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
 
 ## Where updates are released
 
@@ -21,11 +21,12 @@ Keep the existing tester URL working. Domain, DNS and hosting migration work is 
 
 **PORTAL / checklist item 20** is also deployed and live-verified. Feature commit `1b604400aede4851c641556f15ad3668971e5530`; [successful Pages run](https://github.com/nikunjsb/Finbridge/actions/runs/43414847487) completed at **12:11 CET**. The public site served build `0a1bb9db1f19` / app `0a46144324db` on a normal reload. Six topic hubs, four life stages, featured/recommended guides, source links, existing tools, search and specific news links are connected. [Verification and screenshot](REVIEWS/2026-11-13-portal-navigation.md). This completes the bounded organization work; the wider Sunday audit remains pending.
 
+**INVEST / checklist item 21** is deployed and live-verified. Feature commit `ee7a986614b5718b4831f26432485d4353e6ffa4`; [successful Pages run](https://github.com/nikunjsb/Finbridge/actions/runs/43434520467) completed at **14:33 CET**. Normal navigation served build `016a06250c43` / app `1e34fe4312d9`. Goals, contribution changes/top-ups, fees, inflation, three assumptions, manual EUR/INR, saved comparisons, CSV and investment-type guidance are implemented. The model uses effective annual growth and before-tax figures; wider product/tax/retirement models are outside this release. [Verification, model scope and screenshot](REVIEWS/2026-11-13-investment-planner.md).
+
 ## Pending queue
 
 | ID | Pending work | Status / next requirement | Proposed release position | Target date | Destination |
 |---|---|---|---|---|---|
-| INVEST | Broader investment and savings planner: goals, contributions, costs, inflation, growth assumptions, manual FX, local comparisons, exports and investment literacy | Implemented; 27 new reference/validation checks pass (91 total). Checklist item 21 awaits publication and live verification | Current visitor-facing release | Current session; publication depends on verification | Existing public website, #invest |
 | SEC | Security review/hardening: browser data and imports, CSP/headers, dependencies, Worker abuse controls and repository/account protection | Planned; see SECURITY_PLAN.md and checklist item 19. Review Sunday findings; verify access and release readiness | Owner-selected security work session | 20 November 2026 — scheduled work; release depends on verification | Repository/public site; separate Workers/settings where authorized |
 | TAX-A | Deeper work-expense screening (TS02–TS03) | Pending; existing calculator regressions pass, but dated attendance, depreciation and reimbursement improvements remain | Next proposed visitor-feature release | Not scheduled | Existing public website |
 | TAX-B | Relocation/double households, parent-support screening and household-services checker (TS04–TS06) | Planned extensions of existing guides; requires sourced eligibility/calculation cases | Following tax-tools release | Not scheduled | Existing public website |
@@ -46,7 +47,7 @@ The selected-task checklist is maintained in [PENDING_TASKS.md](PENDING_TASKS.md
 ## Completion baseline
 
 - Money self-check, detailed payslip explainer, family-support preparation and double-household/departure evidence checklists are implemented; they should not reappear as wholly unbuilt tasks.
-- The combined suite has 64 passing local tests, including the 24 previous money/service tests. Those tests do not prove that a deployed Cloudflare cron ran.
+- The combined suite currently has 91 passing local tests, including 27 new investment checks and the original 24 money/service checks. Those tests do not prove that a deployed Cloudflare cron ran.
 - Private feedback review is included in daily Release QA through 19 December 2026. The older standalone feedback task stays paused within the five-active-task limit.
 - TS01 and TS07–TS10 preparation features are deployed and live-verified in TAX-PREP-1. TS02–TS06 remain planned. The bounded tariff model is not a full tax assessment; broader reference coverage remains in QA.
 

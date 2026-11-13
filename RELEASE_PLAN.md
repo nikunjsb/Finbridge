@@ -19,11 +19,12 @@ Keep the existing tester URL working. Domain, DNS and hosting migration work is 
 
 **TAX-PREP-1 / checklist items 1, 2, 4, 9–13** is deployed and live-verified. Feature commit `8e753ad8af4ad5d358bb8ad4cf856cafd1aeadf9`; [successful Pages run](https://github.com/nikunjsb/Finbridge/actions/runs/43398676203) completed at 10:13 CET. The site served app version `6777156d3e20` / build `58b29cf43e83` after a normal reload from the previous cached build. Planner/check/path flows, bounded tariff estimates, residence/transfer examples, TXT/CSV download/year filtering and key calculator regressions were checked. [Detailed evidence](REVIEWS/2026-11-13-tax-planning.md).
 
+**PORTAL / checklist item 20** is also deployed and live-verified. Feature commit `1b604400aede4851c641556f15ad3668971e5530`; [successful Pages run](https://github.com/nikunjsb/Finbridge/actions/runs/43414847487) completed at **12:11 CET**. The public site served build `0a1bb9db1f19` / app `0a46144324db` on a normal reload. Six topic hubs, four life stages, featured/recommended guides, source links, existing tools, search and specific news links are connected. [Verification and screenshot](REVIEWS/2026-11-13-portal-navigation.md). This completes the bounded organization work; the wider Sunday audit remains pending.
+
 ## Pending queue
 
 | ID | Pending work | Status / next requirement | Proposed release position | Target date | Destination |
 |---|---|---|---|---|---|
-| PORTAL | Homepage organization and six topic hubs, with existing guides, tools, reviewed news and life-stage navigation | Implemented and locally verified; checklist item 20 awaits matching Pages deployment and live checks | Current visitor-facing release | Current session; publication depends on verification | Existing public website |
 | SEC | Security review/hardening: browser data and imports, CSP/headers, dependencies, Worker abuse controls and repository/account protection | Planned; see SECURITY_PLAN.md and checklist item 19. Review Sunday findings; verify access and release readiness | Owner-selected security work session | 20 November 2026 — scheduled work; release depends on verification | Repository/public site; separate Workers/settings where authorized |
 | TAX-A | Deeper work-expense screening (TS02–TS03) | Pending; existing calculator regressions pass, but dated attendance, depreciation and reimbursement improvements remain | Next proposed visitor-feature release | Not scheduled | Existing public website |
 | TAX-B | Relocation/double households, parent-support screening and household-services checker (TS04–TS06) | Planned extensions of existing guides; requires sourced eligibility/calculation cases | Following tax-tools release | Not scheduled | Existing public website |

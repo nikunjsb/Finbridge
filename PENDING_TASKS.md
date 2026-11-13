@@ -15,11 +15,9 @@ Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist;
 - [x] **12. Adviser exports and supported tax-effect estimates:** year-filtered TXT/CSV/print packs, private receipt/date/basis fields and guarded 2026 tariff illustrations.
 - [x] **13. Calculator reference checks:** 64 passing local checks, including 40 new planning/reference tests and three independently observed official tariff outputs plus one official payroll example. Broader individual payroll/financial coverage remains in QA.
 
-Feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbridge/commit/8e753ad8af4ad5d358bb8ad4cf856cafd1aeadf9) passed [Pages deployment](https://github.com/nikunjsb/Finbridge/actions/runs/43398676203) at **10:13 CET**. Live checks verified the planner, review states, downloads/year selection and key existing calculators. See the release review for scope and limits.
+- [x] **20. Homepage and topic organization:** featured arrival guide, reviewed updates, four life stages, six topic hubs, guide cards and connected tools/official sources. Published and live-verified; desktop/mobile, search and keyboard checks passed. [Release evidence](REVIEWS/2026-11-13-portal-navigation.md).
 
-## Awaiting publication verification
-
-- [ ] **20. Homepage and topic organization:** featured arrival guide, reviewed updates, four life stages, six topic hubs, guide cards and connected tools/sources. Implemented and checked locally, including desktop, 390px/320px mobile, search, keyboard navigation and 141 hub links. Awaiting matching successful Pages publication and live verification.
+Tax-planning feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbridge/commit/8e753ad8af4ad5d358bb8ad4cf856cafd1aeadf9) passed [Pages deployment](https://github.com/nikunjsb/Finbridge/actions/runs/43398676203) at **10:13 CET**. Live checks verified the planner, review states, downloads/year selection and key existing calculators. See the release review for scope and limits.
 
 ## Scheduled for Sunday, 15 November 2026
 

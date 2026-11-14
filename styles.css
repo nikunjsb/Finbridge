@@ -541,6 +541,7 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 #content.has-page-accents .fb-card-symbol{background:var(--atlas-tint);color:var(--atlas-accent);border-color:var(--atlas-rule)}
 #content.has-page-accents .card.link>.icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:var(--atlas-tint);color:var(--atlas-accent);border-radius:11px;margin-bottom:16px}
 #content.has-page-accents .card.link>.icon .fb-icon{width:22px;height:22px}
+#content.has-page-accents .card.link>.icon:has(+.tag){margin-inline-end:10px}
 #content.has-page-accents .tag{display:inline-block;background:var(--atlas-tint);color:var(--atlas-accent);border-radius:5px;padding:4px 7px;line-height:1.5;margin-bottom:9px}
 #content.has-page-accents .pill{background:var(--atlas-wash);color:var(--atlas-accent);border-color:var(--atlas-rule)}
 #content.has-page-accents .result:not([role="alert"]):not(.error):not(.warning):not(.success){background:var(--atlas-wash);border-color:var(--atlas-rule)}

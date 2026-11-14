@@ -1,4 +1,4 @@
-import {nonnegative} from './tax-rules.js?v=2d1e89d92ef2';
+import {nonnegative} from './tax-rules.js?v=87446554c97e';
 const money=v=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(Number(v)||0);
 const expenseNumbers=(fd,key)=>{const value=fd.get(key);return value===null||value===''?0:nonnegative(value,key);};
 export function calculateExpenseCore(fd){

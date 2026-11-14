@@ -45,7 +45,7 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 
 ## Owner-approved expense workspace — 14 November 2026
 
-- [ ] **26a. Connected expense records and planning:** edit/duplicate, year summaries, clear allowance labels, overlap checks, reviewed 2026 work-tax comparisons, paid/planned scenarios, six preparation checklist selections and PDF/TXT/CSV tax-pack downloads. Implemented; 174 tests and local browser/reference/download checks pass. Awaiting publication, reload and responsive verification. [Scope and evidence](REVIEWS/2026-11-14-expense-workspace.md).
+- [x] **26a. Connected expense records and planning:** edit/duplicate, year summaries, clear allowance labels, overlap checks, reviewed 2026 work-tax comparisons, paid/planned scenarios, six preparation checklist selections and PDF/TXT/CSV tax-pack downloads. Published in commit `8964b55bdf4517a3f494d6462fd7d5a4830ee693` with successful Pages run `43609869136`. Live edit-in-place, record/checklist reload persistence and responsive checks at 320, 390, 700, 900 and 1348px pass. Local ZIP/PDF checks and 174 tests pass. The readable-report follow-up adds four passing checks (178 total); attachment verification remains separate in 26b. [Scope and evidence](REVIEWS/2026-11-14-expense-workspace.md).
 - [ ] **26b. Evidence and tax-pack restore browser verification:** local PDF/JPEG/PNG storage, attachment downloads and missing-ID ZIP restore are implemented; byte/type/size/CRC/manifest tests pass. The browser file-selection permission was declined, so attachment selection/storage and restore were not exercised end to end. No workaround or second upload attempt was made. Keep this verification pending.
 
 ## Scheduled for Sunday, 15 November 2026

@@ -1,5 +1,5 @@
 import { companionPage, mountCompanion } from './tax-companion.js?v=a9197f7e3106';
-import { taxSources, taxEffect, donationCheck, childcareCheck, insuranceCheck, indianResidency, transferQuote, adviserText, taxRecordsCSV, recordsForYear, preparationEvidence } from './tax-rules.js?v=2d1e89d92ef2';
+import { taxSources, taxEffect, donationCheck, childcareCheck, insuranceCheck, indianResidency, transferQuote, adviserText, taxRecordsCSV, recordsForYear, preparationEvidence } from './tax-rules.js?v=87446554c97e';
 import { workbenchPage, mountWorkbench } from './tax-workbenches.js?v=80ca6ef16360';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));

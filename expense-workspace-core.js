@@ -1,4 +1,5 @@
-import { tariff2026 } from './tax-rules.js?v=2d1e89d92ef2';
+import { friendlyExpenseRecord } from './expense-records-report.js?v=2e6c155d32f5';
+import { tariff2026 } from './tax-rules.js?v=87446554c97e';
 
 export const workCategories = ['Commuting + home office','Commuting','Home office','Work equipment','Professional education','Business travel'];
 export const expenseYear = r => Number(r.year);
@@ -70,7 +71,7 @@ export const routeFor = r => r.category==='Support to family'?['Anlage Unterhalt
 export function workspaceReport(records,year,profile={},receipts=[]) {
   const s=workspaceSummary(records,year),effect=workspaceEffect(records,year,profile);
   const lines=['AtlasEveryday - tax preparation pack - '+year,'Preparation only. No return submitted or refund calculated.','Recorded spending: '+eur(s.spending),'Planned spending (not paid claims): '+eur(s.plannedSpending),'Unreviewed or separately assessed records: '+s.pending,...s.warnings,''];
-  for(const r of s.selected){lines.push((isPlanned(r)?'PLANNED':'RECORDED')+' | '+(r.item||r.category),'ID: '+r.id+' | '+r.category+' | Year: '+r.year,spendingLabel(r),'Preliminary candidate: '+(finite(r.estimated)?eur(r.estimated):'not assessed'),'User-reviewed current-year amount: '+(r.review?.confirmed&&finite(r.review.amount)?eur(r.review.amount):'not confirmed'),r.details||'', 'Payment date: '+(r.paymentDate||'not recorded'),'Receipt reference: '+(r.receiptRef||'not recorded'),'Notes: '+(r.note||''),'German section: '+routeFor(r)[0],...receipts.filter(f=>f.recordId===r.id).map(f=>'Evidence: '+f.name+' ('+f.size+' bytes)'), '');}
+  for(const [index,r] of s.selected.entries())lines.push(...friendlyExpenseRecord(r,index,receipts));
   lines.push('2026 ORDINARY INCOME-TAX ILLUSTRATION');
   if(effect.supported)lines.push('Baseline taxable income (not gross salary): '+eur(effect.income),'Baseline already includes the standard employee allowance; reviewed listed costs must not already be deducted.','Work costs outside these records: '+eur(effect.other),'Tax before listed records: '+eur(effect.beforeRecords),'Tax after reviewed paid work records: '+eur(effect.afterPaid),'Additional income-tax reduction from listed paid work records: '+eur(effect.paidSaving),'Additional illustration if reviewed plans are paid and qualify in this year: '+eur(effect.plannedSaving),'Per-record removal comparisons are marginal; do not add them together.');
   else lines.push(effect.reason);

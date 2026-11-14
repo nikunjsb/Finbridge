@@ -1,4 +1,4 @@
-import { esc,eur,ensureExpenseIds,isPlanned,isWork,spendingLabel,workspaceSummary,workspaceEffect,workspaceReport,workspaceCSV,reviewFromForm,routeFor,summaryPDF } from './expense-workspace-core.js?v=2233caa20f11';
+import { esc,eur,ensureExpenseIds,isPlanned,isWork,spendingLabel,workspaceSummary,workspaceEffect,workspaceReport,workspaceCSV,reviewFromForm,routeFor,summaryPDF } from './expense-workspace-core.js?v=6a738efd8440';
 import { allEvidence,attachEvidence,removeEvidence,removeRecordEvidence,putEvidence,evidenceType,safeEvidenceName,makeZip,readOwnZip,MAX_TOTAL } from './tax-evidence.js?v=7d5a4951cf0a';
 
 const yearOf=state=>[2024,2025,2026].includes(Number(state.taxWorkspaceYear))?Number(state.taxWorkspaceYear):2026;

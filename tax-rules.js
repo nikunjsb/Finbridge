@@ -1,3 +1,4 @@
+import { friendlyExpenseSection } from './expense-records-report.js?v=2e6c155d32f5';
 import { workbenchSummary, workbenchLabels, workbenchSources } from './tax-workbench-rules.js?v=c391eb9cc29c';
 // Reviewed 13 November 2026. Pure preparation/screening models; never a filing decision.
 export const TAX_RULES_VERSION = '20261113-tax1';
@@ -191,9 +192,7 @@ export function adviserText(state = {}, year = 2026) {
   const { selected, unassigned } = recordsForYear(state.expenses, year);
   const lines = ['ATLASEVERYDAY — ADVISER PREPARATION PACK', 'German tax year: ' + year, 'Preparation only. No tax return has been filed. Candidate deductions are not refunds.', 'Do not sum different tax categories or years. Keep original documents privately.', '', 'EVIDENCE CHECKLIST'];
   for (const [id, label] of preparationEvidence) lines.push((state.taxEvidence?.[year + ':' + id] === true ? '[x] ' : '[ ] ') + label);
-  lines.push('', 'EXPENSE RECORDS FOR ' + year);
-  for (const [index, r] of selected.entries()) lines.push((index + 1) + '. ' + cellText(r.category) + (r.item ? ' / ' + cellText(r.item) : ''), '  Payment date: ' + (r.paymentDate || 'not recorded') + '; actual spending EUR: ' + cellText(r.actual ?? r.amount ?? 'not recorded'), '  Candidate deduction EUR: ' + (typeof r.estimated === 'number' && Number.isFinite(r.estimated) ? r.estimated : 'not assessed'), '  Receipt: ' + (r.receiptRef || 'not recorded') + '; notes: ' + cellText(r.note), '  Basis: ' + cellText(r.details), '  Recorded inputs: ' + (r.basis && typeof r.basis === 'object' ? JSON.stringify(r.basis) : 'not recorded (older entry)'), '  Review: ' + cellText(r.warning));
-  if (!selected.length) lines.push('No expense records for this tax year.');
+  lines.push(...friendlyExpenseSection(selected, year));
   lines.push('', 'Records without a year: ' + unassigned.length + ' — omitted from year-specific totals and export. Review or re-create them with a year in the workspace.');
   const planned = recordsForYear(state.expenses, year).planned;
   if (planned.length) lines.push('', 'PLANNED PURCHASES — NOT PAID CLAIMS', ...planned.map(r => cellText(r.item || r.category) + ': planned spending EUR ' + cellText(r.actual ?? r.amount) + '. Not included in paid expense records.'));
@@ -210,9 +209,12 @@ export function adviserText(state = {}, year = 2026) {
   for (const kind of ['work', 'parents', 'household']) {
     const snapshot = state.taxWorkbenches?.[kind]?.[String(year)];
     if (!snapshot || String(snapshot.result?.year) !== String(year)) continue;
-    lines.push(workbenchLabels[kind] + ': ' + workbenchSummary(snapshot.result), '  Recorded inputs: ' + JSON.stringify(snapshot.input), '  Recorded result: ' + JSON.stringify(snapshot.result));
+    lines.push(workbenchLabels[kind] + ': ' + workbenchSummary(snapshot.result), '  Original inputs/results are preserved in the reference appendix below.');
   }
   lines.push('Worksheet amounts may overlap with expense records above. Do not add both. Parent support is an income deduction; household services are DIRECT tax credits.', '', 'WORKSHEET REFERENCES (reviewed 14 November 2026)', ...Object.entries(workbenchSources).map(([name, url]) => name + ': ' + url));
   lines.push('', 'ADVISER QUESTIONS', 'Which expenses qualify, and which allowance/prefilled entries already cover them?', 'Which receipts, work-use evidence and reimbursements need correction?', 'Does arrival/departure, family status or foreign income change filing obligations or treaty treatment?', 'Which items are deductions, direct credits, required declarations or unsupported estimates?', '', 'RULE REFERENCES (reviewed 13 November 2026)', ...Object.entries(taxSources).map(([name, url]) => name + ': ' + url));
+  lines.push('', 'REFERENCE APPENDIX — ORIGINAL CALCULATION INPUTS', 'For checking or reproducing the calculations; these are not additional claims.');
+  for (const [index,r] of selected.entries()) lines.push((index+1)+'. '+cellText(r.item||r.category)+': '+(r.basis&&typeof r.basis==='object'?JSON.stringify(r.basis):'Original calculator inputs were not recorded.'));
+  for (const kind of ['work','parents','household']) {const snapshot=state.taxWorkbenches?.[kind]?.[String(year)];if(snapshot&&String(snapshot.result?.year)===String(year))lines.push(workbenchLabels[kind]+' inputs: '+JSON.stringify(snapshot.input),workbenchLabels[kind]+' result: '+JSON.stringify(snapshot.result));}
   return lines.join('\n');
 }

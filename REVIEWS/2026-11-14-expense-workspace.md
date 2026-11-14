@@ -23,4 +23,8 @@ Reviewed EStG §9a (ordinary employee allowance), §32a (2026 tariff) and the of
 - **Verification limitation:** the browser file-selection permission was declined during the fictional receipt test. No alternate upload route was attempted. Attachment selection/storage/download and ZIP restore were not tested end to end in the browser. Byte/type/manifest/archive checks pass independently; retain this limitation in the task list. No real user's files were accessed or uploaded.
 - An unrelated active preview replaced the local preview during testing; this is not an application reload failure. Remaining reload and responsive checks are to be completed on the published site using the [viewport harness](2026-11-14-expense-responsive.html).
 
-Publication and final live checks are pending this release.
+Feature commit `8964b55bdf4517a3f494d6462fd7d5a4830ee693` passed Pages run `43609869136`. Public build `234797c6f6d6` passed edit-in-place, record/checklist reload persistence and viewport checks at 320, 390, 700, 900 and 1348px, with no document overflow. Attachment and ZIP-restore browser verification remains blocked as described above.
+
+## Readable export follow-up
+
+The owner requested clearer expense records after reviewing the adviser text. The shared formatter now gives an at-a-glance spending summary, allowance-aware spending descriptions, plain-language input labels, user-review status, evidence to gather, category-specific next actions and German form-section names. No written receipt reference is treated as proof that evidence is missing. Raw expense and detailed-worksheet JSON is preserved in a reference appendix, not mixed into the main narrative. The ZIP PDF/TXT and existing adviser TXT/print preview use the same readable records. Four new reference/presentation checks pass (178 total); live follow-up publication is pending.

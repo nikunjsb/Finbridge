@@ -9,7 +9,8 @@ Extend the money check (`#moneycheck`), claim categories (`#taxguide`), expense 
 ## Selected implementation status — 13 November
 
 - [x] TS01 and TS07–TS10: delivered as preparation/review tools on 13 November, with successful Pages deployment and live functional checks. Numerical scope is explicitly bounded; insurance/pension and complex treaty cases receive review rather than automatic eligibility or refund figures.
-- [ ] TS02–TS06: deeper work-expense, relocation, parent-support and household-service improvements remain pending. Regression tests of existing calculators do not complete those enhancements.
+- [ ] TS02, TS03, TS05 and TS06: deeper work-expense, parent-support and household-service worksheets implemented on 14 November for 2025/2026; awaiting successful publication and live verification. New numerical and boundary tests pass; [scope and evidence](REVIEWS/2026-11-14-tax-workbenches.md).
+- [ ] TS04: relocation/double-household extension remains pending.
 - [Owner checklist](PENDING_TASKS.md) preserves the eighteen chat IDs; [release review](REVIEWS/2026-11-13-tax-planning.md) records sources and validation. Wider payroll, legal/source, accessibility and performance coverage remains separately tracked.
 
 ## First implementation priorities

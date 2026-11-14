@@ -1,3 +1,4 @@
+import { workbenchSummary, workbenchLabels, workbenchSources } from './tax-workbench-rules.js?v=c391eb9cc29c';
 // Reviewed 13 November 2026. Pure preparation/screening models; never a filing decision.
 export const TAX_RULES_VERSION = '20261113-tax1';
 export const taxSources = {
@@ -203,6 +204,13 @@ export function adviserText(state = {}, year = 2026) {
     for (const [key, value] of Object.entries(state.taxFinder)) if (typeof value === 'string') lines.push(key + ': ' + value);
   }
   if (state.taxEffect?.year === Number(year) && state.taxEffect?.supported === true) lines.push('', 'SAVED TARIFF ILLUSTRATION', 'Baseline taxable income EUR: ' + state.taxEffect.baselineIncome + '; assessment: ' + state.taxEffect.assessment + '; basis: ' + state.taxEffect.kind, 'Spending EUR: ' + state.taxEffect.spending + '; candidate EUR: ' + state.taxEffect.candidate + '; reimbursements EUR: ' + state.taxEffect.reimbursements + '; allowance accounted for EUR: ' + state.taxEffect.allowance + '; extra income deduction EUR: ' + state.taxEffect.incrementalDeduction, 'Tariff before EUR: ' + state.taxEffect.before + '; after EUR: ' + state.taxEffect.after, '2026 tariff-only effect EUR: ' + state.taxEffect.effect + '. Not a refund. Eligibility and input taxable income must be checked. No Soli, church tax, credits, benefits, progression or cross-border assessment.');
+  lines.push('', 'SAVED WORKSHEETS — NOT ADDITIONAL EXPENSE RECORDS');
+  for (const kind of ['work', 'parents', 'household']) {
+    const snapshot = state.taxWorkbenches?.[kind]?.[String(year)];
+    if (!snapshot || String(snapshot.result?.year) !== String(year)) continue;
+    lines.push(workbenchLabels[kind] + ': ' + workbenchSummary(snapshot.result), '  Recorded inputs: ' + JSON.stringify(snapshot.input), '  Recorded result: ' + JSON.stringify(snapshot.result));
+  }
+  lines.push('Worksheet amounts may overlap with expense records above. Do not add both. Parent support is an income deduction; household services are DIRECT tax credits.', '', 'WORKSHEET REFERENCES (reviewed 14 November 2026)', ...Object.entries(workbenchSources).map(([name, url]) => name + ': ' + url));
   lines.push('', 'ADVISER QUESTIONS', 'Which expenses qualify, and which allowance/prefilled entries already cover them?', 'Which receipts, work-use evidence and reimbursements need correction?', 'Does arrival/departure, family status or foreign income change filing obligations or treaty treatment?', 'Which items are deductions, direct credits, required declarations or unsupported estimates?', '', 'RULE REFERENCES (reviewed 13 November 2026)', ...Object.entries(taxSources).map(([name, url]) => name + ': ' + url));
   return lines.join('\n');
 }

@@ -1,4 +1,5 @@
-import { taxSources, taxEffect, donationCheck, childcareCheck, insuranceCheck, indianResidency, transferQuote, adviserText, taxRecordsCSV, recordsForYear, preparationEvidence } from './tax-rules.js?v=628bf4e06e8d';
+import { taxSources, taxEffect, donationCheck, childcareCheck, insuranceCheck, indianResidency, transferQuote, adviserText, taxRecordsCSV, recordsForYear, preparationEvidence } from './tax-rules.js?v=99b8aaacdca1';
+import { workbenchPage, mountWorkbench } from './tax-workbenches.js?v=80ca6ef16360';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const euro = value => new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }).format(value);
@@ -22,18 +23,18 @@ export function opportunityResults(input = {}) {
   const changedYear = ['arrival', 'departure', 'both'].includes(input.period);
   const india = input.india && input.india !== 'none';
   return [
-    ['work', 'Work travel and home working', ['office', 'home', 'hybrid'].includes(input.work) && employed ? 'Potentially relevant' : employeeStatus, 'Keep dated office, home-working and business-trip records; reconcile reimbursements and the employee allowance.', '#tax', taxSources.allowance],
-    ['equipment', 'Equipment, phone and professional training', yes(input.equipment), 'Keep invoices, work-use share, purchase dates and employer payments. Expensive assets and general German courses need separate treatment.', '#guide/equipment', taxSources.allowance],
+    ['work', 'Work travel and home working', ['office', 'home', 'hybrid'].includes(input.work) && employed ? 'Potentially relevant' : employeeStatus, 'Keep dated office, home-working and business-trip records; reconcile reimbursements and the employee allowance.', '#taxplan/work', taxSources.allowance],
+    ['equipment', 'Equipment, phone and professional training', yes(input.equipment), 'Keep invoices, work-use share, purchase dates and employer payments. Expensive assets and general German courses need separate treatment.', '#taxplan/work', taxSources.allowance],
     ['education', 'Education and student preparation', ['first', 'later', 'service'].includes(input.education) ? 'Potentially relevant' : input.education === 'none' ? 'Not indicated by your answers' : 'Needs review', 'First education, subsequent education and training within employment follow different rules; loss carryforward is not automatic.', '#taxplan/student', taxSources.special],
     ['household', 'Relocation and a second household', yes(input.household), 'Review your own main home, financial participation, professional reason, accommodation, actual home trips and reimbursements.', '#doublehousehold', taxSources.allowance],
-    ['parents', 'Supporting parents in India', yes(input.parents), 'Review each recipient’s need, income, assets, months, country adjustment and traceable support payments.', '#parentsguide', 'https://www.gesetze-im-internet.de/estg/__33a.html'],
+    ['parents', 'Supporting parents in India', yes(input.parents), 'Review each recipient’s need, income, assets, months, country adjustment and traceable support payments.', '#taxplan/parents', 'https://www.gesetze-im-internet.de/estg/__33a.html'],
     ['insurance', 'Insurance and pension certificates', yes(input.insured), 'Compare annual certificates with prefilled entries. Paying a premium does not establish an extra deduction.', '#taxplan/checks', taxSources.special],
     ['donations', 'Charitable donations', yes(input.donated), 'Confirm the recipient, receipt, refunds and ordinary annual limit; political and foreign-recipient cases need separate review.', '#taxplan/donations', taxSources.donations],
     ['family', 'Family and annual assessment', family ? 'Potentially relevant' : input.family === 'none' ? 'Not indicated by your answers' : 'Needs review', 'Separate joint-assessment eligibility from payroll tax-class cash flow. Review childcare and family changes.', '#taxplan/cases', taxSources.family],
     ['childcare', 'Childcare costs', ['children', 'both'].includes(input.family) ? 'Potentially relevant' : input.family === 'spouse' || input.family === 'none' ? 'Not indicated by your answers' : 'Needs review', 'For qualifying childcare, check child/household conditions, invoices, bank payment and excluded food or lessons.', '#taxplan/childcare', taxSources.special],
     ['partyear', 'Arrival or departure year', changedYear ? 'Potentially relevant' : input.period === 'full' ? 'Not indicated by your answers' : 'Needs review', 'Collect German and foreign income for the calendar year. Progression and filing obligations require a separate review.', '#taxplan/partyear', taxSources.progression],
     ['international', 'Indian income, accounts and transfers', india ? 'Potentially relevant' : input.india === 'none' ? 'Not indicated by your answers' : 'Needs review', 'Separate tax residence, FEMA banking status, income, gifts and transfers of your own money. Keep income and foreign-tax evidence.', '#taxplan/cross', taxSources.treaty],
-    ['services', 'Household services and medical/care costs', 'Needs review', 'Look for eligible labour on service-charge statements; medical/care costs and direct tax credits use different conditions from work deductions.', '#guide/household', 'https://www.gesetze-im-internet.de/estg/__35a.html']
+    ['services', 'Household services and medical/care costs', 'Needs review', 'Look for eligible labour on service-charge statements; medical/care costs and direct tax credits use different conditions from work deductions.', '#taxplan/household', 'https://www.gesetze-im-internet.de/estg/__35a.html']
   ].map(([id, label, status, detail, route, source]) => ({ id, label, status, detail, route, source })).sort((a,b) => ['Potentially relevant','Needs review','Not indicated by your answers'].indexOf(a.status) - ['Potentially relevant','Needs review','Not indicated by your answers'].indexOf(b.status));
 }
 
@@ -114,9 +115,10 @@ function pack(state, selectedYear = '2026') {
 
 export function taxPlanningPage(part, state, { title }) {
   const tab = ['insurance', 'donations', 'childcare'].includes(part) ? 'checks' : ['student', 'partyear'].includes(part) ? 'cases' : part || 'finder';
-  const tabs = [['finder', 'Find opportunities'], ['checks', 'Insurance & donations'], ['cases', 'Family & studies'], ['cross', 'Germany–India'], ['export', 'Adviser pack'], ['effect', 'Tax effect']];
-  const body = tab === 'checks' ? checks(['donations', 'childcare'].includes(part) ? part : 'insurance') : tab === 'cases' ? cases(['student', 'partyear'].includes(part) ? part : 'family') : tab === 'cross' ? cross() : tab === 'export' ? pack(state) : tab === 'effect' ? effect() : finder(state);
-  return '<div id="taxPlanning">' + title('TAX PREPARATION / 2026', 'Your tax preparation planner', 'Find topics to review, check evidence and prepare useful records for your return or adviser.') + '<nav class="row fb-tax-plan-nav" aria-label="Tax preparation sections" style="justify-content:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:20px">' + tabs.map(([id, label]) => '<a class="button ' + (tab === id ? '' : 'secondary') + '" href="#taxplan/' + id + '"' + (tab === id ? ' aria-current="page"' : '') + '>' + label + '</a>').join('') + '</nav>' + localNote + body + sourceNote + '</div>';
+  const tabs = [['finder', 'Find opportunities'], ['work', 'Work expenses'], ['parents', 'Parent support'], ['household', 'Household services'], ['checks', 'Insurance & donations'], ['cases', 'Family & studies'], ['cross', 'Germany–India'], ['export', 'Adviser pack'], ['effect', 'Tax effect']];
+  const isWorkbench = ['work', 'parents', 'household'].includes(tab);
+  const body = isWorkbench ? workbenchPage(tab, state) : tab === 'checks' ? checks(['donations', 'childcare'].includes(part) ? part : 'insurance') : tab === 'cases' ? cases(['student', 'partyear'].includes(part) ? part : 'family') : tab === 'cross' ? cross() : tab === 'export' ? pack(state) : tab === 'effect' ? effect() : finder(state);
+  return '<div id="taxPlanning">' + title(isWorkbench ? 'TAX PREPARATION / 2025–2026' : 'TAX PREPARATION / 2026', 'Your tax preparation planner', 'Find topics to review, check evidence and prepare useful records for your return or adviser.') + '<nav class="row fb-tax-plan-nav" aria-label="Tax preparation sections" style="justify-content:flex-start;gap:8px;margin-bottom:20px">' + tabs.map(([id, label]) => '<a class="button ' + (tab === id ? '' : 'secondary') + '" href="#taxplan/' + id + '"' + (tab === id ? ' aria-current="page"' : '') + '>' + label + '</a>').join('') + '</nav>' + localNote + body + (isWorkbench ? '<p class="muted">New worksheets reviewed 14 November 2026; numerical scope is 2025/2026. Other planner checks retain their stated 2026 scope.</p>' : sourceNote) + '</div>';
 }
 
 function download(text, name, type) {
@@ -127,6 +129,9 @@ function download(text, name, type) {
 export function mountTaxPlanning({ state, save }) {
   const root = document.getElementById('taxPlanning') || document.getElementById('taxResidenceRoot');
   if (!root) return;
+  const nav = root.querySelector('.fb-tax-plan-nav'), current = nav?.querySelector('[aria-current="page"]');
+  if (nav && current && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = current.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - current.offsetWidth) / 2;
+  if (document.getElementById('taxWorkbench')) { mountWorkbench({ state, save }); return; }
   let currentCheck = null, currentEffect = null;
   const data = form => Object.fromEntries(new FormData(form));
   const show = (id, html) => { const out = document.getElementById(id); if (out) { out.innerHTML = html; out.focus(); } };

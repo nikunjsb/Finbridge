@@ -1,4 +1,4 @@
-import { nonnegative } from './tax-rules.js?v=628bf4e06e8d';
+import { nonnegative } from './tax-rules.js?v=99b8aaacdca1';
 
 export function employeeHealthAnnual(gross, additionalRate, ceiling = 69750) {
   return Math.min(nonnegative(gross, 'annual gross'), nonnegative(ceiling, 'contribution ceiling')) * (.146 + nonnegative(additionalRate, 'additional contribution rate', 10) / 100) / 2;

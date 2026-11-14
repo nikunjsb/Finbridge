@@ -24,7 +24,7 @@ export function pageAccent(route, topics = [], articles = []) {
     return topic?.tone || categoryTone(articles.find(article => article.id === id)?.cat);
   }
   if (page === 'journey') return /support|family|student/.test(id || '') ? 'rose' : /invest/.test(id || '') ? 'blue' : 'sage';
-  if (page === 'taxplan') return id === 'cross' ? 'sage' : ['cases', 'checks', 'insurance', 'donations', 'childcare', 'student', 'partyear'].includes(id) ? 'rose' : 'blue';
+  if (page === 'taxplan') return id === 'household' ? 'sand' : id === 'parents' ? 'rose' : id === 'cross' ? 'sage' : ['cases', 'checks', 'insurance', 'donations', 'childcare', 'student', 'partyear'].includes(id) ? 'rose' : 'blue';
   return pageTones[page] || 'sage';
 }
 

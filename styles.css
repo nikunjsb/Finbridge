@@ -512,6 +512,26 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  .atlas-official-sources{padding:22px}
 }
 
+/* Tax worksheets keep records grouped and readable on narrow screens. */
+.fb-tax-plan-nav{flex-wrap:wrap}
+.tw-group,.tw-record{min-width:0;margin:22px 0;padding:20px;border:1px solid var(--atlas-rule,#dce4dc);border-radius:13px;background:#fff}
+.tw-group legend,.tw-record legend{font-weight:700;padding:0 8px;color:var(--atlas-accent,#395d43)}
+.tw-record{background:var(--atlas-wash,#f4f7f1)}
+.tw-record [hidden]{display:none!important}
+.tw-group .field,.tw-record .field{min-width:0}
+.tw-group input,.tw-record input,.tw-group select,.tw-record select{max-width:100%;min-width:0}
+.tw-record .tw-remove{margin-top:16px}
+.tw-wide{grid-column:1/-1}
+.tw-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.tw-actions button:disabled{opacity:.55;cursor:not-allowed}
+.tw-source{line-height:2;overflow-wrap:anywhere;font-size:12px}
+.tw-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:24px 0}
+.tw-stats>div{min-width:0;border-top:1px solid var(--atlas-rule,#dce4dc);padding-top:13px}
+.tw-stats dt{font-size:12px;color:#555;line-height:1.6}
+.tw-stats dd{font-size:21px;font-weight:700;margin:6px 0;overflow-wrap:anywhere;color:var(--atlas-accent,#395d43)}
+#twResult:focus{outline:2px solid var(--atlas-accent,#395d43);outline-offset:4px}
+@media(max-width:700px){.fb-tax-plan-nav{flex-wrap:nowrap;overflow-x:auto;max-width:100%;padding-bottom:10px}.fb-tax-plan-nav .button{flex:0 0 auto;white-space:nowrap}.tw-group,.tw-record{padding:16px 12px}.tw-stats{grid-template-columns:minmax(0,1fr)}#taxWorkbench .sectionhead{align-items:flex-start;flex-direction:column;gap:10px}.tw-actions{align-items:stretch;flex-direction:column}.tw-actions .button{width:100%;white-space:normal}}
+
 /* Money review uses the existing card and navigation design. */
 /* Shared, restrained accents on the existing inner-page components. */
 #content.has-page-accents .page-kicker{display:inline-block;background:var(--atlas-tint);color:var(--atlas-accent);border:1px solid var(--atlas-rule);border-radius:6px;padding:5px 9px;font-size:10px;line-height:1.5;letter-spacing:1.5px}

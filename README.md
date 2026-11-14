@@ -53,6 +53,10 @@ Run `node tools/version-assets.mjs` after changing local JS/CSS and before commi
 
 Calculation references and verification limits are in [the 13 November review](REVIEWS/2026-11-13-tax-planning.md). Full mobile/accessibility/performance and authenticated Cloudflare checks are scheduled for the Sunday 15 November QA task.
 
+## Detailed tax worksheets
+
+The tax planner includes work-expense (`#taxplan/work`), parent-support (`#taxplan/parents`) and household-service (`#taxplan/household`) worksheets for 2025 and 2026. They reconcile dated records, reimbursements, evidenced work use, recipient circumstances and separate direct-credit limits. Unknown conditions produce review prompts; numerical scope and exclusions are explicit. Saving retains one worksheet per type/year, without adding an expense; existing JSON backup and adviser TXT/print exports include the snapshots. See [rules, reference examples and verification](REVIEWS/2026-11-14-tax-workbenches.md). Run all checks with `node --test tests/*.test.mjs` (140 passing tests).
+
 ## Money and paperwork review
 The overview's muted sage, sand, blue and rose palette is shared by inner-page cards, icons, labels, category selections and focus outlines through `page-accents.js`. Topic/route accents are presentation only; calculator logic, saved records and completion/warning states retain their existing behavior. Overview and topic layouts keep their original styling. Release status is recorded in the selected-task checklist.
 

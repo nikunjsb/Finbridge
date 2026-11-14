@@ -25,13 +25,16 @@ Keep the existing tester URL working. Domain, DNS and hosting migration work is 
 
 **STYLE / checklist item 22** is deployed and live-verified. Feature commit `fd28c8bb98e84c0d802f4bb1dde7d6e5c42da8ed`; [successful Pages run](https://github.com/nikunjsb/Finbridge/actions/runs/43439913699) completed at **15:09 CET**. A normal reload served build `f4335e286f56` / app `049d43d4a783`. The existing four-colour overview palette now accents inner-page cards, icons, labels, selected categories and keyboard focus. [Verification and screenshot](REVIEWS/2026-11-13-page-colours.md). The wider Sunday accessibility/performance audit remains pending.
 
+## Completed release — 14 November 2026
+
+**TAX-WORKSHEETS / checklist 5, 7 and 8 (TS02–TS03, TS05–TS06)** is deployed and live-verified. Feature commit `db09964c06de7bfaebff0900b41e2b2132829047`; [successful Pages run](https://github.com/nikunjsb/Finbridge/actions/runs/43583872978) finished its deploy job at **11:09:34 CET**. A normal reload served build `3350150dd886` / app `7b362ca58cd9` / CSS `ebaf95602244`. Work expense, parent-support and household-service worksheets cover 2025/2026, with explicit evidence/scope gates, separate deductions/direct credits, local per-year snapshots and adviser exports. **140 tests pass**, including 49 new reference/boundary checks. Desktop/mobile and live examples passed. [Detailed rules, scope, verification and screenshot](REVIEWS/2026-11-14-tax-workbenches.md). TS04 and the broader scheduled audits remain pending.
+
 ## Pending queue
 
 | ID | Pending work | Status / next requirement | Proposed release position | Target date | Destination |
 |---|---|---|---|---|---|
 | SEC | Security review/hardening: browser data and imports, CSP/headers, dependencies, Worker abuse controls and repository/account protection | Planned; see SECURITY_PLAN.md and checklist item 19. Review Sunday findings; verify access and release readiness | Owner-selected security work session | 20 November 2026 — scheduled work; release depends on verification | Repository/public site; separate Workers/settings where authorized |
-| TAX-A | Dated work-expense screening (TS02–TS03; checklist 5) | Implemented locally; 140 tests pass; awaiting publication and live verification | Current owner-selected release | 14 November 2026 — release in progress | Existing public website |
-| TAX-B | Parent-support and household-service worksheets (TS05–TS06; checklist 7–8), plus remaining relocation extension (TS04) | Parent/support and household worksheets implemented locally; awaiting publication/live verification. TS04 remains pending | Worksheets in current owner-selected release; relocation separately proposed | Worksheets: 14 November 2026 — in progress. TS04: not scheduled | Existing public website |
+| TAX-B | Relocation/double-household extension (TS04; checklist 6) | Pending; extend eligibility, furnishings/meals, actual flights, reimbursement and overlap handling. Parent-support/household-service work (TS05–TS06) is completed in TAX-WORKSHEETS | Next proposed tax-tools extension | Not scheduled | Existing public website |
 | QA-FIN | Wider individual payroll, special-expense and complex treaty/foreign-tax reference coverage | Focused preparation models/reference suite implemented; wider coverage remains | Further validation with relevant releases | Not scheduled | Repository checks and public website |
 | OPS-LIVE | Verify deployed Cloudflare versions, bindings/log settings, cron history and retained-row counts | Awaiting authenticated owner evidence; included in existing Sunday QA | Operational verification | 15 November 2026 — scheduled check | Existing Cloudflare services |
 | OWNER | Protected analytics dashboard | Planned; owner authentication and protected reporting path needed. Read-only D1 console queries are ready | Separate private-service release | Not scheduled | Private reporting service; endpoint to be agreed |
@@ -49,9 +52,9 @@ The selected-task checklist is maintained in [PENDING_TASKS.md](PENDING_TASKS.md
 ## Completion baseline
 
 - Money self-check, detailed payslip explainer, family-support preparation and double-household/departure evidence checklists are implemented; they should not reappear as wholly unbuilt tasks.
-- The combined suite currently has 91 passing local tests, including 27 new investment checks and the original 24 money/service checks. Those tests do not prove that a deployed Cloudflare cron ran.
+- The combined suite currently has 140 passing local tests, including 49 new expense/support/household checks, 27 investment checks, 40 prior tax-planning checks and the original 24 money/service checks. Those tests do not prove that a deployed Cloudflare cron ran.
 - Private feedback review is included in daily Release QA through 19 December 2026. The older standalone feedback task stays paused within the five-active-task limit.
-- TS01 and TS07–TS10 preparation features are deployed and live-verified in TAX-PREP-1. TS02–TS06 remain planned. The bounded tariff model is not a full tax assessment; broader reference coverage remains in QA.
+- TS01 and TS07–TS10 preparation features are deployed and live-verified in TAX-PREP-1. TS02–TS03 and TS05–TS06 are deployed and live-verified in TAX-WORKSHEETS; TS04 remains planned. The bounded tariff model is not a full tax assessment; broader reference coverage remains in QA.
 
 ## Daily monitor rules
 

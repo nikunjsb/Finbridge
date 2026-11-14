@@ -1,6 +1,6 @@
 # Work expenses, parent support and household services — 14 November 2026
 
-Owner-selected pending tasks **5, 7 and 8** (TS02–TS03, TS05 and TS06). Implementation and focused local validation are complete; publication/live verification is pending. Do not mark the checklist complete until those checks pass. TS04 relocation/double-household work, the wider Sunday audit, authenticated Cloudflare checks, Friday security and 22 November hosting review retain their separate status.
+Owner-selected pending tasks **5, 7 and 8** (TS02–TS03, TS05 and TS06). Implementation, focused validation, publication and live verification are complete. The owner checklist is marked complete for these three bounded tasks. TS04 relocation/double-household work, the wider Sunday audit, authenticated Cloudflare checks, Friday security and 22 November hosting review retain their separate status.
 
 ## Implemented experience
 
@@ -65,4 +65,18 @@ Household credits cover supported EU/EEA services and eligible craft work in an 
 
 Local browser checks have verified the combined work example (€2,045.80 employment candidate and separate €6,000 initial education), overlap rejection, invalidation/save controls, reload persistence, one/two-parent and December examples, missing-evidence review, distinct 2025/2026 saved inputs, household invoice/cap/tax-liability examples and cash/subsidy exclusion.
 
-Downloaded worksheet TXT, adviser TXT and JSON backup were read back. They contain the correct snapshots/year; the expense ledger remains empty in the synthetic test session. Test exports are private QA artifacts and are not committed. Responsive browser previews at 320, 390 and 900 CSS pixels show no document overflow or overflowing form controls across all three worksheets. The mobile section navigation uses a single horizontally scrollable row and keeps the active section visible. A 320px household calculation reproduced the desktop result and focused its named result region. Desktop guide-to-worksheet links were also exercised. These are Chrome/iframe checks, not physical-device or full screen-reader certification. Final publication and live verification remain pending before closing the tasks.
+Downloaded worksheet TXT, adviser TXT and JSON backup were read back. They contain the correct snapshots/year; the expense ledger remains empty in the synthetic test session. Test exports are private QA artifacts and are not committed. Responsive browser previews at 320, 390 and 900 CSS pixels show no document overflow or overflowing form controls across all three worksheets. The mobile section navigation uses a single horizontally scrollable row and keeps the active section visible. A 320px household calculation reproduced the desktop result and focused its named result region. Desktop guide-to-worksheet links were also exercised. These are Chrome/iframe checks, not physical-device or full screen-reader certification. The published examples and existing planner sections were subsequently checked as recorded below.
+
+
+## Publication and live evidence
+
+- Feature commit [`db09964c06de7bfaebff0900b41e2b2132829047`](https://github.com/nikunjsb/Finbridge/commit/db09964c06de7bfaebff0900b41e2b2132829047).
+- [Pages run 43583872978](https://github.com/nikunjsb/Finbridge/actions/runs/43583872978) completed successfully. Deploy finished **10:09:34 UTC / 11:09:34 CET**, 14 November 2026.
+- A normal public reload served **build `3350150dd886`**, **app `7b362ca58cd9`**, **CSS `ebaf95602244`**. No page cache-busting query was used.
+- Live work example: one 2026 office visit at 30 one-way km produced **€11.40**, with **€0 additional amount above the employee allowance**.
+- Live parent example: one India parent, full year, zero reviewed income and €6,000 of verified support produced **€3,087** before the selected verified conditions; the example's donor affordability did not bind.
+- Live household example: €1,200 cost share, €1,000 labour, €200 material produced **€200 potential direct credit**, limited to **€70** against entered remaining assessed tax.
+- All six existing planner sections (finder, insurance/donations, family/studies, Germany–India, adviser pack and tax effect) still rendered their expected controls. Their existing numerical tests remain green.
+- No synthetic live worksheet was saved or sent to a backend. The final screenshot shows the default work worksheet and the three new navigation entries, without personal financial records.
+
+![Published tax worksheets](2026-11-14-tax-workbenches.jpg)

@@ -23,6 +23,16 @@ Owner selection: 13 November 2026. IDs 1–18 match the original chat checklist;
 
 Tax-planning feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbridge/commit/8e753ad8af4ad5d358bb8ad4cf856cafd1aeadf9) passed [Pages deployment](https://github.com/nikunjsb/Finbridge/actions/runs/43398676203) at **10:13 CET**. Live checks verified the planner, review states, downloads/year selection and key existing calculators. See the release review for scope and limits.
 
+## Completed and verified — 14 November 2026
+
+Owner selected three more pending tasks on 14 November:
+
+- [x] **5. Deeper work-expense planning:** dated office/home/domestic travel records, duplicate-day checks, reimbursements, equipment thresholds/month-based depreciation, phone/internet work use and initial/professional education screening (TS02–TS03).
+- [x] **7. Parent-support calculator:** one/two-parent income/assets and need review, dated transfers, support months, country adjustment, shared-pot household allocation, other donors and standard donor affordability (TS05).
+- [x] **8. Household-services checker:** invoice/statement labour versus materials, bank-payment evidence, reimbursements/duplicates, separate household-wide service/craft limits and potential direct tax-credit calculation (TS06).
+
+All three support **2025/2026** within their stated numerical scope and are published/live-verified. Local save, per-year reload, worksheet/adviser TXT, JSON backup, mobile reflow and **140 passing tests** are recorded in the [release evidence](REVIEWS/2026-11-14-tax-workbenches.md). Worksheet candidates are not approved claims or refunds. The relocation/double-household extension remains pending.
+
 ## Scheduled for Sunday, 15 November 2026
 
 - [ ] **15. Cloudflare verification:** deployed versions/bindings, logging, cron executions and retention. Authenticated owner evidence is still required; local tests do not complete this task.
@@ -35,10 +45,7 @@ Tax-planning feature commit [`8e753ad8af4a`](https://github.com/nikunjsb/Finbrid
 ## Other pending work
 
 - [ ] **3. Full desktop/mobile regression:** new release flows will be checked during publication; a complete whole-site regression remains with Sunday QA and future releases.
-- [ ] **5. Deeper work-expense planning:** dated attendance, reimbursements/overlaps, equipment/depreciation and training screening (TS02–TS03). Implemented 14 November; awaiting publication and live verification.
 - [ ] **6. Relocation/double-household extension:** full eligibility, actual flights, furnishings/meals and reimbursement handling (TS04).
-- [ ] **7. Parent-support calculator:** recipient income/assets, support months, country adjustment and household allocation (TS05). Implemented 14 November; awaiting publication and live verification.
-- [ ] **8. Household-services checker:** labour/materials, bank payment, limits and direct tax-credit calculation (TS06). Implemented 14 November; awaiting publication and live verification.
 - [ ] **16. Private owner dashboard:** authentication and protected reporting; final endpoint undecided.
 - [ ] **17. Operator/contact and legal notices:** awaiting chosen public operator details and review.
 - [ ] **18. Hosting/domain review:** **22 November 2026**, preserving the existing tester link. This is a review date, not a migration commitment.

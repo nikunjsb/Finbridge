@@ -1,15 +1,15 @@
 # FinBridge tax-saving workstream
 
-Requested: 12 November 2026. Status: partial implementation on 13 November; selected preparation features are deployed and live-verified. The plan does not establish eligibility for a tax claim. Hosting/domain work remains deferred until 22 November.
+Requested: 12 November 2026. Status: TS01–TS03 and TS05–TS10 preparation features are deployed and live-verified as of 14 November; TS04 remains pending. The plan does not establish eligibility for a tax claim. Hosting/domain work remains deferred until 22 November.
 
 ## Build on the existing site
 
 Extend the money check (`#moneycheck`), claim categories (`#taxguide`), expense workspace (`#tax`), double-household worksheet (`#doublehousehold`), family-support guide (`#parentsguide`) and sourced topic articles. The money check, payslip explainer, evidence checklists and arrival/departure-year article already exist. The remaining work is deeper screening, calculations, examples and validation.
 
-## Selected implementation status — 13 November
+## Selected implementation status — 14 November
 
 - [x] TS01 and TS07–TS10: delivered as preparation/review tools on 13 November, with successful Pages deployment and live functional checks. Numerical scope is explicitly bounded; insurance/pension and complex treaty cases receive review rather than automatic eligibility or refund figures.
-- [ ] TS02, TS03, TS05 and TS06: deeper work-expense, parent-support and household-service worksheets implemented on 14 November for 2025/2026; awaiting successful publication and live verification. New numerical and boundary tests pass; [scope and evidence](REVIEWS/2026-11-14-tax-workbenches.md).
+- [x] TS02, TS03, TS05 and TS06: deeper work-expense, parent-support and household-service worksheets published and live-verified on 14 November for 2025/2026 within their stated scope. All 140 tests pass, including 49 new numerical/boundary checks; [scope, sources and evidence](REVIEWS/2026-11-14-tax-workbenches.md).
 - [ ] TS04: relocation/double-household extension remains pending.
 - [Owner checklist](PENDING_TASKS.md) preserves the eighteen chat IDs; [release review](REVIEWS/2026-11-13-tax-planning.md) records sources and validation. Wider payroll, legal/source, accessibility and performance coverage remains separately tracked.
 

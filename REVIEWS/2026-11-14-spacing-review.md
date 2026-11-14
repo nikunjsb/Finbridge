@@ -17,6 +17,8 @@ Owner requested a visual review and small spacing corrections, preserving the ex
 - Existing **156 tests pass**. Asset versions match and `git diff --check` passes. Changes are CSS plus the refreshed stylesheet/build references; no calculation or data-storage changes.
 - Browser viewport checks are not physical-device, screen-reader, security or full-site regression certification. Scheduled audits remain pending.
 
-![Responsive transfer comparison after spacing correction](2026-11-14-spacing-review.jpg)
+![Published transfer comparison after spacing correction](2026-11-14-spacing-review.jpg)
 
-Public deployment and live verification follow this combined release. The previous main head `6218bd5a8f7511c15b4a075db771975214d9af50` had successful Pages run `43603792779` before release preparation.
+Feature commit `fbe7b8c41d3481c9692e2dde603745d56066e974` passed [Pages deployment 43605524149](https://github.com/nikunjsb/Finbridge/actions/runs/43605524149). A normal public-page reload served build `1a3ac68f2174`; live checks confirmed 14px transfer-field gaps, 16px action clearance, shrinking insurance fields and investment target positioning at 148px. The screenshot above is from the published site.
+
+The previous main head `6218bd5a8f7511c15b4a075db771975214d9af50` had successful Pages run `43603792779` before release preparation.

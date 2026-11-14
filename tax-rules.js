@@ -171,7 +171,7 @@ export function csvCell(value) {
 export function recordsForYear(records, year) {
   if (!['2024', '2025', '2026'].includes(String(year))) throw Error('Choose a supported German tax year.');
   const list = Array.isArray(records) ? records.filter(r => r && typeof r === 'object') : [];
-  return { selected: list.filter(r => String(r.year) === String(year)), unassigned: list.filter(r => !r.year) };
+  return { selected: list.filter(r => String(r.year) === String(year) && r.status !== 'planned'), unassigned: list.filter(r => !r.year), planned: list.filter(r => String(r.year) === String(year) && r.status === 'planned') };
 }
 export function taxRecordsCSV(records, year) {
   const { selected } = recordsForYear(records, year);
@@ -195,6 +195,8 @@ export function adviserText(state = {}, year = 2026) {
   for (const [index, r] of selected.entries()) lines.push((index + 1) + '. ' + cellText(r.category) + (r.item ? ' / ' + cellText(r.item) : ''), '  Payment date: ' + (r.paymentDate || 'not recorded') + '; actual spending EUR: ' + cellText(r.actual ?? r.amount ?? 'not recorded'), '  Candidate deduction EUR: ' + (typeof r.estimated === 'number' && Number.isFinite(r.estimated) ? r.estimated : 'not assessed'), '  Receipt: ' + (r.receiptRef || 'not recorded') + '; notes: ' + cellText(r.note), '  Basis: ' + cellText(r.details), '  Recorded inputs: ' + (r.basis && typeof r.basis === 'object' ? JSON.stringify(r.basis) : 'not recorded (older entry)'), '  Review: ' + cellText(r.warning));
   if (!selected.length) lines.push('No expense records for this tax year.');
   lines.push('', 'Records without a year: ' + unassigned.length + ' — omitted from year-specific totals and export. Review or re-create them with a year in the workspace.');
+  const planned = recordsForYear(state.expenses, year).planned;
+  if (planned.length) lines.push('', 'PLANNED PURCHASES — NOT PAID CLAIMS', ...planned.map(r => cellText(r.item || r.category) + ': planned spending EUR ' + cellText(r.actual ?? r.amount) + '. Not included in paid expense records.'));
   const savedChecks = Array.isArray(state.taxChecks) ? state.taxChecks.filter(r => r && String(r.year) === String(year)) : [];
   lines.push('', 'SAVED PREPARATION CHECKS');
   for (const r of savedChecks) lines.push(cellText(r.label) + ': ' + cellText(r.summary));

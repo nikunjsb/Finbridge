@@ -2,7 +2,7 @@
 
 Public branding approved on 13 November 2026: **AtlasEveryday**, with the country label **Germany · Deutschland**. The header, page title, visitor copy and download labels use the new name. The existing repository, tester URL, browser-storage keys and separate service identifiers retain their FinBridge names for continuity. Germany–India guidance remains part of the site; domain/hosting review stays on 22 November.
 
-Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The selected tax-planning items are deployed and verified complete. That release passed 64 local checks; the current combined suite has 156, including 16 self-filing companion checks, 27 investment-planner and 49 new expense/support/household worksheet checks. Other pending feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
+Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The selected tax-planning items are deployed and verified complete. That release passed 64 local checks; the current combined suite has 174, including 18 expense-workspace checks, including 16 self-filing companion checks, 27 investment-planner and 49 new expense/support/household worksheet checks. Other pending feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
 
 ## Where updates are released
 
@@ -56,7 +56,7 @@ The selected-task checklist is maintained in [PENDING_TASKS.md](PENDING_TASKS.md
 ## Completion baseline
 
 - Money self-check, detailed payslip explainer, family-support preparation and double-household/departure evidence checklists are implemented; they should not reappear as wholly unbuilt tasks.
-- The combined suite currently has 156 passing local tests, including 16 self-filing companion checks, 49 new expense/support/household checks, 27 investment checks, 40 prior tax-planning checks and the original 24 money/service checks. Those tests do not prove that a deployed Cloudflare cron ran.
+- The combined suite currently has 174 passing local tests, including 16 self-filing companion checks, 49 new expense/support/household checks, 27 investment checks, 40 prior tax-planning checks and the original 24 money/service checks. Those tests do not prove that a deployed Cloudflare cron ran.
 - Private feedback review is included in daily Release QA through 19 December 2026. The older standalone feedback task stays paused within the five-active-task limit.
 - TS01 and TS07–TS10 preparation features are deployed and live-verified in TAX-PREP-1. TS02–TS03 and TS05–TS06 are deployed and live-verified in TAX-WORKSHEETS; TS04 remains planned. The bounded tariff model is not a full tax assessment; broader reference coverage remains in QA.
 
@@ -71,3 +71,5 @@ Update saved task/status records only for material, evidenced changes. Preserve 
 Before any documentation commit, re-read main and Pages status. Wait until the previous latest commit has a successful deployment and no Pages run is active. Make at most one necessary documentation commit, preserve concurrent edits, and verify its deployment. When blocked, report the update as pending and retain the existing tracker. No automatic feature implementation, workflow cancellation, DNS change or hosting migration is part of this monitor.
 
 Use live reports for the latest head/deployment status. Do not create a commit solely to record the monitor's own commit SHA, run number, check timestamp or an unchanged list; this prevents a self-generated documentation-update loop.
+
+**EXPENSE-WORKSPACE / checklist 26a–26b:** edit-in-place records, paid/planned separation, reviewed ordinary 2026 work-tax comparison, checklist selections and tax ZIP/PDF exports are implemented. 174 tests and local calculation/download checks pass. Publication/reload/responsive verification is pending. Browser file-selection permission was declined; local evidence/ZIP-restore end-to-end verification remains explicitly pending. [Scope and review](REVIEWS/2026-11-14-expense-workspace.md).

@@ -43,6 +43,11 @@ Published and live-verified; see the release evidence below:
 
 Local and live verification evidence: [self-filing companion review](REVIEWS/2026-11-14-self-filing-companion.md). These items do not complete TS04 or replace the scheduled Sunday audits.
 
+## Owner-approved expense workspace — 14 November 2026
+
+- [ ] **26a. Connected expense records and planning:** edit/duplicate, year summaries, clear allowance labels, overlap checks, reviewed 2026 work-tax comparisons, paid/planned scenarios, six preparation checklist selections and PDF/TXT/CSV tax-pack downloads. Implemented; 174 tests and local browser/reference/download checks pass. Awaiting publication, reload and responsive verification. [Scope and evidence](REVIEWS/2026-11-14-expense-workspace.md).
+- [ ] **26b. Evidence and tax-pack restore browser verification:** local PDF/JPEG/PNG storage, attachment downloads and missing-ID ZIP restore are implemented; byte/type/size/CRC/manifest tests pass. The browser file-selection permission was declined, so attachment selection/storage and restore were not exercised end to end. No workaround or second upload attempt was made. Keep this verification pending.
+
 ## Scheduled for Sunday, 15 November 2026
 
 - [ ] **15. Cloudflare verification:** deployed versions/bindings, logging, cron executions and retention. Authenticated owner evidence is still required; local tests do not complete this task.

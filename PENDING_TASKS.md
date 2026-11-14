@@ -33,6 +33,16 @@ Owner selected three more pending tasks on 14 November:
 
 All three support **2025/2026** within their stated numerical scope and are published/live-verified. Local save, per-year reload, worksheet/adviser TXT, JSON backup, mobile reflow and **140 passing tests** are recorded in the [release evidence](REVIEWS/2026-11-14-tax-workbenches.md). Worksheet candidates are not approved claims or refunds. The relocation/double-household extension remains pending.
 
+## Owner-approved work — 14 November 2026, self-filing and planning
+
+Implemented and locally verified; publication/live verification pending:
+
+- [ ] **23. Find your situation:** 13 overlapping profiles, year changes and unsure-answer paths, English questions with German section names and current coverage notes.
+- [ ] **24. Two guided self-filing preparation journeys:** working student and commuting employee; evidence, conditional eligibility, relevant existing tools and downloadable TXT plan. No return submission or refund calculation.
+- [ ] **25. Investment-tax comparison requirements:** shared-profile baseline, affordability, distinct tax treatments, fair comparisons and release tests defined in [the specification](INVESTMENT_TAX_COMPARISON_SPEC.md). The numerical optimiser is a separate pending implementation.
+
+Local evidence and remaining publication step: [self-filing companion review](REVIEWS/2026-11-14-self-filing-companion.md). These items do not complete TS04 or replace the scheduled Sunday audits.
+
 ## Scheduled for Sunday, 15 November 2026
 
 - [ ] **15. Cloudflare verification:** deployed versions/bindings, logging, cron executions and retention. Authenticated owner evidence is still required; local tests do not complete this task.

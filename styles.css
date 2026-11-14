@@ -715,3 +715,20 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  #taxPlanning:has(#taxPackPreview)>:not(#taxPackBody),#taxPackBody>:not(details){display:none!important}
  #taxPackBody details{display:block!important;box-shadow:none;border:0;padding:0}#taxPackBody summary{display:none}#taxPackPreview{font-size:10pt!important;white-space:pre-wrap;overflow-wrap:anywhere}
 }
+
+/* Self-filing companion: preserve the shared muted accents and native controls. */
+.companion-options{border:1px solid var(--line,#ddd);border-radius:12px;margin:20px 0;padding:18px;min-width:0}
+.companion-options legend{font-weight:650;padding:0 6px;max-width:100%}
+.companion-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.companion-choices .check{display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.companion-choices input{flex:0 0 auto;margin-top:5px}
+.companion-actions{justify-content:flex-start;gap:12px;flex-wrap:wrap;margin:16px 0}
+#taxCompanion details>summary{cursor:pointer;line-height:1.5}
+#taxCompanion h4{margin-top:24px}
+#taxCompanion .card{margin-top:18px}
+.companion-table{overflow-x:auto;max-width:100%}
+.companion-table table{width:100%;border-collapse:collapse;font-size:.9rem}
+.companion-table th,.companion-table td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line,#ddd);padding:12px;overflow-wrap:anywhere;min-width:140px}
+#taxCompanion .result{overflow-wrap:anywhere}
+#taxCompanion [hidden]{display:none!important}
+@media(max-width:600px){.companion-choices{grid-template-columns:minmax(0,1fr)}.companion-options{padding:12px}.companion-actions .button{max-width:100%;white-space:normal}}

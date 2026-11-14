@@ -58,3 +58,9 @@ These are research entry points, not a completed rule audit or a table of guaran
 - [BMF: 2026 wage-tax guidance](https://lsth.bundesfinanzministerium.de/lsth/2026/)
 - [ELSTER: official filing and annex help](https://www.elster.de/eportal/)
 - [BMF: Germany–India tax treaty](https://www.bundesfinanzministerium.de/Content/DE/Standardartikel/Themen/Steuern/Internationales_Steuerrecht/Staatenbezogene_Informationen/Laender_A_Z/Indien/1996-05-06-Indien-Abkommen-DBA.html)
+
+## Owner expansion agreed 14 November 2026
+
+The English self-filing companion (`#taxplan/prepare`) adds overlapping situation/year-change questions and two preparation journeys, with section-level ELSTER guidance and a local TXT plan. Implemented/local-verified, awaiting publication; see [review](REVIEWS/2026-11-14-self-filing-companion.md). This does not complete TS04.
+
+The personalised tax/investment comparison has [defined requirements](INVESTMENT_TAX_COMPARISON_SPEC.md); numerical product models, eligibility/limit references, fair net-cost comparisons and the automatic search remain pending. Do not report the optimiser as implemented.

@@ -1,3 +1,4 @@
+import { companionPage, mountCompanion } from './tax-companion.js?v=a9197f7e3106';
 import { taxSources, taxEffect, donationCheck, childcareCheck, insuranceCheck, indianResidency, transferQuote, adviserText, taxRecordsCSV, recordsForYear, preparationEvidence } from './tax-rules.js?v=99b8aaacdca1';
 import { workbenchPage, mountWorkbench } from './tax-workbenches.js?v=80ca6ef16360';
 
@@ -114,11 +115,11 @@ function pack(state, selectedYear = '2026') {
 }
 
 export function taxPlanningPage(part, state, { title }) {
-  const tab = ['insurance', 'donations', 'childcare'].includes(part) ? 'checks' : ['student', 'partyear'].includes(part) ? 'cases' : part || 'finder';
-  const tabs = [['finder', 'Find opportunities'], ['work', 'Work expenses'], ['parents', 'Parent support'], ['household', 'Household services'], ['checks', 'Insurance & donations'], ['cases', 'Family & studies'], ['cross', 'Germany–India'], ['export', 'Adviser pack'], ['effect', 'Tax effect']];
+  const tab = ['insurance', 'donations', 'childcare'].includes(part) ? 'checks' : ['student', 'partyear', 'singleparent'].includes(part) ? 'cases' : part || 'finder';
+  const tabs = [['prepare', 'Find your situation / ELSTER'], ['finder', 'Find opportunities'], ['work', 'Work expenses'], ['parents', 'Parent support'], ['household', 'Household services'], ['checks', 'Insurance & donations'], ['cases', 'Family & studies'], ['cross', 'Germany–India'], ['export', 'Adviser pack'], ['effect', 'Tax effect']];
   const isWorkbench = ['work', 'parents', 'household'].includes(tab);
-  const body = isWorkbench ? workbenchPage(tab, state) : tab === 'checks' ? checks(['donations', 'childcare'].includes(part) ? part : 'insurance') : tab === 'cases' ? cases(['student', 'partyear'].includes(part) ? part : 'family') : tab === 'cross' ? cross() : tab === 'export' ? pack(state) : tab === 'effect' ? effect() : finder(state);
-  return '<div id="taxPlanning">' + title(isWorkbench ? 'TAX PREPARATION / 2025–2026' : 'TAX PREPARATION / 2026', 'Your tax preparation planner', 'Find topics to review, check evidence and prepare useful records for your return or adviser.') + '<nav class="row fb-tax-plan-nav" aria-label="Tax preparation sections" style="justify-content:flex-start;gap:8px;margin-bottom:20px">' + tabs.map(([id, label]) => '<a class="button ' + (tab === id ? '' : 'secondary') + '" href="#taxplan/' + id + '"' + (tab === id ? ' aria-current="page"' : '') + '>' + label + '</a>').join('') + '</nav>' + localNote + body + (isWorkbench ? '<p class="muted">New worksheets reviewed 14 November 2026; numerical scope is 2025/2026. Other planner checks retain their stated 2026 scope.</p>' : sourceNote) + '</div>';
+  const body = tab === 'prepare' ? companionPage() : isWorkbench ? workbenchPage(tab, state) : tab === 'checks' ? checks(['donations', 'childcare'].includes(part) ? part : 'insurance') : tab === 'cases' ? cases(['student', 'partyear', 'singleparent'].includes(part) ? part : 'family') : tab === 'cross' ? cross() : tab === 'export' ? pack(state) : tab === 'effect' ? effect() : finder(state);
+  return '<div id="taxPlanning">' + title(isWorkbench || tab === 'prepare' ? 'TAX PREPARATION / 2025–2026' : 'TAX PREPARATION / 2026', 'Your tax preparation planner', 'Find topics to review, check evidence and prepare useful records for your return or adviser.') + '<nav class="row fb-tax-plan-nav" aria-label="Tax preparation sections" style="justify-content:flex-start;gap:8px;margin-bottom:20px">' + tabs.map(([id, label]) => '<a class="button ' + (tab === id ? '' : 'secondary') + '" href="#taxplan/' + id + '"' + (tab === id ? ' aria-current="page"' : '') + '>' + label + '</a>').join('') + '</nav>' + (tab === 'prepare' ? '' : localNote) + body + (tab === 'prepare' ? '' : isWorkbench ? '<p class="muted">New worksheets reviewed 14 November 2026; numerical scope is 2025/2026. Other planner checks retain their stated 2026 scope.</p>' : sourceNote) + '</div>';
 }
 
 function download(text, name, type) {
@@ -131,6 +132,7 @@ export function mountTaxPlanning({ state, save }) {
   if (!root) return;
   const nav = root.querySelector('.fb-tax-plan-nav'), current = nav?.querySelector('[aria-current="page"]');
   if (nav && current && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = current.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - current.offsetWidth) / 2;
+  if (document.getElementById('taxCompanion')) { mountCompanion(); return; }
   if (document.getElementById('taxWorkbench')) { mountWorkbench({ state, save }); return; }
   let currentCheck = null, currentEffect = null;
   const data = form => Object.fromEntries(new FormData(form));

@@ -29,6 +29,10 @@ Keep the existing tester URL working. Domain, DNS and hosting migration work is 
 
 **TAX-WORKSHEETS / checklist 5, 7 and 8 (TS02–TS03, TS05–TS06)** is deployed and live-verified. Feature commit `db09964c06de7bfaebff0900b41e2b2132829047`; [successful Pages run](https://github.com/nikunjsb/Finbridge/actions/runs/43583872978) finished its deploy job at **11:09:34 CET**. A normal reload served build `3350150dd886` / app `7b362ca58cd9` / CSS `ebaf95602244`. Work expense, parent-support and household-service worksheets cover 2025/2026, with explicit evidence/scope gates, separate deductions/direct credits, local per-year snapshots and adviser exports. **140 tests pass**, including 49 new reference/boundary checks. Desktop/mobile and live examples passed. [Detailed rules, scope, verification and screenshot](REVIEWS/2026-11-14-tax-workbenches.md). TS04 and the broader scheduled audits remain pending.
 
+## Current owner-approved release — 14 November 2026
+
+**SELF-FILING / checklist 23–25:** questionnaire, working-student/commuting preparation journeys, TXT export and investment-tax comparison requirements are implemented and locally verified (156 tests). Publication and live checks are pending. [Scope and evidence](REVIEWS/2026-11-14-self-filing-companion.md). The investment optimiser and full tax assessment are not implemented; retain them as future work. TS04 remains pending.
+
 ## Pending queue
 
 | ID | Pending work | Status / next requirement | Proposed release position | Target date | Destination |

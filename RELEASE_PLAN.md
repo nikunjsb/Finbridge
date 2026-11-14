@@ -2,7 +2,7 @@
 
 Public branding approved on 13 November 2026: **AtlasEveryday**, with the country label **Germany · Deutschland**. The header, page title, visitor copy and download labels use the new name. The existing repository, tester URL, browser-storage keys and separate service identifiers retain their FinBridge names for continuity. Germany–India guidance remains part of the site; domain/hosting review stays on 22 November.
 
-Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The selected tax-planning items are deployed and verified complete. That release passed 64 local checks; the current combined suite has 140, including 27 investment-planner and 49 new expense/support/household worksheet checks. Other pending feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
+Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The selected tax-planning items are deployed and verified complete. That release passed 64 local checks; the current combined suite has 156, including 16 self-filing companion checks, 27 investment-planner and 49 new expense/support/household worksheet checks. Other pending feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
 
 ## Where updates are released
 
@@ -29,9 +29,9 @@ Keep the existing tester URL working. Domain, DNS and hosting migration work is 
 
 **TAX-WORKSHEETS / checklist 5, 7 and 8 (TS02–TS03, TS05–TS06)** is deployed and live-verified. Feature commit `db09964c06de7bfaebff0900b41e2b2132829047`; [successful Pages run](https://github.com/nikunjsb/Finbridge/actions/runs/43583872978) finished its deploy job at **11:09:34 CET**. A normal reload served build `3350150dd886` / app `7b362ca58cd9` / CSS `ebaf95602244`. Work expense, parent-support and household-service worksheets cover 2025/2026, with explicit evidence/scope gates, separate deductions/direct credits, local per-year snapshots and adviser exports. **140 tests pass**, including 49 new reference/boundary checks. Desktop/mobile and live examples passed. [Detailed rules, scope, verification and screenshot](REVIEWS/2026-11-14-tax-workbenches.md). TS04 and the broader scheduled audits remain pending.
 
-## Current owner-approved release — 14 November 2026
+## Additional completed release — 14 November 2026
 
-**SELF-FILING / checklist 23–25:** questionnaire, working-student/commuting preparation journeys, TXT export and investment-tax comparison requirements are implemented and locally verified (156 tests). Publication and live checks are pending. [Scope and evidence](REVIEWS/2026-11-14-self-filing-companion.md). The investment optimiser and full tax assessment are not implemented; retain them as future work. TS04 remains pending.
+**SELF-FILING / checklist 23–25:** questionnaire, working-student/commuting preparation journeys, TXT export and investment-tax comparison requirements are deployed and live-verified (156 tests). Feature commit `dc5f801977afc23b2b2d508ec95cf00777b07420` passed [Pages run 43603523397](https://github.com/nikunjsb/Finbridge/actions/runs/43603523397); a normal reload served build `6399c4aac147`. Both journeys, TXT download and existing work-worksheet navigation passed public-site checks. [Scope and evidence](REVIEWS/2026-11-14-self-filing-companion.md). The investment optimiser and full tax assessment are not implemented; retain them as future work. TS04 remains pending.
 
 ## Pending queue
 
@@ -56,7 +56,7 @@ The selected-task checklist is maintained in [PENDING_TASKS.md](PENDING_TASKS.md
 ## Completion baseline
 
 - Money self-check, detailed payslip explainer, family-support preparation and double-household/departure evidence checklists are implemented; they should not reappear as wholly unbuilt tasks.
-- The combined suite currently has 140 passing local tests, including 49 new expense/support/household checks, 27 investment checks, 40 prior tax-planning checks and the original 24 money/service checks. Those tests do not prove that a deployed Cloudflare cron ran.
+- The combined suite currently has 156 passing local tests, including 16 self-filing companion checks, 49 new expense/support/household checks, 27 investment checks, 40 prior tax-planning checks and the original 24 money/service checks. Those tests do not prove that a deployed Cloudflare cron ran.
 - Private feedback review is included in daily Release QA through 19 December 2026. The older standalone feedback task stays paused within the five-active-task limit.
 - TS01 and TS07–TS10 preparation features are deployed and live-verified in TAX-PREP-1. TS02–TS03 and TS05–TS06 are deployed and live-verified in TAX-WORKSHEETS; TS04 remains planned. The bounded tariff model is not a full tax assessment; broader reference coverage remains in QA.
 

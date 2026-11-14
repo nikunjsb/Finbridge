@@ -61,6 +61,6 @@ These are research entry points, not a completed rule audit or a table of guaran
 
 ## Owner expansion agreed 14 November 2026
 
-The English self-filing companion (`#taxplan/prepare`) adds overlapping situation/year-change questions and two preparation journeys, with section-level ELSTER guidance and a local TXT plan. Implemented/local-verified, awaiting publication; see [review](REVIEWS/2026-11-14-self-filing-companion.md). This does not complete TS04.
+The English self-filing companion (`#taxplan/prepare`) adds overlapping situation/year-change questions and two preparation journeys, with section-level ELSTER guidance and a local TXT plan. Published and live-verified (build `6399c4aac147`); see [review](REVIEWS/2026-11-14-self-filing-companion.md). This does not complete TS04.
 
 The personalised tax/investment comparison has [defined requirements](INVESTMENT_TAX_COMPARISON_SPEC.md); numerical product models, eligibility/limit references, fair net-cost comparisons and the automatic search remain pending. Do not report the optimiser as implemented.

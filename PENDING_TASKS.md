@@ -35,13 +35,13 @@ All three support **2025/2026** within their stated numerical scope and are publ
 
 ## Owner-approved work — 14 November 2026, self-filing and planning
 
-Implemented and locally verified; publication/live verification pending:
+Published and live-verified; see the release evidence below:
 
-- [ ] **23. Find your situation:** 13 overlapping profiles, year changes and unsure-answer paths, English questions with German section names and current coverage notes.
-- [ ] **24. Two guided self-filing preparation journeys:** working student and commuting employee; evidence, conditional eligibility, relevant existing tools and downloadable TXT plan. No return submission or refund calculation.
-- [ ] **25. Investment-tax comparison requirements:** shared-profile baseline, affordability, distinct tax treatments, fair comparisons and release tests defined in [the specification](INVESTMENT_TAX_COMPARISON_SPEC.md). The numerical optimiser is a separate pending implementation.
+- [x] **23. Find your situation:** 13 overlapping profiles, year changes and unsure-answer paths, English questions with German section names and current coverage notes.
+- [x] **24. Two guided self-filing preparation journeys:** working student and commuting employee; evidence, conditional eligibility, relevant existing tools and downloadable TXT plan. No return submission or refund calculation.
+- [x] **25. Investment-tax comparison requirements:** shared-profile baseline, affordability, distinct tax treatments, fair comparisons and release tests defined in [the specification](INVESTMENT_TAX_COMPARISON_SPEC.md). The numerical optimiser is a separate pending implementation.
 
-Local evidence and remaining publication step: [self-filing companion review](REVIEWS/2026-11-14-self-filing-companion.md). These items do not complete TS04 or replace the scheduled Sunday audits.
+Local and live verification evidence: [self-filing companion review](REVIEWS/2026-11-14-self-filing-companion.md). These items do not complete TS04 or replace the scheduled Sunday audits.
 
 ## Scheduled for Sunday, 15 November 2026
 

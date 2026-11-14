@@ -25,4 +25,8 @@ Official ELSTER private-person and certificate-retrieval pages, ELSTER 2025 educ
 
 ## Publication
 
-Awaiting publication and live checks. The previous main commit `664c619f7955dd7d83f30f3ba0292f692dbba362` had successful Pages run `43584253118` before release preparation. Recheck main and all active Pages states immediately before committing. Preserve the existing public URL and scheduled audits.
+Feature commit `dc5f801977afc23b2b2d508ec95cf00777b07420` deployed successfully through [Pages run 43603523397](https://github.com/nikunjsb/Finbridge/actions/runs/43603523397). A normal public-page reload served build **6399c4aac147**. The public questionnaire, working-student and commuting examples, existing work worksheet navigation and TXT download passed live checks. The downloaded file was read and confirmed to contain the selected-year preparation data. [Open the companion](https://nikunjsb.github.io/Finbridge/#taxplan/prepare).
+
+![Published self-filing companion](2026-11-14-self-filing-companion.jpg)
+
+The previous main commit `664c619f7955dd7d83f30f3ba0292f692dbba362` had successful Pages run `43584253118` before release preparation. Recheck main and all active Pages states immediately before committing. Preserve the existing public URL and scheduled audits.

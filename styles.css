@@ -732,3 +732,19 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 #taxCompanion .result{overflow-wrap:anywhere}
 #taxCompanion [hidden]{display:none!important}
 @media(max-width:600px){.companion-choices{grid-template-columns:minmax(0,1fr)}.companion-options{padding:12px}.companion-actions .button{max-width:100%;white-space:normal}}
+
+/* Let long select options shrink inside their form column. */
+.field{min-width:0}
+
+/* Small breathing spaces for stacked tax controls and their actions. */
+#taxPlanning form > .field + .field,
+#taxTransferForm .grid > div > .field + .field{margin-top:14px}
+#taxPlanning form > .field + .grid{margin-top:20px}
+#taxPlanning form > .button{margin-top:16px;max-width:100%;white-space:normal}
+#taxPlanning .formgrid + p{margin-top:14px}
+
+/* Jump targets must clear both sticky desktop bars (132px in total). */
+.inv-workspace section,.expat-news-card[id],[id^="fbImmigration-"]{scroll-margin-top:148px}
+@media(max-width:700px){
+ .inv-workspace section,.expat-news-card[id],[id^="fbImmigration-"]{scroll-margin-top:88px}
+}

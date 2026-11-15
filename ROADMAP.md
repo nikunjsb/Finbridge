@@ -5,24 +5,24 @@ Updated: 2026-11-13. Status: public beta / in progress. This plan distinguishes 
 | Phase | Workstream | Exit criteria | Status |
 |---|---|---|---|
 | P0 | Desktop/mobile UX smoke tests | Critical journeys checked on both screen sizes after relevant changes | Money-check/payslip links, saved choices, reset, evidence counters and a 390px viewport checked on 12 November; full-site regression continues |
-| P1 | Release quality & traceability | Scheduled QA, deployment checks and repeatable tests | Release QA and hourly monitoring active; 64 local tests pass; news automation carries the release interlock |
+| P1 | Release quality & traceability | Scheduled QA, deployment checks and repeatable tests | Release QA and hourly monitoring active; 178 local tests documented in the 14 November expense-workspace review; deployment guard requires successful prior Pages release |
 | P2 | Privacy & trust baseline | Accurate service notices and operator/contact information | Service disclosures exist and stale setup notes are reconciled; operator-specific details and full review remain pending |
 | P3 | Optional topic insights | Explicit opt-in, fixed enums, aggregate-only rows and 30 UTC-date retention | Worker/D1 setup previously confirmed; frontend configured and off by default per visitor. Local tests pass; authenticated live cron/log verification scheduled for Sunday 15 November |
 | P4 | Private analytics dashboard | Owner-authenticated reports; no public database access | Read-only D1 aggregate queries ready; protected dashboard UI and authenticated reporting still planned |
 | P5 | Content accuracy | Dated, jurisdiction-relevant official sources | Money guidance, pension refund, German-course and fund-exit-tax updates reviewed on 12 November; wider audit continues |
 | P6 | Journey completeness | Relevant newcomer, healthcare, immigration and cross-border paths | Nine newcomer profiles, healthcare recognition and departure journeys implemented; fuller residency/account scenarios planned |
-| P7 | Financial tool QA | Independent boundary/reference tests for salary, insurance and budget | 64 local checks include 40 new planning/reference cases; three 2026 tariff outputs independently matched the Bavarian official calculator. Wider payroll/reference coverage remains pending |
+| P7 | Financial tool QA | Independent boundary/reference tests for salary, insurance and budget | 178 local checks documented through 14 November, including the earlier 40 planning/reference cases; three 2026 tariff outputs independently matched the Bavarian official calculator. Wider payroll/reference coverage remains pending |
 | P8 | Performance & accessibility | Keyboard, screen readers, contrast and mobile/error states | Narrow-screen money-guidance checks complete; wider accessibility/performance audit scheduled for Sunday 15 November |
 | P9 | Public beta operations | Reliable releases and preserved tester access | GitHub Pages live; domain/hosting work deferred until 22 November 2026 |
 | P10 | Feedback and learning loop | Private feedback review and actionable, deduplicated findings | Private repository read access verified; daily QA includes feedback through 19 December; owner analytics review awaits live report verification |
-| P11 | Tax-saving guidance and tools | Guided opportunities, evidence checks, year-specific estimates and independent reference cases | Selected TS01/TS07–TS10 preparation features deployed and live-verified on 13 November; TS02–TS06 extensions remain pending. See [selected checklist](PENDING_TASKS.md) and [tax roadmap](TAX_SAVINGS_ROADMAP.md) |
+| P11 | Tax-saving guidance and tools | Guided opportunities, evidence checks, year-specific estimates and independent reference cases | TS01–TS03 and TS05–TS10 preparation/worksheet features deployed and live-verified by 14 November; TS04 remains pending. Wider tax QA remains open. See [selected checklist](PENDING_TASKS.md) and [tax roadmap](TAX_SAVINGS_ROADMAP.md) |
 
 ## Security work — scheduled 20 November
 
 The owner assigned a dedicated security review/hardening session to Friday 20 November 2026, through the existing Release QA task. [SECURITY_PLAN.md](SECURITY_PLAN.md) and checklist item 19 track the scope, evidence and blockers. Existing functional checks are not a full security audit. Sunday 15 November operations/accessibility checks and the 22 November hosting review retain their dates.
 
 ## Current implementation inventory
-- The 13 November selected tax-preparation release is deployed and live-verified with 64 passing local checks. See [review](REVIEWS/2026-11-13-tax-planning.md).
+- The 13 November selected tax-preparation release is deployed and live-verified with 64 passing local checks; 14 November tax worksheets and expense-workspace enhancements were subsequently published and verified, with 178 tests recorded in the later review. See [review](REVIEWS/2026-11-13-tax-planning.md).
 - The site includes the money self-check, detailed payslip guide, family-support preparation, double-household evidence and departure document packs.
 - Location-trial and topic-insights endpoints are configured separately from AI and feedback. Topic analytics remains off by default for each visitor.
 - Local tests exercise 14-day location expiry and the latest 30 UTC-date Insights cleanup using the actual SQL schemas. They do not verify that a deployed Cloudflare cron ran.
@@ -58,7 +58,7 @@ See [RELEASE_PLAN.md](RELEASE_PLAN.md) for the pending queue, proposed release o
 
 1. Verify deployed Cloudflare cron executions, binding/log settings and retained-row counts using authenticated owner access.
 2. Prepare operator-specific public contact/identity details for the privacy/operator notices; do not invent or expose a private home address.
-3. Work through the [tax-saving priorities](TAX_SAVINGS_ROADMAP.md): guided claim finder, work expenses, relocation/double households, parent support and household services, with independent calculator reference cases and wider accessibility checks.
+3. Work through the [tax-saving priorities](TAX_SAVINGS_ROADMAP.md): remaining TS04 relocation/double-household extension, wider calculator reference cases and accessibility checks. TS02–TS03 and TS05–TS06 are already published and live-verified.
 4. Build protected owner reporting from the aggregate queries, with server-side authentication before exposing any report endpoint.
 5. Expand Germany–India residency/account scenarios and the transfer-cost worksheet using official sources.
 6. Revisit domain/hosting on 22 November, preserving the tester link and user backups.

@@ -48,6 +48,10 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 - [x] **26a. Connected expense records and planning:** edit/duplicate, year summaries, clear allowance labels, overlap checks, reviewed 2026 work-tax comparisons, paid/planned scenarios, six preparation checklist selections and PDF/TXT/CSV tax-pack downloads. Published in commit `8964b55bdf4517a3f494d6462fd7d5a4830ee693` with successful Pages run `43609869136`. Live edit-in-place, record/checklist reload persistence and responsive checks at 320, 390, 700, 900 and 1348px pass. Local ZIP/PDF checks and 174 tests pass. The readable-report follow-up is also published and live-verified: clearer allowance/spending descriptions, evidence/next actions/form names and a raw-input appendix. TXT and ZIP/PDF downloads pass independent checks; 178 tests pass. Attachment verification remains separate in 26b. [Scope and evidence](REVIEWS/2026-11-14-expense-workspace.md).
 - [ ] **26b. Evidence and tax-pack restore browser verification:** local PDF/JPEG/PNG storage, attachment downloads and missing-ID ZIP restore are implemented; byte/type/size/CRC/manifest tests pass. The browser file-selection permission was declined, so attachment selection/storage and restore were not exercised end to end. No workaround or second upload attempt was made. Keep this verification pending.
 
+## Completed and verified — 16 November 2026
+
+- [x] **6. Relocation/double-household expansion (bounded 2026 preparation):** own-household/centre-of-life/financial participation screening; dated land/air and first/final journeys; furnishing depreciation; domestic meals; moving actuals; reimbursements; overlaps; local save and readable adviser exports. Published and live-verified after successful Pages deployment; 203 tests pass, including 25 new reference/security/data-consistency checks. [Scope, evidence and advanced cases](REVIEWS/2026-11-16-relocation.md). Advanced cases remain **6b**, rather than being represented as supported calculations. Focused question-history/backup fixes do not complete the broader security review.
+
 ## Scheduled for Sunday, 15 November 2026
 
 - [ ] **15. Cloudflare verification:** deployed versions/bindings, logging, cron executions and retention. Authenticated owner evidence is still required; local tests do not complete this task.
@@ -60,7 +64,6 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 ## Other pending work
 
 - [ ] **3. Full desktop/mobile regression:** new release flows will be checked during publication; a complete whole-site regression remains with Sunday QA and future releases.
-- [ ] **6. Relocation/double-household extension (bounded 2026 preparation):** implemented and locally verified; awaiting guarded publication/live checks. Eligibility screening, dated land/air and first/final journeys, furnishing depreciation, domestic meals, moving actuals, reimbursements, overlaps, local save and readable adviser export. [Scope, checks and remaining advanced cases](REVIEWS/2026-11-16-relocation.md).
 - [ ] **6b. Further relocation cases:** same-year unused housing-limit pooling, meal-clock restarts, older assets, foreign accommodation, additional tax years and detailed moving-cost BUKG/AUV limits. These remain explicit review cases in the first extension; no numerical claim is made for them.
 - [ ] **16. Private owner dashboard:** authentication and protected reporting; final endpoint undecided.
 - [ ] **17. Operator/contact and legal notices:** awaiting chosen public operator details and review.

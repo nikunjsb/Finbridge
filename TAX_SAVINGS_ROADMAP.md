@@ -1,6 +1,6 @@
 # FinBridge tax-saving workstream
 
-Requested: 12 November 2026. Status: TS01–TS03 and TS05–TS10 preparation features are deployed and live-verified as of 14 November; TS04 has a bounded 2026 implementation awaiting publication/live verification. Advanced follow-up remains checklist 6b. The plan does not establish eligibility for a tax claim. Hosting/domain work remains deferred until 22 November.
+Requested: 12 November 2026. Status: TS01–TS03 and TS05–TS10 preparation features are deployed and live-verified as of 14 November; TS04/checklist 6 is published and live-verified for the bounded 2026 preparation scope as of 16 November. Advanced follow-up remains checklist 6b. The plan does not establish eligibility for a tax claim. Hosting/domain work remains deferred until 22 November.
 
 ## Build on the existing site
 
@@ -10,7 +10,7 @@ Extend the money check (`#moneycheck`), claim categories (`#taxguide`), expense 
 
 - [x] TS01 and TS07–TS10: delivered as preparation/review tools on 13 November, with successful Pages deployment and live functional checks. Numerical scope is explicitly bounded; insurance/pension and complex treaty cases receive review rather than automatic eligibility or refund figures.
 - [x] TS02, TS03, TS05 and TS06: deeper work-expense, parent-support and household-service worksheets published and live-verified on 14 November for 2025/2026 within their stated scope. All 140 tests pass, including 49 new numerical/boundary checks; [scope, sources and evidence](REVIEWS/2026-11-14-tax-workbenches.md).
-- [ ] TS04: bounded 2026 extension implemented, awaiting guarded publication/live verification. [Rules, evidence and unsupported cases](REVIEWS/2026-11-16-relocation.md); advanced follow-up remains checklist 6b.
+- [x] TS04/checklist 6: bounded 2026 preparation extension published/live-verified on 16 November (203 tests). [Rules, evidence and unsupported cases](REVIEWS/2026-11-16-relocation.md); advanced follow-up remains checklist 6b.
 - [Owner checklist](PENDING_TASKS.md) preserves the eighteen chat IDs; [release review](REVIEWS/2026-11-13-tax-planning.md) records sources and validation. Wider payroll, legal/source, accessibility and performance coverage remains separately tracked.
 
 ## First implementation priorities

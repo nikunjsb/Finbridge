@@ -33,4 +33,8 @@ Official references are maintained in `relocation-core.js`: EStG §§9, 6 and 7;
 
 203 automated tests pass, including 25 new relocation/backup/reference/adversarial cases. Module syntax and dependency-based asset versions pass. Local browser: eligibility gating, synthetic €1,500 housing cost / €500 reimbursement → €500 candidate; €800 airfare + 40 land km / €100 reimbursement → €715.20; €1,200 furnishing / €200 reimbursement / 10-year life from July → €50. Save/reload/recalculate preserves the records; editing disables stale export. The actual downloaded TXT was independently read and matched the €1,215.20 rent+flight subtotal with reference inputs. At 320/390/700/900/1348px iframe widths, document scroll width matched content width (305/375/685/885/1333px). Browser ZIP/general JSON imports were not retried; the existing declined-upload verification limit remains.
 
-Publication/live verification is pending the guarded release below; do not mark the checklist complete until that check passes.
+## Published-site verification
+
+Feature commit `da5b3bca2ad544294f031fbc9e9f8c39a444d720` passed Pages run `43774637250`. The live site served build `0eb7aac750d4` at `https://nikunjsb.github.io/Finbridge/?build=0eb7aac750d4#doublehousehold`. A synthetic rent/reimbursement example produced the expected €500 conditional candidate from €1,500 recorded cost and €500 reimbursement; save, reload, load and recalculation preserved it. An actual live TXT download was independently read and matched EUR 500.00, including original normalized inputs. No user receipt/backup upload was attempted. A release screenshot was captured with the synthetic row clearly labelled.
+
+Checklist 6/TS04 is complete within the stated 2026 preparation scope. Advanced cases are retained as checklist 6b. The earlier wider accessibility/performance, operational and security reviews remain separate and incomplete unless their own evidence is recorded.

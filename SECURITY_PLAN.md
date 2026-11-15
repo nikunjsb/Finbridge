@@ -28,3 +28,7 @@ Sunday 15 November's Cloudflare operations and wider accessibility/performance c
 ## Starting assessment
 
 The 13 November passive review found baseline input/anti-spam controls, local financial processing and selected validation/retention tests, alongside work needed on browser policy, imported/stored rendering, dependencies, consistent backend limits and repository protection. The 64-check functional/reference suite is useful regression coverage; it is not a full security audit or penetration test.
+
+## Focused fixes released before the full review — 16 November 2026
+
+The owner-selected relocation extension also fixed inconsistent local question-history escaping, added bounded general-backup structure/budget checks and persistence rollback, and introduced strict relocation input/recalculation/overlap guards. 25 new reference/security/data-consistency tests pass (203 combined), with feature deployment and live checks recorded in [the scoped review](REVIEWS/2026-11-16-relocation.md). These provide evidence for the later audit but do not complete SEC01–SEC06, a full legacy backup-schema review or authenticated Cloudflare/repository-account controls.

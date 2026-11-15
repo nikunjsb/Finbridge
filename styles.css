@@ -767,6 +767,19 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 .ew-evidence ul{padding-left:18px}.ew-evidence li{line-height:1.8;margin:10px 0}.ew-evidence .button{padding:6px 9px;font-size:11px;margin:4px 0}
 .ew-check{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.7;margin:18px 0}
 .ew-check input{flex:0 0 auto;width:17px;height:17px;margin:3px 0 0;accent-color:var(--atlas-accent,#426b59)}
+.health-system-guide>p{font-size:14px;line-height:1.8;max-width:900px}
+.health-system-guide .stat{font-size:25px;margin:12px 0;overflow-wrap:anywhere}
+.health-guide-details{margin:16px 0;padding:20px}
+.health-guide-details>summary{cursor:pointer;font-size:14px;line-height:1.6}
+.health-guide-details[open]>summary{margin-bottom:18px}
+.health-guide-details :is(p,li){font-size:13px;line-height:1.8}
+.health-guide-details li{margin:10px 0}.health-guide-details a{overflow-wrap:anywhere}
+.health-guide-table{overflow-x:auto;max-width:100%}
+.health-guide-table table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.7}
+.health-guide-table :is(th,td){text-align:left;vertical-align:top;border-bottom:1px solid var(--atlas-rule,#ddd);padding:14px;min-width:170px}
+.health-guide-table thead th{background:var(--atlas-wash,#f7f7f7)}
+.health-guide-scenarios{gap:24px}
+@media(max-width:700px){.health-guide-details{padding:16px}.health-guide-table :is(th,td){padding:12px;min-width:155px}.health-system-guide .stat{font-size:23px}}
 .ew-editor-meta{margin:20px 0}.ew-checklist>div{border-bottom:1px solid #e5e5e5;padding:4px 0 14px}.ew-checklist>div:last-child{border:0;padding-bottom:0}
 .ew-checklist .ew-check{margin-bottom:10px}.ew-checklist p{margin-left:27px}
 #ewProfileForm .formgrid{margin-bottom:16px}.ew-spend-preview{font-size:20px;line-height:1.5}

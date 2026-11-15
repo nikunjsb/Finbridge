@@ -1,3 +1,4 @@
+import { healthInsuranceGuide } from './health-insurance-guide.js?v=b2cb783184e0';
 import { prepareExpenseWorkspace,workspaceOverview,expenseEditorExtras,workspaceComparison,workspaceRecords,workspacePlanning,workspaceExports,commitExpense,mountExpenseWorkspace } from './expense-workspace.js?v=76ae43efafed';
 import { spendingLabel } from './expense-workspace-core.js?v=6a738efd8440';
 import { clearEvidence } from './tax-evidence.js?v=7d5a4951cf0a';
@@ -606,13 +607,14 @@ return title('LIVING IN GERMANY / HEALTH','Healthcare in Germany: doctors, hospi
 '<div class="sectionhead"><h2>Useful German terms</h2></div>'+
 '<div class="card"><div class="grid two"><div><p><b>Hausarzt</b> — family doctor / GP</p><p><b>Facharzt</b> — specialist doctor</p><p><b>Überweisung</b> — referral</p><p><b>Termin</b> — appointment</p></div><div><p><b>Notaufnahme</b> — emergency department</p><p><b>Rezept / E-Rezept</b> — prescription</p><p><b>Krankenversicherung</b> — health insurance</p><p><b>Apotheke</b> — pharmacy</p></div></div><a class="biglink" href="#language">More German terms and letters →</a></div>'+
 '<div class="sectionhead"><h2>Related AtlasEveryday guidance</h2></div>'+
-'<div class="grid two"><a href="#healthcompare" class="card link"><h3>Compare health insurance</h3><p>Review statutory insurer contributions, published benefits and comparison limitations.</p><span class="arrow">Compare providers →</span></a><a href="#healthcare" class="card link"><h3>Working in healthcare?</h3><p>Doctors, nurses, pharmacists and allied professionals: see the separate qualification-recognition guide.</p><span class="arrow">Professional recognition →</span></a></div>'+
+'<div class="grid two"><a href="#healthcompare" class="card link"><h3>Compare health insurance</h3><p>Understand public versus private cover, then review statutory contributions and published benefits.</p><span class="arrow">Compare providers →</span></a><a href="#healthcare" class="card link"><h3>Working in healthcare?</h3><p>Doctors, nurses, pharmacists and allied professionals: see the separate qualification-recognition guide.</p><span class="arrow">Professional recognition →</span></a></div>'+
 '<p class="muted" style="margin-top:16px">Official sources are linked alongside each topic. Information may change; confirm insurance coverage and referral requirements with the treating practice or insurer before booking. No personal health information is collected by this guide.</p>';
 }
 
 function healthCompare(){
 const options=gkvOptions.map(x=>'<option value="'+x.id+'">'+escapeHTML(x.name)+' (2026: '+x.rate.toFixed(2)+'%)</option>').join('');
-return title('INSURANCE / GERMANY','Compare statutory health insurers','Calculate employee health-insurance contributions and compare insurer benefits using their official published pages.')+
+return title('INSURANCE / GERMANY','Public or private health insurance?','Understand GKV and PKV, compare the long-term trade-offs, then explore statutory insurer contributions and benefits.')+
+healthInsuranceGuide()+
 '<div class="note"><b>Important for January 2027:</b> The German Ministry of Health has set the <b>average additional rate at 2.9% for 2027</b>, unchanged from 2026. This is <b>not</b> the rate each insurer will charge: each fund decides separately. As of 9 November 2026, the comparison does not mark any insurer-specific 2027 rate as confirmed. The government has proposed raising the income ceiling from €69,750 (2026) to €76,500 (2027); the regulation is not yet fully finalized.</div>'+
 '<div class="card"><h3>Compare your current provider and a possible switch</h3><form id="healthCompareForm" class="formgrid">'+
 '<label class="field">Annual gross employee salary (€)<input name="salary" type="number" min="0" max="1000000" step="100" value="80000" required></label>'+

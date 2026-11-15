@@ -58,7 +58,7 @@ See [RELEASE_PLAN.md](RELEASE_PLAN.md) for the pending queue, proposed release o
 
 1. Verify deployed Cloudflare cron executions, binding/log settings and retained-row counts using authenticated owner access.
 2. Prepare operator-specific public contact/identity details for the privacy/operator notices; do not invent or expose a private home address.
-3. Work through the [tax-saving priorities](TAX_SAVINGS_ROADMAP.md): remaining TS04 relocation/double-household extension, wider calculator reference cases and accessibility checks. TS02–TS03 and TS05–TS06 are already published and live-verified.
+3. Work through the [tax-saving priorities](TAX_SAVINGS_ROADMAP.md): TS04 bounded 2026 extension awaiting publication/live checks, advanced relocation cases (checklist 6b), wider calculator reference cases and accessibility checks. TS02–TS03 and TS05–TS06 are already published and live-verified.
 4. Build protected owner reporting from the aggregate queries, with server-side authentication before exposing any report endpoint.
 5. Expand Germany–India residency/account scenarios and the transfer-cost worksheet using official sources.
 6. Revisit domain/hosting on 22 November, preserving the tester link and user backups.

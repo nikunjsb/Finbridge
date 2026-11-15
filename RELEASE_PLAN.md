@@ -2,7 +2,7 @@
 
 Public branding approved on 13 November 2026: **AtlasEveryday**, with the country label **Germany · Deutschland**. The header, page title, visitor copy and download labels use the new name. The existing repository, tester URL, browser-storage keys and separate service identifiers retain their FinBridge names for continuity. Germany–India guidance remains part of the site; domain/hosting review stays on 22 November.
 
-Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The selected tax-planning items are deployed and verified complete. That release passed 64 local checks; the current combined suite has 178, including 18 expense-workspace and four readable-report checks, including 16 self-filing companion checks, 27 investment-planner and 49 new expense/support/household worksheet checks. Other pending feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
+Baseline: 13 November 2026. The owner selected items 1, 2, 4, 9, 10, 11, 12 and 13 for the current release. The selected tax-planning items are deployed and verified complete. That release passed 64 local checks; the current combined suite has 203, including 18 expense-workspace and four readable-report checks, including 16 self-filing companion checks, 27 investment-planner and 49 new expense/support/household worksheet checks. Other pending feature release dates have not been agreed. The confirmed hosting milestone is a discussion/review on 22 November, not an automatic migration.
 
 ## Where updates are released
 
@@ -38,7 +38,7 @@ Keep the existing tester URL working. Domain, DNS and hosting migration work is 
 | ID | Pending work | Status / next requirement | Proposed release position | Target date | Destination |
 |---|---|---|---|---|---|
 | SEC | Security review/hardening: browser data and imports, CSP/headers, dependencies, Worker abuse controls and repository/account protection | Planned; see SECURITY_PLAN.md and checklist item 19. Review Sunday findings; verify access and release readiness | Owner-selected security work session | 20 November 2026 — scheduled work; release depends on verification | Repository/public site; separate Workers/settings where authorized |
-| TAX-B | Relocation/double-household extension (TS04; checklist 6) | Pending; extend eligibility, furnishings/meals, actual flights, reimbursement and overlap handling. Parent-support/household-service work (TS05–TS06) is completed in TAX-WORKSHEETS | Next proposed tax-tools extension | Not scheduled | Existing public website |
+| TAX-B | Relocation/double-household extension (TS04; checklist 6) | Bounded 2026 implementation and local verification complete; awaiting guarded publication/live checks. Advanced cases remain checklist 6b. [Evidence](REVIEWS/2026-11-16-relocation.md) | Owner-selected release | 16 November 2026 — publication pending verification | Existing public website |
 | QA-FIN | Wider individual payroll, special-expense and complex treaty/foreign-tax reference coverage | Focused preparation models/reference suite implemented; wider coverage remains | Further validation with relevant releases | Not scheduled | Repository checks and public website |
 | OPS-LIVE | Verify deployed Cloudflare versions, bindings/log settings, cron history and retained-row counts | Awaiting authenticated owner evidence; included in existing Sunday QA | Operational verification | 15 November 2026 — scheduled check | Existing Cloudflare services |
 | OWNER | Protected analytics dashboard | Planned; owner authentication and protected reporting path needed. Read-only D1 console queries are ready | Separate private-service release | Not scheduled | Private reporting service; endpoint to be agreed |
@@ -56,9 +56,9 @@ The selected-task checklist is maintained in [PENDING_TASKS.md](PENDING_TASKS.md
 ## Completion baseline
 
 - Money self-check, detailed payslip explainer, family-support preparation and double-household/departure evidence checklists are implemented; they should not reappear as wholly unbuilt tasks.
-- The combined suite currently has 178 passing local tests, including 16 self-filing companion checks, 49 new expense/support/household checks, 27 investment checks, 40 prior tax-planning checks and the original 24 money/service checks. Those tests do not prove that a deployed Cloudflare cron ran.
+- The combined suite currently has 203 passing local tests, including 16 self-filing companion checks, 49 new expense/support/household checks, 27 investment checks, 40 prior tax-planning checks and the original 24 money/service checks. Those tests do not prove that a deployed Cloudflare cron ran.
 - Private feedback review is included in daily Release QA through 19 December 2026. The older standalone feedback task stays paused within the five-active-task limit.
-- TS01 and TS07–TS10 preparation features are deployed and live-verified in TAX-PREP-1. TS02–TS03 and TS05–TS06 are deployed and live-verified in TAX-WORKSHEETS; TS04 remains planned. The bounded tariff model is not a full tax assessment; broader reference coverage remains in QA.
+- TS01 and TS07–TS10 preparation features are deployed and live-verified in TAX-PREP-1. TS02–TS03 and TS05–TS06 are deployed and live-verified in TAX-WORKSHEETS; TS04 has a bounded 2026 implementation awaiting publication/live checks; advanced follow-up remains checklist 6b. The bounded tariff model is not a full tax assessment; broader reference coverage remains in QA.
 
 ## Daily monitor rules
 
@@ -73,3 +73,5 @@ Before any documentation commit, re-read main and Pages status. Wait until the p
 Use live reports for the latest head/deployment status. Do not create a commit solely to record the monitor's own commit SHA, run number, check timestamp or an unchanged list; this prevents a self-generated documentation-update loop.
 
 **EXPENSE-WORKSPACE / checklist 26a–26b:** edit-in-place records, paid/planned separation, reviewed ordinary 2026 work-tax comparison, checklist selections and tax ZIP/PDF exports are implemented. 174 tests and local calculation/download checks pass. Feature commit `8964b55bdf4517a3f494d6462fd7d5a4830ee693` passed Pages run `43609869136`; live edit/reload and 320–1348px viewport checks pass. Readable adviser/PDF/TXT follow-up `0e00f505154abd3d0d6224964881edda35b0ccaa` passed Pages run `43610524527` and live preview/TXT/ZIP/PDF checks (178 tests total). Browser file-selection permission was declined; local evidence/ZIP-restore end-to-end verification remains explicitly pending. [Scope and review](REVIEWS/2026-11-14-expense-workspace.md).
+
+**RELOCATION / 16 November 2026:** 25 new reference/security/data-consistency tests bring the combined suite to 203. 2026 dated records, eligibility gates, reimbursement separation, furniture/meal models, local save, adviser/TXT export and cross-worksheet warnings are implemented. Local browser checks pass. Publication verification pending; [scope and remaining cases](REVIEWS/2026-11-16-relocation.md). Focused question-history/backup hardening does not complete the scheduled security review.

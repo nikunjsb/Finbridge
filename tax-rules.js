@@ -1,3 +1,4 @@
+import { relocationReport } from './relocation-core.js?v=785c28b90feb';
 import { friendlyExpenseSection } from './expense-records-report.js?v=2e6c155d32f5';
 import { workbenchSummary, workbenchLabels, workbenchSources } from './tax-workbench-rules.js?v=c391eb9cc29c';
 // Reviewed 13 November 2026. Pure preparation/screening models; never a filing decision.
@@ -211,6 +212,8 @@ export function adviserText(state = {}, year = 2026) {
     if (!snapshot || String(snapshot.result?.year) !== String(year)) continue;
     lines.push(workbenchLabels[kind] + ': ' + workbenchSummary(snapshot.result), '  Original inputs/results are preserved in the reference appendix below.');
   }
+  const relocation=state.taxWorkbenches?.relocation?.[String(year)];
+  if(relocation){try{if(relocation.version!==1||String(year)!=='2026')throw Error('Unknown version or mismatched year');lines.push('',relocationReport(relocation.input,state));}catch{lines.push('Relocation worksheet could not be validated and was omitted. Reload/review it before exporting.');}}
   lines.push('Worksheet amounts may overlap with expense records above. Do not add both. Parent support is an income deduction; household services are DIRECT tax credits.', '', 'WORKSHEET REFERENCES (reviewed 14 November 2026)', ...Object.entries(workbenchSources).map(([name, url]) => name + ': ' + url));
   lines.push('', 'ADVISER QUESTIONS', 'Which expenses qualify, and which allowance/prefilled entries already cover them?', 'Which receipts, work-use evidence and reimbursements need correction?', 'Does arrival/departure, family status or foreign income change filing obligations or treaty treatment?', 'Which items are deductions, direct credits, required declarations or unsupported estimates?', '', 'RULE REFERENCES (reviewed 13 November 2026)', ...Object.entries(taxSources).map(([name, url]) => name + ': ' + url));
   lines.push('', 'REFERENCE APPENDIX — ORIGINAL CALCULATION INPUTS', 'For checking or reproducing the calculations; these are not additional claims.');

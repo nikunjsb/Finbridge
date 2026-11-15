@@ -793,3 +793,14 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  .ew-section,#expenseForm{scroll-margin-top:88px}
  .ew-toolbar .ew-actions{margin-top:0}.ew-record{padding:20px 0}
 }
+
+/* Relocation worksheet uses the shared cards and keeps each record readable on phones. */
+.rw-section{margin:18px 0}.rw-section>summary{cursor:pointer;line-height:1.65;font-size:15px}
+.rw-section[open]>summary{margin-bottom:16px}.rw-section :is(p,li){font-size:13px;line-height:1.8}
+.rw-record{min-width:0;border:1px solid var(--atlas-rule,#d5d5d5);border-radius:12px;padding:18px;margin:18px 0}
+.rw-record legend{padding:0 8px;font-weight:700}.rw-record>.button{margin-top:16px}
+.rw-result-row{border-top:1px solid var(--atlas-rule,#ddd);padding:18px 0;overflow-wrap:anywhere}
+#rwStatus{min-height:1.8em;font-size:14px}#rwOutput:focus{outline:2px solid var(--accent,#456b78);outline-offset:5px}
+#relocationWorkbench .stat{font-size:27px;overflow-wrap:anywhere}#relocationWorkbench .ew-actions{flex-wrap:wrap}
+#relocationWorkbench :is(input,select){max-width:100%;min-width:0}#relocationWorkbench .field{min-width:0}
+@media(max-width:600px){.rw-record{padding:14px}#relocationWorkbench .stat{font-size:23px}}

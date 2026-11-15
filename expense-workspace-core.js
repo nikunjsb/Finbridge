@@ -1,5 +1,5 @@
 import { friendlyExpenseRecord } from './expense-records-report.js?v=2e6c155d32f5';
-import { tariff2026 } from './tax-rules.js?v=87446554c97e';
+import { tariff2026 } from './tax-rules.js?v=f05ad518f34c';
 
 export const workCategories = ['Commuting + home office','Commuting','Home office','Work equipment','Professional education','Business travel'];
 export const expenseYear = r => Number(r.year);

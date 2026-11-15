@@ -60,7 +60,8 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 ## Other pending work
 
 - [ ] **3. Full desktop/mobile regression:** new release flows will be checked during publication; a complete whole-site regression remains with Sunday QA and future releases.
-- [ ] **6. Relocation/double-household extension:** full eligibility, actual flights, furnishings/meals and reimbursement handling (TS04).
+- [ ] **6. Relocation/double-household extension (bounded 2026 preparation):** implemented and locally verified; awaiting guarded publication/live checks. Eligibility screening, dated land/air and first/final journeys, furnishing depreciation, domestic meals, moving actuals, reimbursements, overlaps, local save and readable adviser export. [Scope, checks and remaining advanced cases](REVIEWS/2026-11-16-relocation.md).
+- [ ] **6b. Further relocation cases:** same-year unused housing-limit pooling, meal-clock restarts, older assets, foreign accommodation, additional tax years and detailed moving-cost BUKG/AUV limits. These remain explicit review cases in the first extension; no numerical claim is made for them.
 - [ ] **16. Private owner dashboard:** authentication and protected reporting; final endpoint undecided.
 - [ ] **17. Operator/contact and legal notices:** awaiting chosen public operator details and review.
 - [ ] **18. Hosting/domain review:** **22 November 2026**, preserving the existing tester link. This is a review date, not a migration commitment.

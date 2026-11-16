@@ -803,6 +803,10 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 #rwStatus{min-height:1.8em;font-size:14px}#rwOutput:focus{outline:2px solid var(--accent,#456b78);outline-offset:5px}
 #relocationWorkbench .stat{font-size:27px;overflow-wrap:anywhere}#relocationWorkbench .ew-actions{flex-wrap:wrap}
 #relocationWorkbench :is(input,select){max-width:100%;min-width:0}#relocationWorkbench .field{min-width:0}
+/* Keep wrapped questions and mixed native controls aligned within each row. */
+#relocationWorkbench .formgrid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:end}
+#relocationWorkbench .field> :is(input,select){width:100%;height:46px}
+@media(max-width:700px){#relocationWorkbench .formgrid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:600px){.rw-record{padding:14px}#relocationWorkbench .stat{font-size:23px}}
 
 /* Property planning: scoped tables keep wide yearly data inside the card. */

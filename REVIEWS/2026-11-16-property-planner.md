@@ -24,10 +24,14 @@ Links are maintained in `property-core.js`: EStG §§7,21,32a; BFH STRE202310209
 
 ## Validation before publication
 
-229 automated tests pass, including 26 new amortisation/reference, rental profit/loss, joint tariff, unknown-tax, depreciation cap, renovation/own/mixed gating, refinancing, cash/equity reconciliation, data validation, escaping, comparison and general-backup round-trip tests. A separate closed-form balance reference agrees within monthly bank-rounding tolerance.
+230 automated tests pass, including 27 new amortisation/reference, rental profit/loss, joint tariff, unknown-tax, depreciation cap, renovation/own/mixed gating, refinancing, cash/equity reconciliation, data validation, escaping, comparison and general-backup round-trip tests. A separate closed-form balance reference agrees within monthly bank-rounding tolerance.
 
 Synthetic default example: €200,000 price + €20,000 costs, €40,000 applied equity, €10,000 buffer → €180,000 loan and €50,000 upfront cash. 4% nominal / 30-year repayment gives €859.35/month. Year 1: €7,142.30 interest, €3,169.90 principal, €3,520 building AfA, -€1,262.30 rental result; tariff at baseline €60,000 moves from €14,233 to €13,748 (reduction €485), while cash flow remains -€1,427.20/year. The planner therefore does not turn a tax reduction into a positive-cash-flow claim.
 
 Local browser checks passed: unconfirmed tax stays unknown; confirmed example matches the reference; an anonymous 4% scenario and a dated synthetic 4.5% scenario compare separately, persist and reload; edited inputs disable stale export; own use removes rental income and numerical rental tax. Actual downloaded TXT and CSV were independently read: quote/limits retained and 31 CSV rows cover both 15-year cases plus header. At iframe widths 320/390/700/900/1348px, document scroll widths equal content widths (305/375/685/885/1333px), including the wide yearly-table disclosure; overflow stays inside labelled keyboard-focusable table regions. The existing declined upload/restore verification was not retried. This is scoped feature QA, not completion of the whole-site security/Cloudflare/accessibility audits.
 
-Guarded publication and live verification remain pending before marking the feature complete.
+## Published-site verification
+
+Feature `895b940f31bf2b0470b72780bb48db3063854ebe` passed Pages run `43779896203`. Live build `6abf11008790` served the new route. The synthetic default 4% scenario reproduced the checked €180,000 mortgage, €14,233 versus €13,748 tariff tax and -€1,427.20/year cash after the tax illustration. Saving/reloading/recalculating preserved inputs; a saved comparison remained visible. Actual downloaded TXT/CSV were independently read: EUR 180000.00 loan, 31 CSV rows and year-one -485 tariff change match the model. No upload or external bank transaction was attempted.
+
+The release follow-up explicitly spells out “tax reduction” versus “tax increase” and explains that annual tax relief is not a monthly payout; the before-tax funding amount can be needed until settlement. A new regression checks this wording with both a loss and a profit case. Calculations are unchanged. Checklist 27 is complete for the documented planning scope. The broader multi-investment optimiser, actual filing-year timing, live personalised rates and unsupported tax cases remain outside this release.

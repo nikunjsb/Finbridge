@@ -1,4 +1,4 @@
-import { propertyPage, mountPropertyPlanner } from './property-planner.js?v=f16e9bb69c67';
+import { propertyPage, mountPropertyPlanner } from './property-planner.js?v=2fe3c87ba4d9';
 import { questionHistoryHTML, parseGeneralBackup, MAX_BACKUP_BYTES } from './backup-safety.js?v=99c5fe98af0d';
 import { relocationPage, mountRelocation } from './relocation-workbench.js?v=a54f90af0086';
 import { healthInsuranceGuide } from './health-insurance-guide.js?v=b2cb783184e0';

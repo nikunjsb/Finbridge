@@ -92,6 +92,7 @@ export function propertyCalculation(raw){
  if(difficult.final.equity<0)warnings.push('Difficult case: projected property value is below the remaining debt. A sale may require additional cash.');
  if(x.horizon<=x.fixedYears)warnings.push('The selected horizon does not reach refinancing. The difficult case still stresses rent, vacancy, repairs and value; extend the horizon to inspect refinancing risk.');
  if(expected.years.some(r=>r.unusedLoss>0)||difficult.years.some(r=>r.unusedLoss>0))warnings.push('A rental loss exceeds the baseline taxable income in at least one year. No carry-back/forward benefit is calculated.');
+ warnings.push('Monthly cash-flow amounts are annual averages. Tax relief is not a monthly payout: you may need to fund the before-tax amount until the actual tax settlement.');
  warnings.push('Each year is a full 12-month planning scenario. 2026 tax rules and baseline taxable income are frozen, including future scenario years. Actual purchase-year timing, future laws, Soli, church tax, sale taxes, grants and other deductions are excluded.');
  warnings.push('Unexpected downside repairs are a cash expense only here; no unverified immediate tax deduction is assumed. Sale proceeds are before disposal tax, early repayment penalties and unmodelled charges. The cash buffer is held aside, not counted as invested profit.');
  return {input:x,loan,upfront,buildingBasis,depreciationRate,taxSupported,taxReasons:reasons,expected,difficult,warnings,grossRentalYield:x.use==='rental'?round(x.rent*12/x.price*100):null};

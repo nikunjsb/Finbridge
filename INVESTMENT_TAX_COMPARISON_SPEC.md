@@ -45,4 +45,4 @@ Sunday 15 November operational/accessibility reviews, Friday 20 November securit
 
 ## Standalone property planning implementation — 16 November 2026
 
-The owner approved a separate property-purchase scenario tool. It is implemented and locally verified pending guarded publication/live checks; [model, sources and tests](REVIEWS/2026-11-16-property-planner.md). It covers cash/loan/rental-tax distinctions and expected/difficult property scenarios, not fair cross-asset allocation, the optimiser or future-law projections. Those broader requirements remain pending.
+The owner approved a separate property-purchase scenario tool. It is published and live-verified within its bounded scope; [model, sources and tests](REVIEWS/2026-11-16-property-planner.md). It covers cash/loan/rental-tax distinctions and expected/difficult property scenarios, not fair cross-asset allocation, the optimiser or future-law projections. Those broader requirements remain pending.

@@ -15,7 +15,7 @@ Updated: 2026-11-13. Status: public beta / in progress. This plan distinguishes 
 | P8 | Performance & accessibility | Keyboard, screen readers, contrast and mobile/error states | Narrow-screen money-guidance checks complete; wider accessibility/performance audit scheduled for Sunday 15 November |
 | P9 | Public beta operations | Reliable releases and preserved tester access | GitHub Pages live; domain/hosting work deferred until 22 November 2026 |
 | P10 | Feedback and learning loop | Private feedback review and actionable, deduplicated findings | Private repository read access verified; daily QA includes feedback through 19 December; owner analytics review awaits live report verification |
-| P11 | Tax-saving guidance and tools | Guided opportunities, evidence checks, year-specific estimates and independent reference cases | TS01–TS03 and TS05–TS10 preparation/worksheet features deployed and live-verified by 14 November; TS04 remains pending. Wider tax QA remains open. See [selected checklist](PENDING_TASKS.md) and [tax roadmap](TAX_SAVINGS_ROADMAP.md) |
+| P11 | Tax-saving guidance and tools | Guided opportunities, evidence checks, year-specific estimates and independent reference cases | TS01–TS10 bounded preparation/worksheet features deployed and live-verified by 16 November, including TS04 for 2026. Advanced relocation cases remain checklist 6b; wider tax QA remains open. See [selected checklist](PENDING_TASKS.md) and [tax roadmap](TAX_SAVINGS_ROADMAP.md) |
 
 ## Security work — scheduled 20 November
 

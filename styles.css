@@ -804,3 +804,15 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 #relocationWorkbench .stat{font-size:27px;overflow-wrap:anywhere}#relocationWorkbench .ew-actions{flex-wrap:wrap}
 #relocationWorkbench :is(input,select){max-width:100%;min-width:0}#relocationWorkbench .field{min-width:0}
 @media(max-width:600px){.rw-record{padding:14px}#relocationWorkbench .stat{font-size:23px}}
+
+/* Property planning: scoped tables keep wide yearly data inside the card. */
+#propertyPlanner .stat{font-size:27px;overflow-wrap:anywhere}#propertyPlanner :is(p,li){line-height:1.8}
+#propertyPlanner .tw-group>p{font-size:13px}#propertyPlanner .ew-actions{flex-wrap:wrap}
+#propertyPlanner .field{min-width:0}#propertyPlanner :is(input,select){min-width:0;max-width:100%}
+.pp-details{margin:20px 0}.pp-details>summary{cursor:pointer;line-height:1.7}.pp-details[open]>summary{margin-bottom:16px}
+.pp-table{max-width:100%;overflow-x:auto;margin:20px 0}.pp-table table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.7}
+.pp-table :is(th,td){text-align:left;vertical-align:top;padding:13px;border-bottom:1px solid var(--atlas-rule,#ddd);min-width:125px}
+.pp-table th{font-weight:650}.pp-table thead{background:var(--atlas-wash,#f6f6f6)}
+.pp-table tbody th{min-width:190px}.pp-saved{padding:18px 0;border-top:1px solid var(--atlas-rule,#ddd);overflow-wrap:anywhere}
+#ppStatus{min-height:1.8em;font-size:14px}#ppResult:focus,.pp-table:focus{outline:2px solid var(--accent,#456b78);outline-offset:5px}
+@media(max-width:600px){#propertyPlanner .stat{font-size:23px}.pp-table :is(th,td){padding:10px}}

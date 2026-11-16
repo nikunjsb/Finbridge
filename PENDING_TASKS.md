@@ -70,3 +70,7 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 - [ ] **18. Hosting/domain review:** **22 November 2026**, preserving the existing tester link. This is a review date, not a migration commitment.
 
 Release destinations and dependencies: [RELEASE_PLAN.md](RELEASE_PLAN.md). Detailed tax criteria: [TAX_SAVINGS_ROADMAP.md](TAX_SAVINGS_ROADMAP.md). Validation: [13 November review](REVIEWS/2026-11-13-tax-planning.md).
+
+## Owner-approved property purchase planner — 16 November 2026
+
+- [ ] **27. Property purchase and rental investment planning:** implemented and locally verified; awaiting guarded publication/live checks. Upfront cash, amortisation/refinancing, dated quote scenarios, rent/vacancy/costs, conditional 2026 rental-tax effects, expected/difficult cases, equity/gain reconciliation, local save and TXT/CSV. 229 tests pass; [scope and verification](REVIEWS/2026-11-16-property-planner.md). The wider multi-investment optimiser remains a separate pending implementation; this property tool is not that optimiser.

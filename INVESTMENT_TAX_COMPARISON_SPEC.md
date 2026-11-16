@@ -42,3 +42,7 @@ Offer two explicit objectives: highest estimated current tax saving among suppor
 - Manual slider results and automatic search agree on fixed examples. Desktop/mobile, keyboard, exports, baseline regression and live-asset freshness checks pass before completion.
 
 Sunday 15 November operational/accessibility reviews, Friday 20 November security work and 22 November hosting review retain their existing scope. The relocation/double-household extension TS04 remains pending.
+
+## Standalone property planning implementation — 16 November 2026
+
+The owner approved a separate property-purchase scenario tool. It is implemented and locally verified pending guarded publication/live checks; [model, sources and tests](REVIEWS/2026-11-16-property-planner.md). It covers cash/loan/rental-tax distinctions and expected/difficult property scenarios, not fair cross-asset allocation, the optimiser or future-law projections. Those broader requirements remain pending.

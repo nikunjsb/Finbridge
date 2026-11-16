@@ -826,3 +826,8 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 .source-links .listrow{flex-wrap:wrap}
 .source-links .listrow>div{min-width:0;overflow-wrap:anywhere}
 .source-links .listrow>.button{flex-shrink:0}
+
+/* Keep fieldset titles inside the card instead of cutting through its border.
+   Retain the native legend so assistive technology still names each group. */
+:is(.tw-group,.tw-record,.rw-record)>legend{float:left;width:100%;max-width:100%;padding:0;margin:0 0 20px;line-height:1.5;overflow-wrap:anywhere}
+:is(.tw-group,.tw-record,.rw-record)>legend+*{clear:both}

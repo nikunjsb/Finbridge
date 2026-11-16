@@ -10,3 +10,7 @@ Verification:
 - 113 linked main pages, guide/term/topic templates and calculator subpages visited at 320px with route identity and document width checks. A transient parent-support measurement was rechecked after rendering: client/scroll width both 305px.
 - Additional tax-planning form checks at 900px; no visible control-bottom offsets or page overflow found.
 - Existing 235 automated tests and asset-version validation pass. This is a layout review, not an exhaustive interaction or security audit. Upload/import verification remains pending.
+
+## Section-title follow-up
+
+At the owner's request, shared worksheet/record legends now render as full-width heading blocks inside their card padding, rather than interrupting the upper border. Native fieldset/legend semantics remain intact. A 20px gap separates the heading from subsequent content; long titles wrap within the card. Property groups were measured 21px inside their border with the expected 20px content gap. Property, relocation and tax worksheet styles were inspected at 900px and 320px without page overflow. Calculation/storage code is unchanged.

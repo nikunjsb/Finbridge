@@ -73,6 +73,8 @@ Release destinations and dependencies: [RELEASE_PLAN.md](RELEASE_PLAN.md). Detai
 
 ## Owner-approved property purchase planner — 16 November 2026
 
-- [x] **27. Property purchase and rental investment planning:** published and live-verified on 16 November 2026. Upfront cash, amortisation/refinancing, dated quote scenarios, rent/vacancy/costs, conditional 2026 rental-tax effects, expected/difficult cases, equity/gain reconciliation, local save and TXT/CSV. 235 tests pass; [scope and verification](REVIEWS/2026-11-16-property-planner.md). The wider multi-investment optimiser remains a separate pending implementation; this property tool is not that optimiser.
+- [x] **27. Property purchase and rental investment planning:** published and live-verified on 16 November 2026. Upfront cash, amortisation/refinancing, dated quote scenarios, rent/vacancy/costs, conditional 2026 rental-tax effects, expected/difficult cases, equity/gain reconciliation, local save and TXT/CSV. 240 tests pass; [scope and verification](REVIEWS/2026-11-16-property-planner.md). The wider multi-investment optimiser remains a separate pending implementation; this property tool is not that optimiser.
 
 Property-planner follow-up: [targeted flaw/flow review](REVIEWS/2026-11-16-property-flow-review.md) records incomplete-input, interim-funding, sale-cost and refinancing fixes, with five additional regressions. Wider security and operational checks retain their separate pending statuses.
+
+Property layout follow-up: shorter basic form, adaptive own/rental/mixed fields, optional tax opt-in and separate cash/tax/equity results. [Review](REVIEWS/2026-11-16-property-structure.md).

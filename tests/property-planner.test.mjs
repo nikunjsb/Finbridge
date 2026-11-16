@@ -44,3 +44,19 @@ test('an explicit zero deductible portion remains distinct from an unknown porti
 test('budget warnings account for pre-tax funding even when the after-tax average fits',()=>{const r=calc({...base(),horizon:1,monthlyBudget:140});assert.equal(r.expected.worstAnnualFundingBeforeTax,1912.2);assert.ok(r.expected.worstAnnualFunding<1680);assert.ok(r.warnings.some(w=>w.startsWith('Expected case:')&&w.includes('before-tax funding')));});
 test('selling costs can require closing cash even while property equity is positive',()=>{const r=calc({...base(),taxConfirmed:'',price:100000,purchaseCosts:0,equity:1000,rate:0,refinanceRate:0,loanYears:40,fixedYears:10,horizon:1,sellingPercent:10});assert.ok(r.difficult.final.equity>0);assert.ok(r.difficult.netEquity<0);assert.ok(r.warnings.some(w=>w.startsWith('Difficult case:')&&w.includes('selling costs exceed')));});
 test('cash purchases and fully fixed repayment do not get irrelevant refinancing-risk warnings',()=>{for(const x of [{...base(),equity:220000},{...base(),loanYears:10,fixedYears:10,horizon:10}]){const r=calc(x);assert.ok(!r.warnings.some(w=>w.includes('does not reach refinancing')));assert.ok(propertyResultHTML(r).includes('Not reached / not needed'));}});
+
+test('cash-only planner ignores inactive tax fields while preserving real cash costs',async()=>{
+ const {propertyPlannerInput}=await import('../property-planner.js');const raw={...base(),annualCosts:0,deductibleCosts:'bad',income:'bad',buildYear:'bad',buildingShare:'bad'};const before=JSON.stringify(raw);const r=calc(propertyPlannerInput(raw,false));assert.equal(r.taxSupported,false);assert.equal(r.expected.years[0].costs,0);assert.equal(r.expected.years[0].taxDelta,null);assert.equal(JSON.stringify(raw),before);
+});
+test('own-use planner cannot retain hidden rental cash or be blocked by rental assumptions',async()=>{
+ const {propertyPlannerInput}=await import('../property-planner.js');const r=calc(propertyPlannerInput({...base(),use:'own',rent:'bad',vacancy:'bad',rentGrowth:'bad',stressVacancy:'bad',stressRentCut:'bad'},true));assert.equal(r.expected.years[0].rent,0);assert.equal(r.difficult.years[0].rent,0);assert.equal(r.taxSupported,false);
+});
+test('mixed use keeps entered rental cash but does not invent a tax allocation',async()=>{
+ const {propertyPlannerInput}=await import('../property-planner.js');const r=calc(propertyPlannerInput({...base(),use:'mixed',rent:500},true));assert.equal(r.expected.years[0].rent,5700);assert.equal(r.expected.years[0].taxDelta,null);
+});
+test('enabled tax inputs still require confirmation and valid reviewed allocations',async()=>{
+ const {propertyPlannerInput}=await import('../property-planner.js');assert.equal(calc(propertyPlannerInput(base(),true)).expected.years[0].taxDelta,-485);assert.equal(calc(propertyPlannerInput({...base(),taxConfirmed:''},true)).taxSupported,false);assert.throws(()=>calc(propertyPlannerInput({...base(),annualCosts:0,deductibleCosts:100},true)),/deductible portion/);
+});
+test('compact summary never presents an unassessed tax effect as available monthly relief',async()=>{
+ const {propertyPlannerInput,propertyQuickHTML}=await import('../property-planner.js');const html=propertyQuickHTML(calc(propertyPlannerInput(base(),false)));assert.ok(html.includes('€159.35'));assert.ok(html.includes('before tax'));assert.ok(html.includes('Tax effect is not assessed'));assert.ok(!html.includes('€118.93'));
+});

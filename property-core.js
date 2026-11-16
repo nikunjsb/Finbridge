@@ -18,7 +18,7 @@ const pick=(v,values,label)=>{if(!values.includes(v))throw Error('Check '+label+
 export function validatePropertyInput(raw){
  if(!raw||typeof raw!=='object'||Array.isArray(raw)||raw.version!==1||!['number','string'].includes(typeof raw.year)||String(raw.year)!=='2026')throw Error('Unsupported property worksheet version or tax reference year.');
  const x={version:1,year:2026};
- for(const [k,[min,max]] of Object.entries(numeric))x[k]=num(raw[k],k,min,max);
+ for(const [k,[min,max]] of Object.entries(numeric))x[k]=['buildingShare','deductibleCosts'].includes(k)&&(raw[k]===''||raw[k]===null)?null:num(raw[k],k,min,max);
  for(const k of ['loanYears','fixedYears','horizon'])if(!Number.isInteger(x[k]))throw Error('Use whole years for '+k+'.');
  x.use=pick(raw.use,['rental','own','mixed'],'property use');x.assessment=pick(raw.assessment,['single','joint'],'assessment');x.taxConfirmed=pick(raw.taxConfirmed,['','yes','no'],'tax review');
  x.apr=raw.apr===''||raw.apr===null?null:num(raw.apr,'effective annual rate for reference',0,30);
@@ -26,7 +26,7 @@ export function validatePropertyInput(raw){
  x.buildYear=raw.buildYear===''||raw.buildYear===null?null:num(raw.buildYear,'completion year',1700,2026);if(x.buildYear!==null&&!Number.isInteger(x.buildYear))throw Error('Enter a whole building completion year.');
  if(x.equity>x.price+x.purchaseCosts+x.initialWorks)throw Error('Own funds applied cannot exceed the purchase and upfront costs. Keep surplus savings in the buffer.');
  if(x.fixedYears>x.loanYears)throw Error('The fixed-interest period cannot exceed the repayment term in this model.');
- if(x.deductibleCosts>x.annualCosts)throw Error('The deductible portion cannot exceed annual cash costs. Do not add interest or depreciation here.');
+ if(x.deductibleCosts!==null&&x.deductibleCosts>x.annualCosts)throw Error('The deductible portion cannot exceed annual cash costs. Do not add interest or depreciation here.');
  if(x.stressVacancy<x.vacancy)throw Error('Downside vacancy must be at least the expected vacancy.');
  if(x.stressValueGrowth>x.valueGrowth)throw Error('Downside property growth must not exceed expected growth.');
  if(x.refinanceRate+x.stressRateRise>20)throw Error('The stressed refinancing rate exceeds this model’s 20% limit.');
@@ -54,12 +54,14 @@ export function mortgageSchedule(principal,rate,years,fixedYears,refinanceRate,h
  return {initialPayment,refinancePayment,rows};
 }
 export function propertyCalculation(raw){
- const x=validatePropertyInput(raw),loan=round(x.price+x.purchaseCosts+x.initialWorks-x.equity),upfront=round(x.equity+x.buffer),buildingBasis=round((x.price+x.purchaseCosts)*x.buildingShare/100);
+ const x=validatePropertyInput(raw),loan=round(x.price+x.purchaseCosts+x.initialWorks-x.equity),upfront=round(x.equity+x.buffer),buildingBasis=x.buildingShare===null?null:round((x.price+x.purchaseCosts)*x.buildingShare/100);
  const depreciationRate=x.buildYear===null?null:x.buildYear>=2023?.03:x.buildYear>=1925?.02:.025;
  const reasons=[];
  if(x.use!=='rental')reasons.push(x.use==='own'?'Owner-occupied home: this rental-tax model does not assess private-home relief.':'Mixed use: actual loan/cost allocation needs separate review; no proportional tax shortcut is applied.');
  if(x.taxConfirmed!=='yes')reasons.push('Confirm the ordinary German rental-tax conditions and the verified deductible-cost/building allocation before enabling the tax illustration.');
  if(x.income===null)reasons.push('Enter taxable income excluding this property, not gross salary.');
+ if(x.buildingShare===null)reasons.push('Confirm the building/land allocation before estimating tax. Cash planning remains available.');
+ if(x.deductibleCosts===null)reasons.push('Confirm the deductible annual cost portion before estimating tax. Do not substitute zero for an unknown amount.');
  if(x.buildYear===null)reasons.push('Confirm the building’s completion year.');
  if(x.initialWorks>0)reasons.push('Upfront renovation is included in financing/cash needs, but its immediate-versus-capital tax classification requires separate review. Tax illustration unavailable.');
  const taxSupported=reasons.length===0;
@@ -71,7 +73,7 @@ export function propertyCalculation(raw){
    const potentialRent=x.use==='own'?0:x.rent*12*(1+x.rentGrowth/100)**(y-1)*(stress?1-x.stressRentCut/100:1);
    const rent=round(potentialRent*(1-(stress?x.stressVacancy:x.vacancy)/100));
    const ordinaryCosts=round(x.annualCosts*(1+x.costGrowth/100)**(y-1)),repair=stress&&y===1?x.stressRepair:0,costs=round(ordinaryCosts+repair);
-   const deductible=round(x.deductibleCosts*(1+x.costGrowth/100)**(y-1));
+   const deductible=x.deductibleCosts===null?null:round(x.deductibleCosts*(1+x.costGrowth/100)**(y-1));
    const depreciation=!taxSupported||depreciationRate===null?null:round(Math.min(remainingBasis,buildingBasis*depreciationRate));if(depreciation!==null)remainingBasis=round(Math.max(0,remainingBasis-depreciation));
    const rentalResult=taxSupported?round(rent-interest-deductible-depreciation):null;
    let taxBefore=null,taxAfter=null,taxDelta=null;
@@ -82,15 +84,17 @@ export function propertyCalculation(raw){
    years.push({year:y,rent,costs,deductible,repair,interest,principal,debtPaid,depreciation,rentalResult,taxBefore,taxAfter,taxDelta,cashBefore,cashAfter,cumulativeCash,cumulativeAfter:taxSupported?cumulativeAfter:null,value,balance,equity:round(value-balance),unusedLoss:taxSupported?round(Math.max(0,-(x.income+rentalResult))):null});
   }
   const final=years.at(-1),saleCosts=round(final.value*x.sellingPercent/100),netEquity=round(final.equity-saleCosts),cumulative=taxSupported?cumulativeAfter:cumulativeCash;
-  return {label:stress?'Difficult case':'Expected case',mortgage:{initialPayment:mortgage.initialPayment,refinancePayment:mortgage.refinancePayment},years,final,netEquity,saleCosts,scenarioGain:round(netEquity-x.equity+cumulative),worstAnnualFunding:round(Math.max(0,...years.map(r=>-(r.cashAfter??r.cashBefore)))),totalPrincipal:round(loan-final.balance)};
+  return {label:stress?'Difficult case':'Expected case',mortgage:{initialPayment:mortgage.initialPayment,refinancePayment:mortgage.refinancePayment},years,final,netEquity,saleCosts,scenarioGain:round(netEquity-x.equity+cumulative),worstAnnualFunding:round(Math.max(0,...years.map(r=>-(r.cashAfter??r.cashBefore)))),worstAnnualFundingBeforeTax:round(Math.max(0,...years.map(r=>-r.cashBefore))),totalPrincipal:round(loan-final.balance)};
  };
  const expected=scenario(false),difficult=scenario(true),warnings=[...reasons];
  if(x.apr!==null&&x.apr<x.rate)warnings.push('The entered effective annual rate is below the nominal borrowing rate. Recheck the quote and whether the two figures describe the same loan.');
  if(upfront>x.availableCash)warnings.push('Upfront cash including the buffer exceeds your entered savings by EUR '+round(upfront-x.availableCash).toFixed(2)+'. This is not a bank affordability decision.');
  for(const r of [expected,difficult])if(r.worstAnnualFunding/12>x.monthlyBudget)warnings.push(r.label+': the largest yearly funding requirement exceeds your entered monthly budget. Yearly averages can hide bill/payment timing.');
+ for(const r of [expected,difficult])if(taxSupported&&r.worstAnnualFundingBeforeTax/12>x.monthlyBudget&&r.worstAnnualFunding/12<=x.monthlyBudget)warnings.push(r.label+': the after-tax average fits your monthly budget, but before-tax funding does not. You may need additional cash until tax settlement.');
+ for(const r of [expected,difficult])if(r.final.equity>=0&&r.netEquity<0)warnings.push(r.label+': selling costs exceed the remaining property equity. A sale would require extra cash even before disposal tax or repayment penalties.');
  if(loan>x.price)warnings.push('The loan exceeds the property price: some purchase/upfront costs are financed. This may affect bank terms and increases leverage.');
  if(difficult.final.equity<0)warnings.push('Difficult case: projected property value is below the remaining debt. A sale may require additional cash.');
- if(x.horizon<=x.fixedYears)warnings.push('The selected horizon does not reach refinancing. The difficult case still stresses rent, vacancy, repairs and value; extend the horizon to inspect refinancing risk.');
+ if(loan>0&&x.fixedYears<x.loanYears&&x.horizon<=x.fixedYears)warnings.push('The selected horizon does not reach refinancing. The difficult case still stresses rent, vacancy, repairs and value; extend the horizon to inspect refinancing risk.');
  if(expected.years.some(r=>r.unusedLoss>0)||difficult.years.some(r=>r.unusedLoss>0))warnings.push('A rental loss exceeds the baseline taxable income in at least one year. No carry-back/forward benefit is calculated.');
  warnings.push('Monthly cash-flow amounts are annual averages. Tax relief is not a monthly payout: you may need to fund the before-tax amount until the actual tax settlement.');
  warnings.push('Each year is a full 12-month planning scenario. 2026 tax rules and baseline taxable income are frozen, including future scenario years. Actual purchase-year timing, future laws, Soli, church tax, sale taxes, grants and other deductions are excluded.');

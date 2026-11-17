@@ -1689,8 +1689,12 @@ case 'propertyplan':content=propertyPage();break;case 'invest':content=invest();
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }
-$('#content').innerHTML='<div class="fb-start-tools" id="fbStartPageTools" aria-label="Start page preference"></div>'+(['tax','salary','taxclasses','doublehousehold','healthcompare'].includes(page)?fbTaxLocationSuggestion():'')+content+(Object.hasOwn(fbAiTopics,page)?fbAiWidget(page):'');
-if(Object.hasOwn(fbAiTopics,page))fbAiRender(page);
+$('#content').innerHTML='<div class="fb-start-tools" id="fbStartPageTools" aria-label="Start page preference"></div>'+(['tax','salary','taxclasses','doublehousehold','healthcompare'].includes(page)?fbTaxLocationSuggestion():'')+content;
+if(Object.hasOwn(fbAiTopics,page)){
+ const aiAnchor=$('#content .lead')||$('#content h1')||document.getElementById('fbStartPageTools');
+ aiAnchor.insertAdjacentHTML('afterend',fbAiWidget(page));
+ fbAiRender(page);
+}
 if(page==='immigration'&&id)requestAnimationFrame(()=>fbJumpToImmigrationSection(id));
 if(page==='news'&&id)requestAnimationFrame(()=>document.getElementById('fbNews-'+id)?.scrollIntoView({block:'start'}));
 fbUpdateLocationHeader();

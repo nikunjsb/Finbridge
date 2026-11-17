@@ -55,7 +55,7 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 ## Scheduled for Sunday, 15 November 2026
 
 - [ ] **15. Cloudflare verification:** deployed versions/bindings, logging, cron executions and retention. Authenticated owner evidence is still required; local tests do not complete this task.
-- [ ] **14. Wider accessibility and performance checks:** keyboard, screen-reader names, contrast, reflow/mobile, load size and error states. Added to the existing Sunday Release QA run.
+- [ ] **14. Wider accessibility and performance checks:** partially tested 17 November: 17 routes × four widths, actual 200%/400% zoom and representative forms. Mobile drawer focus and missing navigation bypass/route focus need fixes; startup layout stability needs controlled production measurement. Screen-reader, contrast, device and error-state coverage remains incomplete. [Browser evidence and BQA-01–04](REVIEWS/2026-11-17-browser-qa.md).
 
 ## Scheduled for Friday, 20 November 2026
 
@@ -63,7 +63,7 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 
 ## Other pending work
 
-- [ ] **3. Full desktop/mobile regression:** new release flows will be checked during publication; a complete whole-site regression remains with Sunday QA and future releases.
+- [ ] **3. Full desktop/mobile regression:** 17 November browser pass covers 17 routes at 320/390/768/1280 px and representative forms; [evidence and limits](REVIEWS/2026-11-17-browser-qa.md). Full route/edge-case/device regression remains incomplete.
 - [ ] **6b. Further relocation cases:** same-year unused housing-limit pooling, meal-clock restarts, older assets, foreign accommodation, additional tax years and detailed moving-cost BUKG/AUV limits. These remain explicit review cases in the first extension; no numerical claim is made for them.
 - [ ] **16. Private owner dashboard:** authentication and protected reporting; final endpoint undecided.
 - [ ] **17. Operator/contact and legal notices:** awaiting chosen public operator details and review.

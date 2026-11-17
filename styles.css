@@ -866,3 +866,10 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 .pp-save-actions{margin:24px 0}
 @media(max-width:1199px){.pp-layout{grid-template-columns:minmax(0,1fr)}.pp-quick{position:static;max-height:none;grid-row:1}.pp-quick:has(#ppQuickResult>p:first-child){display:none}}
 @media(max-width:700px){.pp-result-metrics{grid-template-columns:minmax(0,1fr)}#propertyPlanner .pp-result-metrics .kicker{min-height:0}.pp-steps{gap:8px}.pp-steps a{font-size:12px}.pp-quick{display:none!important}#ppPurchase,#ppFinancing,#ppExplore,#ppResult{scroll-margin-top:105px}}
+
+/* Start page is a device preference; keep the control clear of form inputs. */
+.fb-start-tools{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px 16px;margin:0 0 20px;min-width:0;font-size:12px}
+.fb-start-button{display:inline-flex;align-items:center;gap:7px;border:1px solid #ccd7cf;border-radius:9px;padding:9px 12px;background:#fff;color:#355640;font:inherit;font-weight:700;cursor:pointer;min-height:40px;white-space:normal;text-align:left}
+.fb-start-button:disabled{background:#edf2ed;color:#355640;cursor:default;opacity:1}
+.fb-start-settings{margin-bottom:18px}.fb-start-settings h2{margin:0 0 12px;font-size:20px}.fb-start-settings select{max-width:100%;width:100%}.fb-start-settings form{max-width:620px}
+@media(max-width:700px){.fb-start-tools{justify-content:flex-start;margin-bottom:18px;gap:8px 14px}.fb-start-tools>a{font-size:12px}}

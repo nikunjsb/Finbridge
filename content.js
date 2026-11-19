@@ -1,5 +1,22 @@
 export const extraArticles = [
   {
+    id: 'everyday-insurance',
+    name: 'Everyday insurance for renters, families and dog owners',
+    cat: 'Living in Germany',
+    summary: 'Compare personal liability, household contents, legal expenses, dental and dog-owner cover.',
+    overview: 'Start with who or what could suffer a loss. If a leak from your washing machine damages a neighbour’s furniture, ask your liability insurer about the claim. Damage to your own belongings is a different question for your household contents insurer.',
+    checks: [
+      'Renting? For private liability (Privathaftpflicht), check damage to rented property and lost keys. For household contents (Hausrat), compare the cost of replacing your belongings after an insured event such as a fire with the premium and deductible.',
+      'Living with a partner or children? Ask who is named or included in each contract. Check household and age conditions before cancelling duplicate policies.',
+      'Have a dog? Check dog-owner liability (Hundehalterhaftpflicht) separately and check your federal state’s rules. Veterinary bills are a separate risk.',
+      'Considering legal expenses cover (Rechtsschutz)? Check the areas covered, waiting periods, exclusions for existing disputes and any advice already available through a tenants’ association or union.',
+      'Considering supplementary dental cover (Zahnzusatz)? Compare reimbursement limits, initial caps and treatment already recommended with the amount you could pay yourself.'
+    ],
+    caution: 'Use your current policy wording and request written confirmation for uncertain cases. An insurance premium and a tax deduction are separate questions.',
+    sources: [['Verbraucherzentrale insurance needs check (German)', 'https://www.verbraucherzentrale.de/wissen/geld-versicherungen/weitere-versicherungen/check-welche-versicherungen-brauche-ich-113573'], ['Verbraucherzentrale personal liability guide (German)', 'https://www.verbraucherzentrale.de/wissen/geld-versicherungen/weitere-versicherungen/private-haftpflichtversicherung-ein-absolutes-muss-fuer-alle-13891']],
+    reviewed: '19 November 2026'
+  },
+  {
     "id": "homeoffice",
     "name": "Home office and remote-work days",
     "cat": "German tax",

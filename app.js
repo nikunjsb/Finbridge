@@ -14,7 +14,7 @@ import { taxPlanningPage, mountTaxPlanning, residenceScreenHTML } from './tax-pl
 import { calculateExpenseCore } from './expense-rules.js?v=b677e9eb8ff9';
 import { tariff2026 as taxClassESt2026 } from './tax-rules.js?v=f05ad518f34c';
 import { taxClassSocial2026, employeeHealthAnnual } from './financial-core.js?v=6055e5cf16dc';
-import { extraArticles } from './content.js?v=2dae655f4b4d';
+import { extraArticles } from './content.js?v=60b9d45167b6';
 import { moneyCheckItems, moneyCheckPage, moneyCheckProgress, moneyNextSteps, householdEvidence, departureEvidence, moneyEvidencePanel, payslipGuide, healthHouseholdReview } from './money-guidance.js?v=16cb6f8729ad';
 import { glossary, conceptBridge } from './language-data.js?v=d8d6e7ff2a22';
 import { feedbackEndpoint, turnstileSiteKey } from './feedback-config.js?v=e95f1804c02e';
@@ -427,6 +427,7 @@ const searchableTools=[
 {id:'journey/return',title:'Return to India checklist',summary:'Departure, banking, taxation, pension, insurance and contracts.',keywords:'return india abmeldung ausland pension bank'},
 {id:'residency',title:'German and Indian residency screening',summary:'Indian day-count tests, German tax residence and pension guidance.',keywords:'residency rnornr ror tax residence fema'},
 {id:'language',title:'Language Bridge',summary:'German financial terms, taxes, insurance, letters and explanations.',keywords:'german translation glossary steuerklasse lohnabrechnung'},
+{id:'guide/driving-licence',title:'Driving licence exchange in Germany',summary:'Use or exchange an Indian car licence and find the local office.',keywords:'drivers license driving licence Führerschein Fuehrerschein Umschreibung Indian car theory practical test'},
 {id:'guide/housing',title:'Rent your first flat or WG room',summary:'Find housing, arrange a viewing and budget for moving in.',keywords:'rent flat apartment Wohnung WG Kaution Warmmiete landlord viewing'}
 ];
 searchableTools.push(...portalTopics.map(topic=>({id:'topic/'+topic.id,title:topic.label,summary:topic.description,keywords:topic.keywords})));
@@ -596,6 +597,7 @@ return title('LIVING IN GERMANY','Everyday life in Germany','Practical tasks, lo
 '<div class="card"><h3>Public transport and getting around</h3><p>Check your local transport association for tickets, service areas and current fares. The Deutschlandticket has its own validity and cancellation conditions, so confirm the current terms before subscribing. Keep rail, bus and work-travel costs separate when tracking expenses.</p><a href="#budget" class="biglink">Plan transport expenses →</a><p>'+ext('https://www.bahn.de/angebot/regio/deutschland-ticket','Official Deutsche Bahn Deutschlandticket information')+'</p></div>'+
 '<div class="card"><h3>Rundfunkbeitrag and household post</h3><p>The public broadcasting contribution generally applies <b>per dwelling</b>, not separately to every person living there. Check whether someone in the household already pays before registering or replying to a letter. Exemptions can apply to certain circumstances.</p>'+ext('https://www.rundfunkbeitrag.de/','Official Beitragsservice')+'</div>'+
 '<div class="card"><h3>Doctors, pharmacies and emergencies</h3><p>Know how to find a Hausarzt and specialist, and keep your health insurance information available. For urgent medical help that is not life-threatening, contact <b>116117</b>; for an emergency, call <b>112</b>.</p><a href="#healthaccess" class="biglink">Family doctor, hospitals and appointments →</a><p><a href="#healthcompare" class="biglink">Compare health insurers →</a></p></div>'+
+'<div class="card"><h3>Driving with an Indian licence</h3><p>Check how long you can drive after moving and how to arrange the exchange.</p><a class="biglink" href="#guide/driving-licence">Driving licence checklist and local office →</a></div>'+
 '<div class="card"><h3>Everyday insurance</h3><p>Check cover for your rented home, family or dog.</p><a class="biglink" href="#guide/everyday-insurance">Which policy covers what? →</a></div>'+
 '<div class="card"><h3>Waste sorting, house rules and neighbours</h3><p>Follow local rules for recycling, collection days and bulky waste. Check the building’s <b>Hausordnung</b> for quiet hours, communal facilities and other requirements. Your municipality and building management are the best sources for local rules.</p>'+ext('https://www.make-it-in-germany.com/en/arriving-living/getting-started/housing-registration','Official housing and daily-life guidance')+'</div>'+
 '<div class="card"><h3>Banking, bills and monthly spending</h3><p>Use your bank account for rent and recurring bills, check direct debits (<b>Lastschrift</b>) and set aside money for annual statements and irregular costs. Keep important account and contract information private.</p><a href="#budget" class="biglink">Budget and expense manager →</a></div>'+
@@ -1431,7 +1433,7 @@ function newcomerJourney(){
  '<label class="field">Who is moving with me?<select id="newcomerCompanions">'+[['alone','Just me'],['partner','With my partner'],['children','With children / family']].map(([id,label])=>'<option value="'+id+'" '+(companions===id?'selected':'')+'>'+label+'</option>').join('')+'</select></label></div>'+
  '<p class="muted" style="font-size:13px">The phases below are suggested planning windows, not guaranteed legal deadlines. Check your specific residence title and local authority guidance.</p>'+
  '<div class="row" style="justify-content:flex-start;gap:10px;margin-top:15px"><span class="pill">'+done+' of '+count+' completed</span><span class="muted">Saved in this browser only</span></div></div>'+privacyNote('saved')+
- '<p><a class="biglink" href="#guide/housing">Rent your first flat or WG room →</a></p>'+
+ '<p><a class="biglink" href="#guide/housing">Rent your first flat or WG room →</a></p><p><a class="biglink" href="#guide/driving-licence">Using or exchanging an Indian driving licence →</a></p>'+
  newcomerPhases.map(([phase,label])=>{const items=allTasks.filter(x=>newcomerPhaseFor(x[0])===phase);if(!items.length)return '';return '<div class="sectionhead"><h2>'+label+'</h2><span class="pill">'+items.filter(x=>state['newcomer:'+x[0]]).length+' / '+items.length+'</span></div><div class="card fb-journey-card">'+fbSteps(items,'newcomer',fbNewcomerIcons)+'</div>';}).join('')+
  '<div class="sectionhead"><h2>Moving from India to Germany: can moving costs reduce tax?</h2></div>'+
  '<div class="card guidebody"><p><b>Possibly, for a job-related move.</b> German 2026 income-tax guidance (LStR R 9.9) recognizes qualifying employee relocation expenses when a move is professionally motivated, including certain moves from abroad to Germany. The German rules draw on the Bundesumzugskostengesetz and Auslandsumzugskostenverordnung. This is not an automatic refund, and the applicable allowances and actual costs need careful review.</p>'+
@@ -1675,7 +1677,7 @@ function fbInitNavigation(){
   let group, matches=0;
   for(const item of navigation.children){
    if(item.classList.contains('navgroup')){group=item;group.hidden=true;continue}
-   const aliases={everyday:'housing rent renting flat Wohnung WG insurance Hausrat Haftpflicht',healthcompare:'Krankenkasse',tax:'Steuerberater tax adviser',healthcare:'sworn translator recognition'};
+   const aliases={everyday:'housing rent renting flat Wohnung WG insurance Hausrat Haftpflicht driving drivers driver license licence Führerschein Fuehrerschein Umschreibung',healthcompare:'Krankenkasse',tax:'Steuerberater tax adviser',healthcare:'sworn translator recognition'};
    const label=(group.textContent+' '+item.textContent+' '+(aliases[item.dataset.nav]||'')).toLowerCase();
    item.hidden=!terms.every(term=>label.includes(term));
    if(!item.hidden){group.hidden=false;matches++}

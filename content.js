@@ -1,5 +1,29 @@
 export const extraArticles = [
   {
+    id: 'driving-licence',
+    name: 'Driving in Germany with an Indian licence',
+    cat: 'Living in Germany',
+    summary: 'Using an Indian car driving licence, arranging a German exchange (Umschreibung) and finding your local Führerscheinstelle.',
+    overview: 'Visiting Germany? If your normal residence remains abroad, you can generally drive the vehicle categories covered by your valid full licence, subject to German age and recognition rules. Moving here? For a recognised Indian licence, the usual six-month period starts when you establish normal residence in Germany. A learner’s permit does not qualify.',
+    checks: [
+      'Before driving, carry your original licence. Check the federal guidance on recognised international driving permits and German translations for your licence format. Carry the original with the permit. A permit or translation does not extend your driving entitlement.',
+      'If you move here, contact the driving licence authority (Führerscheinstelle) for your town or district early. Use the Bundesportal link below and select your place of residence. Ask which date the authority treats as the start of normal residence if your situation is unclear.',
+      'For an ordinary Indian car licence, plan for both the theory and practical tests. India is outside the Annex 11 exchange list. Ask a driving school about exam arrangements, preparation lessons, language options and a written breakdown of school, test and authority fees.',
+      'For a category B exchange, prepare your valid original Indian licence, identity document, registration evidence, biometric photo, eyesight test and first-aid course certificate. Confirm the local translation requirements and appointment procedure before paying for documents.',
+      'If the six months end while your application is pending, stop driving until you have a valid German entitlement or an approved extension. You can still pursue the exchange after the six-month driving period. If your total period of normal residence will be no longer than twelve months, ask the authority in advance about a possible extension of up to six months.'
+    ],
+    caution: 'If your licence has expired, was issued while you already lived in Germany, or is for a lorry or bus, ask the authority to assess your case before driving. If you have never held a full licence, ask for the first-time application (Ersterteilung).',
+    sources: [
+      ['Find my local driving licence office — select my town (Bundesportal)', 'https://verwaltung.bund.de/leistungsverzeichnis/de/leistung/99108047050002'],
+      ['Federal transport ministry: using foreign driving licences (English)', 'https://www.bmv.de/SharedDocs/EN/Articles/StV/Roadtraffic/validity-foreign-driving-licences-in-germany'],
+      ['Driving with a foreign licence — FeV §29', 'https://www.gesetze-im-internet.de/fev_2010/__29.html'],
+      ['German licence exchange rules — FeV §31', 'https://www.gesetze-im-internet.de/fev_2010/__31.html'],
+      ['Check the issuing country and category — Annex 11', 'https://www.gesetze-im-internet.de/fev_2010/anlage_11.html']
+    ],
+    reviewed: '19 November 2026',
+    applicability: 'Private car licences issued in India.'
+  },
+  {
     id: 'everyday-insurance',
     name: 'Everyday insurance for renters, families and dog owners',
     cat: 'Living in Germany',

@@ -27,7 +27,7 @@ export const portalTopics = [
       ['healthaccess', 'Find your way around healthcare', 'Learn about doctors, specialist appointments and urgent care.'],
       ['language', 'Understand the paperwork', 'Look up German terms and explanations of common administrative phrases.']
     ],
-    guides: ['housing', 'household', 'credit', 'scams', 'products'],
+    guides: ['housing', 'driving-licence', 'everyday-insurance', 'household', 'credit', 'scams', 'products'],
     tools: [['healthcompare', 'Health insurance comparison', 'Compare the available insurer information and contribution scenarios.', 'heart'], ['language', 'Language Bridge', 'Explain terms and common phrases in German letters.', 'language'], ['location', 'Local guidance', 'Choose your country and German federal state.', 'globe']],
     sources: [['Federal Ministry of Health', 'https://www.bundesgesundheitsministerium.de/'], ['Verbraucherzentrale: consumer information', 'https://www.verbraucherzentrale.de/']],
     keywords: 'living germany everyday housing rent doctor healthcare insurance transport language letters contracts'

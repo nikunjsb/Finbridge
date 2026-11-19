@@ -9,7 +9,7 @@ import { spendingLabel } from './expense-workspace-core.js?v=964417265e14';
 import { clearEvidence } from './tax-evidence.js?v=7d5a4951cf0a';
 import { applyPageAccents } from './page-accents.js?v=9c3c67f9012e';
 import { investmentPage, mountInvestmentPlanner } from './investment-planner.js?v=9c281cc28ea2';
-import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=dc5c457134ce';
+import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=70bbbc40dd94';
 import { taxPlanningPage, mountTaxPlanning, residenceScreenHTML } from './tax-planning.js?v=7a2ae264b924';
 import { calculateExpenseCore } from './expense-rules.js?v=b677e9eb8ff9';
 import { tariff2026 as taxClassESt2026 } from './tax-rules.js?v=f05ad518f34c';
@@ -125,6 +125,16 @@ $('#navigation').innerHTML=sections.map(([id,label,sym,group])=>{
 const header=group!==previous?'<div class="navgroup">'+group+'</div>':'';previous=group;
 return header+'<a class="navitem" data-nav="'+id+'" href="#'+id+'"><span class="sym">'+fbIcon(fbNavIcons[id]||'file')+'</span><span class="fb-nav-text">'+label+'</span></a>'
 }).join('');
+const branches=portalTopics.map(topic=>{
+ const links=new Map([['topic/'+topic.id,'All '+topic.label.toLowerCase()]]);
+ for(const id of topic.guides){
+  const guide=articles.find(article=>article.id===id);
+  if(guide)links.set('guide/'+id,guide.name);
+ }
+ for(const [route,label] of [...topic.steps,...topic.tools])if(!links.has(route))links.set(route,label);
+ return '<details><summary>'+escapeHTML(topic.label)+'</summary><ul>'+[...links].map(([route,label])=>'<li><a class="navitem" href="#'+escapeHTML(route)+'">'+escapeHTML(label)+'</a></li>').join('')+'</ul></details>';
+});
+$('#fbTopicsNav').innerHTML=branches.join('');
 }
 function cards(list){return '<div class="grid">'+list.map(a=>'<a href="#guide/'+a.id+'" class="card link"><span class="icon">'+fbIcon('book')+'</span><div class="tag">'+escapeHTML(a.cat)+'</div><h3>'+escapeHTML(a.name)+'</h3><p>'+escapeHTML(a.summary)+'</p><span class="arrow">Read guide →</span></a>').join('')+'</div>'}
 
@@ -1672,19 +1682,43 @@ function fbInitNavigation(){
  const skip=document.getElementById('fbSkipContent');
  try{if(localStorage.getItem(fbSidebarStorageKey)==='yes')document.body.classList.add('fb-sidebar-hidden')}catch{}
 
+ const topics=document.getElementById('fbTopicsNav');
+ const results=document.getElementById('fbNavMatches');
+ const pagesButton=document.getElementById('fbPagesMode');
+ const topicsButton=document.getElementById('fbTopicsMode');
+ const aliases={'guide/driving-licence':'drivers license driver licence Führerschein Fuehrerschein Umschreibung','guide/housing':'housing rent renting flat Wohnung WG','guide/everyday-insurance':'Hausrat Haftpflicht','healthcompare':'Krankenkasse','taxplan/export':'Steuerberater tax adviser','healthcare':'sworn translator recognition'};
+ let topicsMode=false;
  function filterPages(){
-  const terms=filter.value.toLowerCase().trim().split(/\s+/);
-  let group, matches=0;
-  for(const item of navigation.children){
-   if(item.classList.contains('navgroup')){group=item;group.hidden=true;continue}
-   const aliases={everyday:'housing rent renting flat Wohnung WG insurance Hausrat Haftpflicht driving drivers driver license licence Führerschein Fuehrerschein Umschreibung',healthcompare:'Krankenkasse',tax:'Steuerberater tax adviser',healthcare:'sworn translator recognition'};
-   const label=(group.textContent+' '+item.textContent+' '+(aliases[item.dataset.nav]||'')).toLowerCase();
-   item.hidden=!terms.every(term=>label.includes(term));
-   if(!item.hidden){group.hidden=false;matches++}
+  const terms=normalizeTerm(filter.value).split(' ').filter(Boolean);
+  const searching=terms.length>0;
+  navigation.hidden=searching||topicsMode;
+  topics.hidden=searching||!topicsMode;
+  results.hidden=!searching;
+  results.replaceChildren();
+  status.textContent='';
+  if(!searching)return;
+  const found=new Set();
+  for(const link of sidebar.querySelectorAll('#navigation a,#fbTopicsNav a')){
+   const route=link.hash.slice(1);
+   const group=link.closest('details')?.querySelector('summary')?.textContent||sections.find(section=>section[0]===route)?.[3]||'';
+   const label=normalizeTerm([link.textContent,group,aliases[route]].join(' '));
+   if(found.has(route)||!terms.every(term=>label.includes(term)))continue;
+   found.add(route);
+   const result=document.createElement('a');
+   result.className='navitem';result.href=link.hash;result.textContent=link.textContent;
+   results.append(result);
   }
-  status.textContent=filter.value.trim()?(matches?matches+' '+(matches===1?'page':'pages')+' found':'No matching pages. Try another word.'):'';
-  navigation.scrollTop=0;
+  status.textContent=found.size?found.size+' '+(found.size===1?'page':'pages')+' found':'No matching pages. Try another word.';
  }
+ function chooseMode(useTopics){
+  topicsMode=useTopics;
+  pagesButton.setAttribute('aria-pressed',String(!useTopics));
+  topicsButton.setAttribute('aria-pressed',String(useTopics));
+  filter.value='';
+  filterPages();
+ }
+ pagesButton.addEventListener('click',()=>chooseMode(false));
+ topicsButton.addEventListener('click',()=>chooseMode(true));
  function sync(){
   const mobile=fbMobileNavQuery.matches;
   if(!mobile)document.body.classList.remove('fb-mobile-nav-open');
@@ -1729,7 +1763,7 @@ function fbInitNavigation(){
   if(e.key==='Escape'){e.preventDefault();closeMobile();return}
   if(e.key!=='Tab')return;
   const first=sidebar.querySelector('.brand');
-  const last=[...navigation.querySelectorAll('a:not([hidden])')].pop()||filter;
+  const last=[...sidebar.querySelectorAll('a,button,input,summary')].filter(el=>el.getClientRects().length&&el.checkVisibility?.()!==false).pop()||filter;
   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
   if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
  });
@@ -1794,6 +1828,11 @@ if(page==='tax'){updateExpensePreview();mountExpenseWorkspace({state,save,render
 const locationTab=document.getElementById('fbLocationButton');if(locationTab)locationTab.hidden=(page==='overview');
 $('#breadcrumb').textContent=page==='topic'?'Topics / '+(portalTopics.find(topic=>topic.id===id)?.label||'Choose a topic'):page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
 document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'||page==='topic'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
+for(const link of document.querySelectorAll('#fbTopicsNav a')){
+ const current=link.hash==='#'+hash;
+ if(current){link.setAttribute('aria-current','page');link.closest('details').open=true}
+ else link.removeAttribute('aria-current');
+}
 fbUpdateStartPage();
 applyPageAccents($('#content'),page,id,portalTopics,articles);
 }

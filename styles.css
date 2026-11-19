@@ -892,3 +892,12 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 .fb-start-button:disabled{background:#edf2ed;color:#355640;cursor:default;opacity:1}
 .fb-start-settings{margin-bottom:18px}.fb-start-settings h2{margin:0 0 12px;font-size:20px}.fb-start-settings select{max-width:100%;width:100%}.fb-start-settings form{max-width:620px}
 @media(max-width:700px){.fb-start-tools{justify-content:flex-start;margin-bottom:18px;gap:8px 14px}.fb-start-tools>a{font-size:12px}}
+
+.fb-nav-mode{display:flex;gap:4px;margin:8px 0;padding:3px;border:1px solid #565656;border-radius:10px}
+.fb-nav-mode button{flex:1;min-height:44px;border:0;border-radius:7px;background:transparent;color:#ddd;font-weight:600}
+.fb-nav-mode button[aria-pressed=true]{background:#eee;color:#252525}
+#fbTopicsNav details{flex-shrink:0}
+#fbTopicsNav summary{cursor:pointer;padding:12px 8px;min-height:44px;color:#eee}
+#fbTopicsNav ul{margin:0 0 8px 14px;border-left:1px solid #626262;padding:0 0 0 6px;list-style:none}
+#fbTopicsNav a,#fbNavMatches a{min-height:44px;white-space:normal}
+#fbTopicsNav a[aria-current=page]{background:#393939;color:white;font-weight:700}

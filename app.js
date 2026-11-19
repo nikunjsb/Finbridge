@@ -14,7 +14,7 @@ import { taxPlanningPage, mountTaxPlanning, residenceScreenHTML } from './tax-pl
 import { calculateExpenseCore } from './expense-rules.js?v=b677e9eb8ff9';
 import { tariff2026 as taxClassESt2026 } from './tax-rules.js?v=f05ad518f34c';
 import { taxClassSocial2026, employeeHealthAnnual } from './financial-core.js?v=6055e5cf16dc';
-import { extraArticles } from './content.js?v=60b9d45167b6';
+import { extraArticles } from './content.js?v=3c7a749543bd';
 import { moneyCheckItems, moneyCheckPage, moneyCheckProgress, moneyNextSteps, householdEvidence, departureEvidence, moneyEvidencePanel, payslipGuide, healthHouseholdReview } from './money-guidance.js?v=16cb6f8729ad';
 import { glossary, conceptBridge } from './language-data.js?v=d8d6e7ff2a22';
 import { feedbackEndpoint, turnstileSiteKey } from './feedback-config.js?v=e95f1804c02e';

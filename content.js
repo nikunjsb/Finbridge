@@ -8,6 +8,11 @@ export const extraArticles = [
     checks: [
       'Before driving, carry your original licence. Check the federal guidance on recognised international driving permits and German translations for your licence format. Carry the original with the permit. A permit or translation does not extend your driving entitlement.',
       'If you move here, contact the driving licence authority (Führerscheinstelle) for your town or district early. Use the Bundesportal link below and select your place of residence. Ask which date the authority treats as the start of normal residence if your situation is unclear.',
+      'New card after moving? If your Indian licence was lost or damaged and the replacement simply records the same continuously valid car entitlement, the later print date alone does not settle recognition. A duplicate does not start another six months.',
+      'Renewed in India after moving? If the underlying entitlement expired and was granted again or extended while your normal residence was in Germany, recognition and exchange can be refused. A Bavarian court distinguished renewal from a replacement card in a case about Albania. For an Indian licence, ask the local office to assess your own record before driving or paying exchange fees.',
+      'Put four dates side by side: first grant of the car category, its expiry, the start of normal residence in Germany, and the renewal or replacement. Ask the issuing Indian RTO for a record showing the category and its history. Send the dates to the German office and ask separately whether you may drive now and whether you can exchange.',
+      'Added a car category during a visit to India? Give the date you acquired car entitlement even if you held a motorcycle licence for years. A holiday visit does not by itself move your normal residence back to India.',
+      'Check restrictions as well as dates. Conditions on a recognised foreign licence still apply in Germany. If a German driving ban is in force, a new Indian card does not lift it.',
       'For an ordinary Indian car licence, plan for both the theory and practical tests. India is outside the Annex 11 exchange list. Ask a driving school about exam arrangements, preparation lessons, language options and a written breakdown of school, test and authority fees.',
       'For a category B exchange, prepare your valid original Indian licence, identity document, registration evidence, biometric photo, eyesight test and first-aid course certificate. Confirm the local translation requirements and appointment procedure before paying for documents.',
       'If the six months end while your application is pending, stop driving until you have a valid German entitlement or an approved extension. You can still pursue the exchange after the six-month driving period. If your total period of normal residence will be no longer than twelve months, ask the authority in advance about a possible extension of up to six months.'
@@ -18,6 +23,8 @@ export const extraArticles = [
       ['Federal transport ministry: using foreign driving licences (English)', 'https://www.bmv.de/SharedDocs/EN/Articles/StV/Roadtraffic/validity-foreign-driving-licences-in-germany'],
       ['Driving with a foreign licence — FeV §29', 'https://www.gesetze-im-internet.de/fev_2010/__29.html'],
       ['German licence exchange rules — FeV §31', 'https://www.gesetze-im-internet.de/fev_2010/__31.html'],
+      ['Bavarian court case on replacement versus renewal (Albanian licence, German PDF)', 'https://www.landesanwaltschaft.bayern.de/media/themenbereiche/strassen_und_verkehr/2026-02-09_fahrerlaubnisrecht.pdf'],
+      ['Indian driving licence register: initial issue, expiry and renewal fields (Form 10, PDF)', 'https://parivahan.gov.in/sites/default/files/DownloadForm/cmvr/FORM-10.pdf'],
       ['Check the issuing country and category — Annex 11', 'https://www.gesetze-im-internet.de/fev_2010/anlage_11.html']
     ],
     reviewed: '19 November 2026',

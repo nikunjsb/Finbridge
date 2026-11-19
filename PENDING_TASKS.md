@@ -55,7 +55,7 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 ## Scheduled for Sunday, 15 November 2026
 
 - [ ] **15. Cloudflare verification:** deployed versions/bindings, logging, cron executions and retention. Authenticated owner evidence is still required; local tests do not complete this task.
-- [ ] **14. Wider accessibility and performance checks:** partially tested 17 November: 17 routes × four widths, actual 200%/400% zoom and representative forms. Mobile drawer focus and missing navigation bypass/route focus need fixes; startup layout stability needs controlled production measurement. Screen-reader, contrast, device and error-state coverage remains incomplete. [Browser evidence and BQA-01–04](REVIEWS/2026-11-17-browser-qa.md).
+- [ ] **14. Wider accessibility and performance checks:** partially tested 17 November: 17 routes × four widths, actual 200%/400% zoom and representative forms. Mobile drawer focus, navigation bypass and route focus were fixed and [browser-tested on 18 November](REVIEWS/2026-11-18-mobile-navigation.md); startup layout stability needs controlled production measurement. Screen-reader, contrast, device and error-state coverage remains incomplete. [Browser evidence and BQA-01–04](REVIEWS/2026-11-17-browser-qa.md).
 
 ## Scheduled for Friday, 20 November 2026
 

@@ -266,7 +266,12 @@ else location.hash='#location';
 }
 function fbUpdateLocationHeader(){
 const target=document.getElementById('fbLocationButton');
-if(target)target.textContent='Location: '+fbLocationLabel();
+if(target){
+ const label=fbLocationLabel();
+ document.getElementById('fbHeaderPlace').textContent=': '+label;
+ target.title='Location: '+label;
+ target.setAttribute('aria-label','Location guidance and settings: '+label);
+}
 }
 async function fbRecordManualLocation(country,state){
 if(!locationTrialEndpoint)return false;
@@ -1644,34 +1649,102 @@ try{
 // Navigation uses one sidebar on all devices: collapsible desktop and modal mobile drawer.
 const fbMobileNavQuery=window.matchMedia('(max-width:700px)');
 const fbSidebarStorageKey='finbridge-sidebar-collapsed';
+function fbFocusContent(scroll=false){
+ const target=document.querySelector('#content h1')||document.getElementById('content');
+ target.setAttribute('tabindex','-1');
+ target.focus({preventScroll:true});
+ if(scroll)target.scrollIntoView({block:'start'});
+}
 function fbInitNavigation(){
  const sidebar=document.getElementById('fbSidebar');
  const toggle=document.getElementById('fbMenuToggle');
- const backdrop=document.getElementById('fbNavBackdrop');
- if(!sidebar||!toggle||!backdrop)return;
+ const close=document.getElementById('fbNavClose');
+ const filter=document.getElementById('fbNavFilter');
+ const navigation=document.getElementById('navigation');
+ const status=document.getElementById('fbNavFilterStatus');
+ const main=document.querySelector('main');
+ const skip=document.getElementById('fbSkipContent');
  try{if(localStorage.getItem(fbSidebarStorageKey)==='yes')document.body.classList.add('fb-sidebar-hidden')}catch{}
- const sync=()=>{
+
+ function filterPages(){
+  const terms=filter.value.toLowerCase().trim().split(/\s+/);
+  let group, matches=0;
+  for(const item of navigation.children){
+   if(item.classList.contains('navgroup')){group=item;group.hidden=true;continue}
+   const label=(group.textContent+' '+item.textContent).toLowerCase();
+   item.hidden=!terms.every(term=>label.includes(term));
+   if(!item.hidden){group.hidden=false;matches++}
+  }
+  status.textContent=filter.value.trim()?(matches?matches+' '+(matches===1?'page':'pages')+' found':'No matching pages. Try another word.'):'';
+  navigation.scrollTop=0;
+ }
+ function sync(){
   const mobile=fbMobileNavQuery.matches;
   if(!mobile)document.body.classList.remove('fb-mobile-nav-open');
-  const open=mobile?document.body.classList.contains('fb-mobile-nav-open'):!document.body.classList.contains('fb-sidebar-hidden');
+  const modal=mobile&&document.body.classList.contains('fb-mobile-nav-open');
+  const open=mobile?modal:!document.body.classList.contains('fb-sidebar-hidden');
+  main.inert=modal;
+  skip.inert=modal;
+  sidebar.inert=!open;
   toggle.setAttribute('aria-expanded',String(open));
   toggle.setAttribute('aria-label',mobile?(open?'Close navigation menu':'Open navigation menu'):(open?'Collapse sidebar':'Expand sidebar'));
-  sidebar.inert=!open;
-  backdrop.setAttribute('aria-hidden',String(!mobile||!open));
- };
- const closeMobile=()=>{if(!fbMobileNavQuery.matches)return;document.body.classList.remove('fb-mobile-nav-open');sync()};
+  if(modal){
+   sidebar.setAttribute('role','dialog');
+   sidebar.setAttribute('aria-modal','true');
+  }else{
+   sidebar.removeAttribute('role');
+   sidebar.removeAttribute('aria-modal');
+   if(filter.value){filter.value='';filterPages()}
+  }
+ }
+ function closeMobile(restoreFocus=true){
+  if(!document.body.classList.contains('fb-mobile-nav-open'))return;
+  document.body.classList.remove('fb-mobile-nav-open');
+  sync();
+  if(restoreFocus)toggle.focus({preventScroll:true});
+ }
  toggle.addEventListener('click',()=>{
-  if(fbMobileNavQuery.matches)document.body.classList.toggle('fb-mobile-nav-open');
-  else{
+  if(fbMobileNavQuery.matches){
+   document.body.classList.add('fb-mobile-nav-open');
+   sync();
+   close.focus({preventScroll:true});
+  }else{
    document.body.classList.toggle('fb-sidebar-hidden');
    try{localStorage.setItem(fbSidebarStorageKey,document.body.classList.contains('fb-sidebar-hidden')?'yes':'no')}catch{}
+   sync();
   }
-  sync();
  });
- backdrop.addEventListener('click',closeMobile);
- sidebar.addEventListener('click',e=>{if(e.target.closest('a[href]'))closeMobile()});
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('fb-mobile-nav-open')){closeMobile();toggle.focus()}});
- fbMobileNavQuery.addEventListener?.('change',sync);
+ close.addEventListener('click',()=>closeMobile());
+ document.getElementById('fbNavBackdrop').addEventListener('click',()=>closeMobile());
+ filter.addEventListener('input',filterPages);
+ sidebar.addEventListener('keydown',e=>{
+  if(!document.body.classList.contains('fb-mobile-nav-open'))return;
+  if(e.key==='Escape'){e.preventDefault();closeMobile();return}
+  if(e.key!=='Tab')return;
+  const first=sidebar.querySelector('.brand');
+  const last=[...navigation.querySelectorAll('a:not([hidden])')].pop()||filter;
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+ });
+ sidebar.addEventListener('click',e=>{
+  const link=e.target.closest('a[href]');
+  if(!link||e.defaultPrevented||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+  closeMobile(false);
+  if(link.hash===location.hash){e.preventDefault();window.scrollTo(0,0);fbFocusContent()}
+ });
+ skip.addEventListener('click',e=>{e.preventDefault();fbFocusContent(true)});
+ fbMobileNavQuery.addEventListener('change',()=>{
+  const wasOpen=document.body.classList.contains('fb-mobile-nav-open');
+  const wasInSidebar=sidebar.contains(document.activeElement);
+  sync();
+  if(wasOpen||(wasInSidebar&&sidebar.inert))toggle.focus({preventScroll:true});
+ });
+ window.addEventListener('hashchange',()=>{
+  closeMobile(false);
+  render();
+  if(!location.hash.startsWith('#immigration/'))window.scrollTo(0,0);
+  fbFocusContent();
+ });
  sync();
 }
 
@@ -1696,7 +1769,10 @@ if(Object.hasOwn(fbAiTopics,page)){
  fbAiRender(page);
 }
 if(page==='immigration'&&id)requestAnimationFrame(()=>fbJumpToImmigrationSection(id));
-if(page==='news'&&id)requestAnimationFrame(()=>document.getElementById('fbNews-'+id)?.scrollIntoView({block:'start'}));
+if(page==='news'&&id)requestAnimationFrame(()=>{
+ const story=document.getElementById('fbNews-'+id);
+ if(story){story.scrollIntoView({block:'start'});story.setAttribute('tabindex','-1');story.focus({preventScroll:true})}
+});
 fbUpdateLocationHeader();
 if(page==='taxclasses'&&fbGeoState.country==='Germany'&&fbGeoState.state){const field=document.querySelector('#taxClassForm [name=state]');if(field)field.value=fbGeoState.state;}
 if(page==='healthcare'){
@@ -1714,7 +1790,6 @@ document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav==
 fbUpdateStartPage();
 applyPageAccents($('#content'),page,id,portalTopics,articles);
 }
-window.addEventListener('hashchange',()=>{render();if(!location.hash.startsWith('#immigration/'))window.scrollTo(0,0)});
 document.addEventListener('change',e=>{if(e.target.matches('#salaryForm select[name="taxClass"]')){const hint=document.getElementById('salaryTaxClassHint');if(hint)hint.innerHTML=salaryTaxClassDescription(e.target.value);return;}if(e.target.id==='financeMonth'){if(/^\d{4}-\d{2}$/.test(e.target.value)){state.financeViewMonth=e.target.value;save();render()}return}if(e.target.matches('#fbImmigrationGoal,#fbImmigrationProfession,#fbImmigrationMissing'))fbImmigrationToolResult();if(e.target.matches('#fbHealthRole,#fbHealthState,#fbHealthOrigin,#fbHealthSituation,#fbHealthGerman,#fbHealthSpecialty,#fbHealthMissing'))fbHealthcareResult();if(e.target.matches('#taxClassForm select')){updateTaxHealthOption();renderTaxClassResults();}if(e.target.matches('#healthCompareForm select'))renderHealthCompare();if(e.target.matches('#expenseForm select[name="category"]')){updateExpenseFields();document.querySelectorAll('[data-tax-category]').forEach(button=>{const selected=button.dataset.taxCategory===e.target.value;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});}else if(e.target.matches('#expenseForm select[name="expenseItem"]')){showCustomExpenseItem();updateExpensePreview()}else if(e.target.closest('#expenseForm'))updateExpensePreview()});
 document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))updateExpensePreview();if(e.target.closest('#taxClassForm'))renderTaxClassResults();if(e.target.closest('#healthCompareForm'))renderHealthCompare()});
 document.addEventListener('submit',async e=>{

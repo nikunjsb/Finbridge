@@ -120,21 +120,29 @@ const fbReturnIcons={decision:'globe',employment:'file',housing:'home',utilities
 function fbSteps(items,prefix,icons){return '<div class="fb-steps">'+items.map(([id,name,description])=>'<label class="fb-step"><input type="checkbox" data-'+prefix+'-task="'+id+'" '+(state[prefix+':'+id]?'checked':'')+'/><span class="fb-step-icon">'+fbIcon(icons[id]||'checklist')+'</span><span class="fb-step-copy"><b>'+escapeHTML(name)+'</b><small>'+escapeHTML(description)+'</small></span></label>').join('')+'</div>'}
 
 function nav(){
+const children=new Map(sections.map(([id])=>[id,[]]));
+const categories={'German tax':'taxguide','Cross-border':'cross',Investing:'invest',Work:'salary',Family:'everyday',Protection:'moneycheck','Everyday money':'everyday','Starting out':'journeys','Living in Germany':'everyday',Property:'propertyplan'};
+for(const [route,label] of fbStartPages){
+ const [type,id]=route.split('/');
+ if(!id)continue;
+ let parent={topic:'discover',journey:'journeys',taxplan:'taxplan'}[type];
+ if(type==='guide')parent=categories[articles.find(article=>article.id===id)?.cat]||'discover';
+ if(parent)children.get(parent).push([route,label]);
+}
+for(const [id,label] of [['pr','Permanent residence'],['citizenship','Citizenship'],['documents','Documents to prepare']]){
+ children.get('immigration').push(['immigration/'+id,label]);
+}
 let previous='';
 $('#navigation').innerHTML=sections.map(([id,label,sym,group])=>{
-const header=group!==previous?'<div class="navgroup">'+group+'</div>':'';previous=group;
-return header+'<a class="navitem" data-nav="'+id+'" href="#'+id+'"><span class="sym">'+fbIcon(fbNavIcons[id]||'file')+'</span><span class="fb-nav-text">'+label+'</span></a>'
+ const header=group!==previous?'<div class="navgroup">'+group+'</div>':'';
+ previous=group;
+ const page='<a class="navitem" data-nav="'+id+'" href="#'+id+'"><span class="sym">'+fbIcon(fbNavIcons[id]||'file')+'</span><span class="fb-nav-text">'+escapeHTML(label)+'</span></a>';
+ const subpages=children.get(id);
+ if(!subpages.length)return header+page;
+ const links=subpages.map(([route,name])=>'<li><a class="navitem" href="#'+escapeHTML(route)+'">'+escapeHTML(name)+'</a></li>').join('');
+ return header+'<div class="fb-page-branch"><div class="fb-page-row">'+page+'<button type="button" class="fb-branch-toggle" aria-label="'+escapeHTML(label)+' subpages" aria-expanded="false" aria-controls="fb-children-'+id+'"><span aria-hidden="true">›</span></button></div><ul hidden id="fb-children-'+id+'">'+links+'</ul></div>';
 }).join('');
-const branches=portalTopics.map(topic=>{
- const links=new Map([['topic/'+topic.id,'All '+topic.label.toLowerCase()]]);
- for(const id of topic.guides){
-  const guide=articles.find(article=>article.id===id);
-  if(guide)links.set('guide/'+id,guide.name);
- }
- for(const [route,label] of [...topic.steps,...topic.tools])if(!links.has(route))links.set(route,label);
- return '<details><summary>'+escapeHTML(topic.label)+'</summary><ul>'+[...links].map(([route,label])=>'<li><a class="navitem" href="#'+escapeHTML(route)+'">'+escapeHTML(label)+'</a></li>').join('')+'</ul></details>';
-});
-$('#fbTopicsNav').innerHTML=branches.join('');
+
 }
 function cards(list){return '<div class="grid">'+list.map(a=>'<a href="#guide/'+a.id+'" class="card link"><span class="icon">'+fbIcon('book')+'</span><div class="tag">'+escapeHTML(a.cat)+'</div><h3>'+escapeHTML(a.name)+'</h3><p>'+escapeHTML(a.summary)+'</p><span class="arrow">Read guide →</span></a>').join('')+'</div>'}
 
@@ -1682,25 +1690,27 @@ function fbInitNavigation(){
  const skip=document.getElementById('fbSkipContent');
  try{if(localStorage.getItem(fbSidebarStorageKey)==='yes')document.body.classList.add('fb-sidebar-hidden')}catch{}
 
- const topics=document.getElementById('fbTopicsNav');
  const results=document.getElementById('fbNavMatches');
- const pagesButton=document.getElementById('fbPagesMode');
- const topicsButton=document.getElementById('fbTopicsMode');
  const aliases={'guide/driving-licence':'drivers license driver licence Führerschein Fuehrerschein Umschreibung','guide/housing':'housing rent renting flat Wohnung WG','guide/everyday-insurance':'Hausrat Haftpflicht','healthcompare':'Krankenkasse','taxplan/export':'Steuerberater tax adviser','healthcare':'sworn translator recognition'};
- let topicsMode=false;
+ navigation.addEventListener('click',event=>{
+  const button=event.target.closest('.fb-branch-toggle');
+  if(!button)return;
+  const list=document.getElementById(button.getAttribute('aria-controls'));
+  list.hidden=!list.hidden;
+  button.setAttribute('aria-expanded',String(!list.hidden));
+ });
  function filterPages(){
   const terms=normalizeTerm(filter.value).split(' ').filter(Boolean);
   const searching=terms.length>0;
-  navigation.hidden=searching||topicsMode;
-  topics.hidden=searching||!topicsMode;
+  navigation.hidden=searching;
   results.hidden=!searching;
   results.replaceChildren();
   status.textContent='';
   if(!searching)return;
   const found=new Set();
-  for(const link of sidebar.querySelectorAll('#navigation a,#fbTopicsNav a')){
+  for(const link of navigation.querySelectorAll('a')){
    const route=link.hash.slice(1);
-   const group=link.closest('details')?.querySelector('summary')?.textContent||sections.find(section=>section[0]===route)?.[3]||'';
+   const group=link.closest('.fb-page-branch')?.querySelector('[data-nav]')?.textContent||sections.find(section=>section[0]===route)?.[3]||'';
    const label=normalizeTerm([link.textContent,group,aliases[route]].join(' '));
    if(found.has(route)||!terms.every(term=>label.includes(term)))continue;
    found.add(route);
@@ -1710,15 +1720,6 @@ function fbInitNavigation(){
   }
   status.textContent=found.size?found.size+' '+(found.size===1?'page':'pages')+' found':'No matching pages. Try another word.';
  }
- function chooseMode(useTopics){
-  topicsMode=useTopics;
-  pagesButton.setAttribute('aria-pressed',String(!useTopics));
-  topicsButton.setAttribute('aria-pressed',String(useTopics));
-  filter.value='';
-  filterPages();
- }
- pagesButton.addEventListener('click',()=>chooseMode(false));
- topicsButton.addEventListener('click',()=>chooseMode(true));
  function sync(){
   const mobile=fbMobileNavQuery.matches;
   if(!mobile)document.body.classList.remove('fb-mobile-nav-open');
@@ -1827,11 +1828,16 @@ if(page==='immigration')fbImmigrationToolResult();if(page==='healthcare')fbHealt
 if(page==='tax'){updateExpensePreview();mountExpenseWorkspace({state,save,render,updateExpenseFields,updateExpensePreview});}if(page==='doublehousehold')mountRelocation({state,save});if(page==='taxclasses'){updateTaxHealthOption();renderTaxClassResults();}if(page==='healthcompare')renderHealthCompare();
 const locationTab=document.getElementById('fbLocationButton');if(locationTab)locationTab.hidden=(page==='overview');
 $('#breadcrumb').textContent=page==='topic'?'Topics / '+(portalTopics.find(topic=>topic.id===id)?.label||'Choose a topic'):page==='guide'?'Guide / '+(articles.find(x=>x.id===id)?.name||'Not found'):page==='journey'?'Life journey':sections.find(s=>s[0]===page)?.[1]||'Overview';
-document.querySelectorAll('[data-nav]').forEach(n=>{const active=n.dataset.nav===(page==='guide'||page==='topic'?'discover':page==='journey'?'journeys':page);n.classList.toggle('active',active);n.setAttribute('aria-current',active?'page':'false')});
-for(const link of document.querySelectorAll('#fbTopicsNav a')){
+for(const link of document.querySelectorAll('#navigation a')){
  const current=link.hash==='#'+hash;
- if(current){link.setAttribute('aria-current','page');link.closest('details').open=true}
- else link.removeAttribute('aria-current');
+ link.classList.toggle('active',current);
+ if(!current){link.removeAttribute('aria-current');continue}
+ link.setAttribute('aria-current','page');
+ const list=link.closest('ul');
+ if(list){
+  list.hidden=false;
+  list.closest('.fb-page-branch').querySelector('button').setAttribute('aria-expanded','true');
+ }
 }
 fbUpdateStartPage();
 applyPageAccents($('#content'),page,id,portalTopics,articles);

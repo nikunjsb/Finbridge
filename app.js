@@ -3,7 +3,7 @@ import { START_PAGE_KEY, readStartPage, writeStartPage, startPageHash } from './
 import { propertyPage, mountPropertyPlanner } from './property-planner.js?v=d21228904f47';
 import { questionHistoryHTML, parseGeneralBackup, MAX_BACKUP_BYTES } from './backup-safety.js?v=99c5fe98af0d';
 import { relocationPage, mountRelocation } from './relocation-workbench.js?v=a54f90af0086';
-import { healthInsuranceGuide } from './health-insurance-guide.js?v=b2cb783184e0';
+import { healthInsuranceGuide } from './health-insurance-guide.js?v=e86586fdeedb';
 import { prepareExpenseWorkspace,workspaceOverview,expenseEditorExtras,workspaceComparison,workspaceRecords,workspacePlanning,workspaceExports,commitExpense,mountExpenseWorkspace } from './expense-workspace.js?v=f0511a880d1f';
 import { spendingLabel } from './expense-workspace-core.js?v=964417265e14';
 import { clearEvidence } from './tax-evidence.js?v=7d5a4951cf0a';
@@ -216,8 +216,12 @@ return title('DISCOVER OPPORTUNITIES','Did you know?','Practical tax, investment
 }
 
 
-const expatNewsReviewed='16 November 2026';
+const expatNewsReviewed='20 November 2026';
 const expatNews=[
+{id:'healthlimits2027',category:'Insurance',status:'Approved',effective:'1 January 2027',title:'Health insurance thresholds rise in January',summary:'The Bundesrat approved the 2027 general employee eligibility threshold of €84,150 and contribution ceiling of €76,500 on 20 November. An individual fund sets its own additional rate.',who:'Employees comparing statutory and private cover',action:'Check your regular annual pay and compare both years using your insurer’s notice.',url:'https://www.bundesregierung.de/breg-de/suche/beitragsbemessungsgrenzen-2027-2454638',route:'#healthcompare'},
+{id:'credit2026nov',category:'Consumer finance',status:'In force',effective:'20 November 2026',title:'Small loans gain consumer-credit protections',summary:'The expanded rules reach loans up to €200 and qualifying buy-now-pay-later arrangements. Digital confirmation can meet the text-form requirement.',who:'Residents financing small purchases or paying in instalments',action:'Check the total repayment amount and payment dates before accepting a checkout offer.',url:'https://www.bundesregierung.de/breg-de/aktuelles/gesetzliche-neuregelungen-november-2026-2459132',route:'#budget'},
+{id:'healthrecognition2026nov',category:'Employment',status:'In force in stages',effective:'November 2026 update',title:'Recognition procedures change for four healthcare professions',summary:'Germany is simplifying recognition of foreign qualifications for doctors, dentists, pharmacists and midwives. The process still depends on the profession, qualification and responsible state authority.',who:'Applicants with overseas healthcare qualifications',action:'Ask the state authority which procedure and transitional rules apply to your application.',url:'https://www.bundesregierung.de/breg-de/aktuelles/gesetzliche-neuregelungen-november-2026-2459132',route:'#healthcare'},
+{id:'taxclasses2026discussion',category:'Tax',status:'Under discussion',effective:'Reported 11 November 2026',title:'Replacing tax classes III/V with a factor system is under discussion',summary:'ARD reports talks about moving couples to an automated factor method for wage-tax withholding. Current law still provides for classes III and V. No switch date has been established in this review.',who:'Married employees comparing monthly take-home pay',action:'Use the tax class on your payslip for current calculations. A withholding proposal alone does not change joint annual taxation.',url:'https://www.gesetze-im-internet.de/estg/__38b.html',report:'https://www.tagesschau.de/inland/steuerklassen-klingbeil-100.html',route:'#taxclasses'},
 {id:'childcare2026vote',category:'Families',status:'Bundestag approved — not yet in effect',effective:'12 November 2026 (Bundestag vote)',title:'Bundestag approves childcare quality and start-opportunity reform',summary:'The Bundestag approved the Startchancen- und Qualitätsentwicklungsgesetz, intended to improve childcare quality and early development support. The legislation is not yet confirmed in force; state-level implementation and remaining legislative steps matter.',who:'Families with young children using German childcare services, including international families',action:'No immediate new entitlement to claim. Follow Bundesrat proceedings and announcements from your state and local Kita.',url:'https://www.bundestag.de/dokumente/textarchiv/2026/kw46-de-startchancen-1231486',route:'#journey/newcomer'},
 {id:'customs2026vote',category:'Banking',status:'Bundestag approved — not yet in effect',effective:'12 November 2026 (Bundestag vote)',title:'Bundestag approves customs and financial-crime enforcement reform',summary:'The Bundestag approved legislation strengthening customs enforcement and financial-crime investigations. This does not itself establish a new ordinary Germany–India bank transfer limit or an immediately applicable remittance rule.',who:'People and businesses with cross-border financial activity; ordinary remitters should not assume their transfer limits changed',action:'Continue existing bank verification and documentation practices; check final publication and commencement before treating proposed powers as active.',url:'https://www.bundestag.de/dokumente/textarchiv/2026/kw46-de-finanzkriminalitaet-1231490',route:'#tax'},
 
@@ -227,10 +231,10 @@ const expatNews=[
 {id:'bluecard2026',category:'Immigration',status:'In effect',effective:'2026',title:'EU Blue Card salary thresholds for 2026',summary:'The official skilled-worker portal lists €50,700 gross annual salary as the general 2026 threshold, with €45,934.20 for certain eligible shortage occupations, new entrants and qualifying IT specialists, subject to further requirements.',who:'Prospective Blue Card applicants and skilled workers',action:'Check your occupational category and recognition requirements before applying.',url:'https://www.make-it-in-germany.com/en/visa-recognition/visa-types/eu-blue-card',route:'#journey/newcomer'}
 ];
 function expatNewsCard(item,compact=false){
-return '<article id="fbNews-'+escapeHTML(item.id)+'" class="card expat-news-card"><div class="expat-news-meta"><span class="tag">'+escapeHTML(item.category)+'</span><span class="expat-news-status">'+escapeHTML(item.status)+'</span><span class="muted">'+escapeHTML(item.effective)+'</span></div><h3>'+escapeHTML(item.title)+'</h3><p>'+escapeHTML(item.summary)+'</p>'+(compact?'':'<p><b>Who it affects:</b> '+escapeHTML(item.who)+'</p><p><b>What to do:</b> '+escapeHTML(item.action)+'</p>')+'<div class="expat-news-links"><a class="biglink" href="'+escapeHTML(item.route)+'">Related AtlasEveryday guide →</a><a class="biglink" href="'+escapeHTML(item.url)+'" target="_blank" rel="noopener noreferrer">Official source ↗</a></div></article>';
+return '<article id="fbNews-'+escapeHTML(item.id)+'" class="card expat-news-card"><div class="expat-news-meta"><span class="tag">'+escapeHTML(item.category)+'</span><span class="expat-news-status">'+escapeHTML(item.status)+'</span><span class="muted">'+escapeHTML(item.effective)+'</span></div><h3>'+escapeHTML(item.title)+'</h3><p>'+escapeHTML(item.summary)+'</p>'+(compact?'':'<p><b>Who it affects:</b> '+escapeHTML(item.who)+'</p><p><b>What to do:</b> '+escapeHTML(item.action)+'</p>')+'<div class="expat-news-links"><a class="biglink" href="'+escapeHTML(item.route)+'">Related AtlasEveryday guide →</a><a class="biglink" href="'+escapeHTML(item.url)+'" target="_blank" rel="noopener noreferrer">Official source ↗</a>'+(item.report?'<a class="biglink" href="'+escapeHTML(item.report)+'">Reporting on the discussion ↗</a>':'')+'</div></article>';
 }
-function expatNewsPreview(){return '<div class="sectionhead expat-news-heading"><h2>Germany Expat Updates</h2><a class="biglink" href="#news">View all updates →</a></div><p class="muted expat-news-caption">Verified against official sources on '+expatNewsReviewed+'. Curated updates, not a live news feed.</p><div class="grid">'+expatNews.map(x=>expatNewsCard(x,true)).join('')+'</div>'}
-function newsPage(){return title('GERMANY / EXPAT NEWS','Germany Expat Updates','Practical rule changes and announcements that may matter for foreign residents, students, employees and families.')+'<div class="note"><b>Editorial status:</b> These are manually reviewed updates checked on '+expatNewsReviewed+'. This page does not pull live headlines or automatically detect new laws. Check the effective date and original official source before acting. “Announced” does not mean a rule is already in effect.</div><div class="grid">'+expatNews.map(x=>expatNewsCard(x)).join('')+'</div><div class="sectionhead"><h2>What we monitor</h2></div><div class="card"><p>Immigration and citizenship; income tax, salary and insurance; transport, rent and banking; student and family rules; and Germany–India cross-border developments. Only sufficiently sourced changes should be published as news.</p><a class="button secondary" href="#feedback">Suggest a news topic →</a></div>'}
+function expatNewsPreview(){return '<div class="sectionhead expat-news-heading"><h2>Germany Expat Updates</h2><a class="biglink" href="#news">View all updates →</a></div><p class="muted expat-news-caption">Latest editorial additions: '+expatNewsReviewed+'. Curated updates, not a live news feed.</p><div class="grid">'+expatNews.map(x=>expatNewsCard(x,true)).join('')+'</div>'}
+function newsPage(){return title('GERMANY / EXPAT NEWS','Germany Expat Updates','Practical rule changes and announcements that may matter for foreign residents, students, employees and families.')+'<div class="note"><b>Editorial status:</b> These are curated updates. Latest additions: '+expatNewsReviewed+'. This page does not pull live headlines or automatically detect new laws. Check the effective date and original official source before acting. “Announced” does not mean a rule is already in effect.</div><div class="grid">'+expatNews.map(x=>expatNewsCard(x)).join('')+'</div><div class="sectionhead"><h2>What we monitor</h2></div><div class="card"><p>Immigration and citizenship; income tax, salary and insurance; transport, rent and banking; student and family rules; and Germany–India cross-border developments. Only sufficiently sourced changes should be published as news.</p><a class="button secondary" href="#feedback">Suggest a news topic →</a></div>'}
 
 
 // Browser-side, permission-gated geolocation. Never save/share raw coordinates.
@@ -599,6 +603,7 @@ osteopathy:{text:'Up to 3 × €40 (€120/year), subject to conditions',url:'ht
 travel:{text:'100% of qualifying private-travel vaccination costs, subject to eligibility',url:'https://www.dak.de/dak/leistungen/praevention-und-vorsorge/impfungen/reiseimpfungen_20802'}}},
 {id:'hkk',name:'hkk',rate:2.59,scope:'Germany-wide',benefits:{}},
 {id:'hek',name:'HEK',rate:2.89,scope:'Germany-wide',benefits:{}},
+{id:'aokbw',name:'AOK Baden-Württemberg',rate:2.99,scope:'Baden-Württemberg',benefits:{}},
 {id:'audi',name:'Audi BKK',rate:2.60,scope:'Germany-wide',benefits:{}}
 ];
 const gkvRateSource='https://www.gkv-spitzenverband.de/service/krankenkassenliste/krankenkassen.jsp?filter=17&pageNo=2';
@@ -645,19 +650,25 @@ return title('LIVING IN GERMANY / HEALTH','Healthcare in Germany: doctors, hospi
 '<p class="muted" style="margin-top:16px">Official sources are linked alongside each topic. Information may change; confirm insurance coverage and referral requirements with the treating practice or insurer before booking. No personal health information is collected by this guide.</p>';
 }
 
+function healthPlanFields(side, heading, selected){
+  const options = gkvOptions.map(plan => '<option value="'+plan.id+'" '+(plan.id===selected?'selected':'')+'>'+escapeHTML(plan.name)+'</option>').join('');
+  return '<fieldset class="card"><legend>'+heading+'</legend>'+
+    '<label class="field">Plan<select name="'+side+'"><optgroup label="Public health insurance">'+options+'</optgroup><option value="private">Private health insurance</option></select></label>'+
+    '<div data-public="'+side+'"><label class="field">2027 additional rate (%)<input type="number" min="0" max="10" step="any" name="'+side+'Rate" placeholder="Use 2026 rate"></label></div>'+
+    '<div data-private="'+side+'" hidden><label class="field">Private insurer and tariff<input name="'+side+'Name" maxlength="100" placeholder="Name on your offer"></label>'+
+    [2026,2027].map(year=>'<label class="field">'+year+' monthly employee share (€)<input type="number" min="0" step="any" name="'+side+year+'" placeholder="Health cover only"></label>').join('')+'</div>'+
+    '<label class="field">Source of your 2027 entry<select name="'+side+'Basis"><option>What-if estimate</option><option>Insurer notice or offer</option></select></label></fieldset>';
+}
 function healthCompare(){
-const options=gkvOptions.map(x=>'<option value="'+x.id+'">'+escapeHTML(x.name)+' (2026: '+x.rate.toFixed(2)+'%)</option>').join('');
-return title('INSURANCE / GERMANY','Public or private health insurance?','Understand GKV and PKV, compare the long-term trade-offs, then explore statutory insurer contributions and benefits.')+
+return title('INSURANCE / GERMANY','Public or private health insurance?','Understand GKV and PKV, compare the long-term trade-offs, then compare public contributions or your own private plan amounts.')+
 healthInsuranceGuide()+
-'<div class="note"><b>Important for January 2027:</b> The German Ministry of Health has set the <b>average additional rate at 2.9% for 2027</b>, unchanged from 2026. This is <b>not</b> the rate each insurer will charge: each fund decides separately. Review date: 16 November 2026. This comparison uses verified 2026 insurer rates; its 2027 figures remain scenarios, not confirmed insurer quotes. Check a dated notice from your insurer before switching. The government has proposed raising the income ceiling from €69,750 (2026) to €76,500 (2027); the regulation is not yet fully finalized.</div>'+
+'<div class="note"><b>Important for January 2027:</b> The German Ministry of Health has set the <b>average additional rate at 2.9% for 2027</b>, unchanged from 2026. This is <b>not</b> the rate each insurer will charge: each fund decides separately. Review date: 16 November 2026. This comparison uses verified 2026 insurer rates; its 2027 figures remain scenarios, not confirmed insurer quotes. Check a dated notice from your insurer before switching. The Bundesrat approved the 2027 contribution ceiling of €76,500 on 20 November 2026.</div>'+
 '<div class="card"><h3>Compare your current provider and a possible switch</h3><form id="healthCompareForm" class="formgrid">'+
-'<label class="field">Annual gross employee salary (€)<input name="salary" type="number" min="0" max="1000000" step="100" value="80000" required></label>'+
-'<label class="field">Year / scenario<select name="year"><option value="2026">2026 actual published contribution rates</option><option value="2027">2027 projection (individual rates not yet confirmed)</option></select></label>'+
-'<label class="field">My current insurer<select name="current">'+options+'</select></label>'+
-'<label class="field">Insurer to compare<select name="next">'+gkvOptions.map(x=>'<option value="'+x.id+'" '+(x.id==='barmer'?'selected':'')+'>'+escapeHTML(x.name)+' (2026: '+x.rate.toFixed(2)+'%)</option>').join('')+'</select></label>'+
-'<label class="field">Optional 2027 rate for CURRENT insurer (%)<input name="rateCurrent27" type="number" min="0" max="10" step="0.01" placeholder="Leave blank for 2026 rate scenario"></label>'+
-'<label class="field">Optional 2027 rate for NEW insurer (%)<input name="rateNext27" type="number" min="0" max="10" step="0.01" placeholder="Leave blank for 2026 rate scenario"></label>'+
+'<label class="field">Annual gross employee salary (€)<input name="salary" type="number" min="0" max="1000000" step="any" value="90000" required></label>'+
+ '<p>For one employee, compare health cover after the employer share. Exclude long-term care premiums, family members and optional extras on both sides. Use the breakdown from payroll or your insurer.</p>'+
+ '<div class="grid two">'+healthPlanFields('current','My current plan','tk')+healthPlanFields('next','Plan to compare','barmer')+'</div>'+
 '</form><div id="healthCompareOutput" class="result" role="status" aria-live="polite"></div></div>'+
+ '<section class="card"><h3>Published private plan examples</h3><p>Employee shares per month, checked 20 November 2026.</p><p>For a 32-year-old employee, ottonova illustrates monthly employee shares of about €284 for Premium Economy and €321 for Business Class. Its example assumes no risk surcharge, daily sickness cover of €150 from day 43 and a €200 premium relief option from age 67. Deductibles vary. </p><p>Allianz lists €390.62 per month for MeinGesundheitsschutz Plus 90 with Zahn 90 for a 30-year-old childless employee earning €80,000. The total premium is €781.24 including care cover. <a href="https://www.allianz.de/gesundheit/private-krankenversicherung/arbeitnehmer/">View the Allianz example and deductible</a>.</p><p>These bundled examples use a different scope from the health-only calculator.</p><p><a href="https://www.ottonova.de/v/private-krankenversicherung/angestellte">See the tariff examples and calculate a personal price</a> · <a href="https://www.pkv.de/verband/ueber-uns/mitglieder-pkv-verband/">Browse the PKV association insurer directory</a></p></section>'+
 '<div class="sectionhead"><h2>Side-by-side benefits from insurer websites</h2></div>'+
 '<div id="healthBenefitsOutput"></div>'+
 healthHouseholdReview()+
@@ -672,27 +683,51 @@ healthHouseholdReview()+
 '<p><a href="https://www.bundesgesundheitsministerium.de/presse/pressemitteilungen/zusatzbeitragssatz-gkv-2027-festgelegt" target="_blank" rel="noopener noreferrer" class="biglink">BMG: 2027 average contribution stays at 2.9% ↗</a></p>'+
 '<p><a href="https://www.bmas.de/DE/Service/Gesetze-und-Gesetzesvorhaben/sozialversicherungs-rechengroessenverordnung-2027.html" target="_blank" rel="noopener noreferrer" class="biglink">BMAS: 2027 contribution-ceiling regulation and status ↗</a></p>'+
 '<p><b>2026 rate snapshot checked:</b> 16 November 2026. <b>Benefits:</b> insurer-owned pages checked 9 November 2026. Only the benefits linked directly below were reviewed; no insurer receives an overall quality ranking. Rates, reimbursements, policy conditions and legal limits can change.</p></div>'+
-'<div class="note"><b>Scope:</b> Model assumes a regular German employee with general statutory health-insurance entitlement and an employer paying half the health contribution, over 12 equal monthly salaries. Care insurance (Pflegeversicherung), pension and income tax are <b>excluded</b>. Self-employed people, pensioners, students, private-insurance members and those with special payroll rules need a different calculation. The page does not send salary information to a server or save it.</div>';
+'<div class="note"><b>Scope:</b> Model assumes a regular German employee with general statutory health-insurance entitlement and an employer paying half the health contribution, over 12 equal monthly salaries. Care insurance (Pflegeversicherung), pension and income tax are <b>excluded</b>. Self-employed people, pensioners, students and those with special payroll rules need a different calculation. The page does not send salary information to a server or save it.</div>';
 }
 function healthCompareCost(salary,rate,year){return employeeHealthAnnual(salary,rate,year===2027?76500:69750);}
 function renderHealthCompare(){
-const form=document.getElementById('healthCompareForm'),output=document.getElementById('healthCompareOutput'),benefits=document.getElementById('healthBenefitsOutput');
-if(!form||!output||!benefits)return;
-const read=k=>form.elements.namedItem(k)?.value||'';
-const salary=Number(read('salary')),year=Number(read('year'));
-const current=gkvOptions.find(x=>x.id===read('current'))||gkvOptions[0],next=gkvOptions.find(x=>x.id===read('next'))||gkvOptions[1];
-const optional=k=>read(k).trim()===''?null:Number(read(k));
-const v1=optional('rateCurrent27'),v2=optional('rateNext27');
-if(!Number.isFinite(salary)||salary<0||salary>1e6||[v1,v2].some(v=>v!==null&&(!Number.isFinite(v)||v<0||v>10))){output.textContent='Please enter an annual gross salary and optional additional rates between 0 and 10%.';return;}
-const r1=year===2027?(v1??current.rate):current.rate,r2=year===2027?(v2??next.rate):next.rate;
-const eur=n=>new Intl.NumberFormat('en-DE',{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
-const a=healthCompareCost(salary,r1,year),b=healthCompareCost(salary,r2,year),difference=a-b,cap=year===2027?76500:69750;
-const old2026=healthCompareCost(salary,current.rate,2026),futureChange=year===2027?b-old2026:0;
-const scenarioLabel=year===2027?'<div class="note"><b>2027 projections, not published insurer premiums:</b> '+(v1===null?'Current insurer uses its 2026 rate as an assumption. ':'Current insurer uses your entered hypothetical 2027 rate. ')+(v2===null?'New insurer uses its 2026 rate as an assumption.':'New insurer uses your entered hypothetical 2027 rate.')+' The 2027 €76,500 ceiling remains subject to the final regulation. No insurer-specific 2027 rate is certified here.</div>':'<p class="muted">2026 published insurer rates; contribution ceiling €69,750/year.</p>';
-output.innerHTML=scenarioLabel+
-'<div class="grid two"><div><div class="kicker">Current: '+escapeHTML(current.name)+'</div><div class="stat">'+eur(a/12)+'</div><p>Employee health contribution per month<br>Additional rate used: '+r1.toFixed(2)+'% · Annual: '+eur(a)+'</p></div><div><div class="kicker">Compare: '+escapeHTML(next.name)+'</div><div class="stat">'+eur(b/12)+'</div><p>Employee health contribution per month<br>Additional rate used: '+r2.toFixed(2)+'% · Annual: '+eur(b)+'</p></div></div>'+
-(year===2027?'<p><b>2026 baseline, current '+escapeHTML(current.name)+': '+eur(old2026/12)+'/month.</b> Your projected 2027 '+escapeHTML(next.name)+' premium is '+(futureChange>=0?eur(futureChange/12)+' higher':eur(Math.abs(futureChange)/12)+' lower')+' per month than this 2026 baseline. <b>This difference includes the proposed higher 2027 contribution ceiling</b>, not just the insurer switch.</p>':'')+
-'<div class="note"><b>'+ (difference>=0?'Potential employee saving':'Potential employee extra cost')+': '+eur(Math.abs(difference)/12)+' per month / '+eur(Math.abs(difference))+' per year.</b> This is health-insurance premium only, not total net-salary or tax savings. Your employer separately pays its share. Calculation: min(annual salary, '+eur(cap)+') × (14.6% + insurer additional rate) ÷ 2.</div>';
+  const form=document.getElementById('healthCompareForm'), output=document.getElementById('healthCompareOutput'), benefits=document.getElementById('healthBenefitsOutput');
+  if(!form||!output||!benefits)return;
+  const value=name=>form.elements.namedItem(name).value;
+  const salaryField=form.elements.namedItem('salary');
+  const bothPrivate=['current','next'].every(side=>value(side)==='private');
+  salaryField.disabled=bothPrivate;
+  const eur=n=>new Intl.NumberFormat('en-DE',{style:'currency',currency:'EUR'}).format(n);
+  function readPlan(side){
+    const selector=form.elements.namedItem(side);
+    if(selector.dataset.previous && selector.dataset.previous!==selector.value){
+      form.elements.namedItem(side+'Rate').value='';
+      form.elements.namedItem(side+'Basis').selectedIndex=0;
+    }
+    selector.dataset.previous=selector.value;
+    const plan=gkvOptions.find(item=>item.id===selector.value);
+    for(const [group,active] of [['public',Boolean(plan)],['private',!plan]]){
+      const section=form.querySelector('[data-'+group+'="'+side+'"]');
+      section.hidden=!active;
+      section.querySelectorAll('input').forEach(input=>input.disabled=!active);
+    }
+    const basis=value(side+'Basis');
+    if(plan && (!salaryField.validity.valid || !form.elements.namedItem(side+'Rate').validity.valid))return {provider:plan};
+    if(plan){
+      const rate=value(side+'Rate');
+      return {name:plan.name, now:healthCompareCost(Number(salaryField.value),plan.rate,2026)/12,
+        future:healthCompareCost(Number(salaryField.value),rate===''?plan.rate:Number(rate),2027)/12,
+        basis:rate===''?'Assumes unchanged 2026 additional rate':basis, provider:plan};
+    }
+    const premium=year=>value(side+year)===''?null:Number(value(side+year));
+    return {name:value(side+'Name').trim()||'Private plan',now:premium(2026),future:premium(2027),basis:premium(2027)===null?'Awaiting an estimate or offer':basis};
+  }
+  const left=readPlan('current'),right=readPlan('next');
+  benefits.innerHTML='';
+  if(!form.checkValidity()){output.textContent='Enter a valid salary and non-negative amounts in the active fields.';return;}
+  const amount=n=>n===null?'Amount needed':eur(n);
+  const diff=(a,b)=>a===null||b===null?'Both amounts needed':Math.abs(a-b)<0.005?'Same cost':eur(Math.abs(b-a))+(b>a?' more':' less');
+  const row=(role,plan)=>'<tr><th>'+role+' · '+escapeHTML(plan.name)+'</th><td>'+amount(plan.now)+'</td><td>'+amount(plan.future)+'</td><td>'+escapeHTML(plan.basis)+'</td></tr>';
+  output.innerHTML='<div class="tax-payroll-scroll"><table class="tax-payroll-table"><caption>Monthly employee cost for health cover</caption><thead><tr><th>Plan</th><th>2026</th><th>2027</th><th>2027 basis</th></tr></thead><tbody>'+
+    row('Current',left)+row('Alternative',right)+'<tr><th>Cost of switching</th><td>'+diff(left.now,right.now)+'</td><td>'+diff(left.future,right.future)+'</td><td>Before deductibles</td></tr></tbody></table></div>';
+  if(!left.provider||!right.provider){benefits.textContent='For private cover, check the benefits and annual deductible in the specific tariff.';return;}
+  const current=left.provider,next=right.provider;
 const keys=[['dental','Professional dental cleaning (PZR)'],['osteopathy','Osteopathy'],['travel','Private travel vaccinations']];
 function itemCell(provider,key){const x=provider.benefits[key];return x?escapeHTML(x.text)+' <a target="_blank" rel="noopener noreferrer" class="biglink" href="'+x.url+'">Insurer source ↗</a>':'<span class="muted">Not yet verified from insurer website — check directly</span>'}
 benefits.innerHTML='<div class="tax-payroll-scroll"><table class="tax-payroll-table"><thead><tr><th>Item</th><th>'+escapeHTML(current.name)+'</th><th>'+escapeHTML(next.name)+'</th></tr></thead><tbody>'+
@@ -705,7 +740,7 @@ keys.map(([key,label])=>'<tr><th>'+label+'</th><td>'+itemCell(current,key)+'</td
 function taxClasses(){
 return title('WORK & SALARY / GERMANY','Tax-class guide for couples and families','Choose your circumstances, explore III/V and IV/IV with factor, and understand the difference between monthly take-home pay and final annual tax.')+
 '<div class="note"><b>2026 guidance.</b> Tax class changes how much wage tax an employer withholds; it generally does not by itself change the final income tax owed after joint assessment. This page is a learning tool, not an official tax-class determination.</div>'+
-'<div class="card"><h3>Health insurance in 2027</h3><p>The average Zusatzbeitrag remains 2.9% for 2027, but each insurer sets its own actual rate. The proposed 2027 assessment ceiling is higher, which could affect costs even with unchanged premiums.</p><a class="button secondary" href="#healthcompare">Compare current and future health insurance contributions →</a></div>'+
+'<div class="card"><h3>Health insurance in 2027</h3><p>The average Zusatzbeitrag remains 2.9% for 2027, but each insurer sets its own actual rate. The approved 2027 assessment ceiling is higher, which could affect costs even with unchanged premiums.</p><a class="button secondary" href="#healthcompare">Compare current and future health insurance contributions →</a></div>'+
 '<div class="grid two"><div class="card"><h3>Which class usually applies?</h3><p><b>I:</b> single, divorced or permanently separated (subject to timing and exceptions).</p><p><b>II:</b> eligible single parents with the statutory relief conditions.</p><p><b>III/V:</b> eligible married couples; III normally assigned to the higher earner, V to the lower earner.</p><p><b>IV/IV:</b> usual married-couple default; <b>IV/IV with factor:</b> withholding better reflects expected joint tax while keeping both partners on IV.</p><p><b>VI:</b> generally an additional employment relationship.</p></div>'+
 '<div class="card"><h3>What matters beyond salary?</h3><p>Germany’s federal states mainly matter here for church tax, and <b>Saxony</b> has a different employee share of long-term-care insurance. Your particular health insurer, children, religious-tax liability and benefits can also affect your payslip.</p><p><b>Separated, divorced or single parent?</b> Use the class overview above and check special eligibility. The couple comparison below assumes spouses who are not permanently separated and can use German marital tax classes.</p><p>Married spouses living outside Germany or subject to limited tax liability need a separate eligibility assessment.</p></div></div>'+
 '<div class="sectionhead"><h2>Compare married-couple salaries</h2></div>'+

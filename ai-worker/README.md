@@ -29,7 +29,7 @@ Cloudflare Workers AI model: `@cf/meta/llama-3.3-70b-instruct-fp8-fast`. See the
 
 ## Troubleshooting
 
-- HTTP 403: call must originate from `https://nikunjsb.github.io` (the published FinBridge site).
+- HTTP 403: call must originate from `https://atlas-everyday.com` (the published FinBridge site).
 - HTTP 503 not_configured: verify both the `AI` and `RATE_LIMITER` bindings.
 - HTTP 429: the rate limit was exceeded; retry later.
 - A “setup pending” banner means the public frontend endpoint hasn't been filled in.

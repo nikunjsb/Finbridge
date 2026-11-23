@@ -7,7 +7,7 @@ import insights from '../insights-worker/src/index.js';
 import location from '../location-worker/src/index.js';
 import feedback from '../feedback-worker/src/index.js';
 
-const origin='https://nikunjsb.github.io';
+const origin='https://atlas-everyday.com';
 const visitorId='11111111-1111-4111-8111-111111111111';
 const event={source:'overview_search',topic:'tax',outcome:'matched'};
 function request(body,{method='POST',site=origin,headers={},cf}={}){

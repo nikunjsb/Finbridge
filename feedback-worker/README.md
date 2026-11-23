@@ -8,9 +8,9 @@ This directory contains a **Cloudflare Worker**. Its source can be public, but f
 
 1. Create a **private** repository named `finbridge-feedback` under `nikunjsb` and enable GitHub Issues. Do not create it as public.
 2. Create a fine-grained GitHub personal access token scoped **only** to `finbridge-feedback`, with **Issues: Read and write** permission. This token is a secret — do not paste it into chats, web source, commits or GitHub Pages.
-3. Sign in to Cloudflare and create a Worker using the files in this directory (with [Wrangler](https://developers.cloudflare.com/workers/wrangler/) or the Cloudflare dashboard). Set `GITHUB_REPO=nikunjsb/finbridge-feedback` and `ALLOWED_ORIGIN=https://nikunjsb.github.io`.
+3. Sign in to Cloudflare and create a Worker using the files in this directory (with [Wrangler](https://developers.cloudflare.com/workers/wrangler/) or the Cloudflare dashboard). Set `GITHUB_REPO=nikunjsb/finbridge-feedback` and `ALLOWED_ORIGIN=https://atlas-everyday.com`.
 4. Set Worker secrets using `npx wrangler secret put GITHUB_TOKEN` and `npx wrangler secret put TURNSTILE_SECRET`.
-5. Create a Cloudflare Turnstile widget for `nikunjsb.github.io`; store the **secret key** as `TURNSTILE_SECRET`. The **site key** is public and belongs in the FinBridge frontend. The backend validates every submission server-side.
+5. Create a Cloudflare Turnstile widget for `atlas-everyday.com`; store the **secret key** as `TURNSTILE_SECRET`. The **site key** is public and belongs in the FinBridge frontend. The backend validates every submission server-side.
 6. Deploy with `npx wrangler deploy` and note your actual `https://...workers.dev` URL. The endpoint must never be guessed.
 7. Configure the FinBridge feedback page with that exact Worker URL and Turnstile **site key** only after testing. Never expose `GITHUB_TOKEN` in frontend code.
 8. Submit a test item; confirm a new **private** issue appears in the feedback repository. Test spam check, invalid fields, failures and mobile before enabling the form for visitors.

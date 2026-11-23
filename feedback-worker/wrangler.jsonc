@@ -5,7 +5,7 @@
   "workers_dev": true,
   "vars": {
     "GITHUB_REPO": "nikunjsb/finbridge-feedback",
-    "ALLOWED_ORIGIN": "https://nikunjsb.github.io"
+    "ALLOWED_ORIGIN": "https://atlas-everyday.com"
   },
   "unsafe": {
     "bindings": [

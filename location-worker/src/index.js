@@ -1,7 +1,7 @@
 // Dedicated, optional FinBridge location-study endpoint. Deploy separately from feedback.
 // Precise coordinates are collected only after a separate, explicit visitor opt-in.
 // D1 has retention cleanup via scheduled event; no public read/report endpoint.
-const allowedOrigin='https://nikunjsb.github.io';
+const allowedOrigin='https://atlas-everyday.com';
 function reply(status,obj){return new Response(JSON.stringify(obj),{status,headers:{'content-type':'application/json','cache-control':'no-store','access-control-allow-origin':allowedOrigin,'vary':'Origin','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type','x-content-type-options':'nosniff'}})}
 const validId=id=>typeof id==='string'&&/^[0-9a-f-]{36}$/i.test(id)&&id.length===36;
 export default {

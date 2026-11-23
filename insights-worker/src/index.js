@@ -1,6 +1,6 @@
 // FinBridge Insights pilot: standalone aggregate events, NEVER raw question text.
 // No log statements, identity columns, cookies or session identifiers.
-const ORIGIN='https://nikunjsb.github.io';
+const ORIGIN='https://atlas-everyday.com';
 const SOURCES=new Set(['overview_search','library_search','ai_question']);
 const TOPICS=new Set(['immigration','healthcare','salary','tax','budget','insurance','crossborder','moving','language','other']);
 const OUTCOMES=new Set(['matched','unmatched','success','error']);

@@ -1,6 +1,6 @@
 // FinBridge contextual AI assistant — separate from feedback and location Workers.
 // No chat history, financial records, identifiers or questions are written to D1 or GitHub.
-const ORIGIN='https://nikunjsb.github.io';
+const ORIGIN='https://atlas-everyday.com';
 const MODEL='@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const sources={
  healthcare:[

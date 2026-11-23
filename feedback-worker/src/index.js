@@ -1,7 +1,7 @@
 // FinBridge feedback receiver — Cloudflare Worker.
 // Required bindings: GITHUB_TOKEN (secret), TURNSTILE_SECRET (secret),
 // GITHUB_REPO (plain text, e.g. nikunjsb/finbridge-feedback), ALLOWED_ORIGIN
-// (plain text, e.g. https://nikunjsb.github.io).
+// (plain text, e.g. https://atlas-everyday.com).
 // Optional: RATE_LIMITER Cloudflare Rate Limiting binding configured in wrangler.jsonc.
 // Never put GITHUB_TOKEN or TURNSTILE_SECRET in website source code.
 const categories = new Set(['Missing guide','Feature request','Incorrect or unclear information','Bug / technical issue']);
@@ -12,7 +12,7 @@ function clean(value,max){return typeof value==='string'?value.trim().slice(0,ma
 function safeBodyText(text){return text.replace(/[\u0000-\u001f\u007f]/g,' ').replace(/@/g,'@\u200b')} // reduce accidental issue mentions
 export default {
  async fetch(request,env){
-   const expectedOrigin=env.ALLOWED_ORIGIN||'https://nikunjsb.github.io';
+   const expectedOrigin=env.ALLOWED_ORIGIN||'https://atlas-everyday.com';
    const origin=request.headers.get('Origin')||'';
    if(origin!==expectedOrigin)return output(403,{ok:false,message:'Origin not allowed'},expectedOrigin);
    if(request.method==='OPTIONS')return new Response(null,{status:204,headers:headers(expectedOrigin)});

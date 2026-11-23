@@ -97,7 +97,7 @@ export const portalTopics = [
 const topicHref = topic => '#topic/' + topic.id;
 const arrow = '<svg class="atlas-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg>';
 const heading = (title, link = '', label = 'Explore all →') => '<div class="atlas-section-heading"><h2>' + esc(title) + '</h2>' + (link ? '<a href="' + esc(link) + '" class="biglink">' + esc(label) + '</a>' : '') + '</div>';
-const linkCard = ([route, title, description, icon = 'book'], icons) => '<a href="#' + esc(route) + '" class="atlas-link-card"><span class="atlas-small-icon">' + icons(icon) + '</span><div><h3>' + esc(title) + '</h3><p>' + esc(description) + '</p></div>' + arrow + '</a>';
+const linkCard = ([route, title, description, icon = 'book'], icons) => '<a href="' + (route === 'salary' ? './tools/german-net-salary-calculator/' : '#' + esc(route)) + '" class="atlas-link-card"><span class="atlas-small-icon">' + icons(icon) + '</span><div><h3>' + esc(title) + '</h3><p>' + esc(description) + '</p></div>' + arrow + '</a>';
 
 export function portalTopicCards(icons) {
   return '<div class="atlas-topic-grid">' + portalTopics.map(topic => '<a class="atlas-topic-card atlas-tone-' + topic.tone + '" href="' + topicHref(topic) + '"><span class="atlas-topic-icon">' + icons(topic.icon) + '</span><h3>' + esc(topic.label) + '</h3><p>' + esc(topic.description) + '</p><span class="atlas-text-link">Explore topic ' + arrow + '</span></a>').join('') + '</div>';

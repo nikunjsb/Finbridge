@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { resolve, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -32,11 +32,25 @@ if (!index.includes('<code id="fbBuildVersion">' + buildVersion + '</code>')) {
 }
 index = index.replace(/(src="\.\/app\.js)\?v=[^"]+/, '$1?v=' + appVersion).replace(/(href="\.\/styles\.css)\?v=[^"]+/, '$1?v=' + cssVersion).replace(/(<code id="fbBuildVersion">)[^<]*(<\/code>)/, '$1' + buildVersion + '$2');
 pending.set(indexPath, index);
-const changed = [...pending].filter(([path, text]) => readFileSync(path, 'utf8') !== text);
+// Build the calculator entry from the shared shell so navigation and asset versions stay in sync.
+const salaryPath = resolve(root, 'tools/german-net-salary-calculator/index.html');
+const salaryTitle = 'German Net Salary Calculator | AtlasEveryday';
+const salaryDescription = 'Estimate monthly take-home pay in Germany using gross salary, tax class, federal state and insurance contributions.';
+const salaryIndex = index
+  .replace('<head>', '<head><base href="../../"/><link rel="canonical" href="https://atlas-everyday.com/tools/german-net-salary-calculator/"/>')
+  .replace(/<title>.*?<\/title>/, '<title>' + salaryTitle + '</title>')
+  .replace(/(<meta name="description" content=")[^"]*/, '$1' + salaryDescription)
+  .replace('<body>', '<body data-page="salary">')
+  .replace('id="content" tabindex="-1"></div>', 'id="content" tabindex="-1"><h1>German net salary calculator</h1><p>' + salaryDescription + '</p><noscript>Enable JavaScript to calculate your estimate.</noscript></div>');
+pending.set(salaryPath, salaryIndex);
+const changed = [...pending].filter(([path, text]) => !existsSync(path) || readFileSync(path, 'utf8') !== text);
 if (process.argv.includes('--check')) {
   if (changed.length) { process.stderr.write('Stale asset versions: ' + changed.map(([path]) => basename(path)).join(', ') + '\n'); process.exitCode = 1; }
   else process.stdout.write('Asset versions match all local module contents.\n');
 } else {
-  for (const [path, text] of changed) writeFileSync(path, text);
+  for (const [path, text] of changed) {
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, text);
+  }
   process.stdout.write('Versioned ' + changed.length + ' assets; website build ' + buildVersion + '.\n');
 }

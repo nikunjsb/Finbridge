@@ -9,7 +9,7 @@ import { spendingLabel } from './expense-workspace-core.js?v=964417265e14';
 import { clearEvidence } from './tax-evidence.js?v=7d5a4951cf0a';
 import { applyPageAccents } from './page-accents.js?v=9c3c67f9012e';
 import { investmentPage, mountInvestmentPlanner } from './investment-planner.js?v=9c281cc28ea2';
-import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=70bbbc40dd94';
+import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=90228370e12c';
 import { taxPlanningPage, mountTaxPlanning, residenceScreenHTML } from './tax-planning.js?v=7a2ae264b924';
 import { calculateExpenseCore } from './expense-rules.js?v=b677e9eb8ff9';
 import { tariff2026 as taxClassESt2026 } from './tax-rules.js?v=f05ad518f34c';
@@ -1598,7 +1598,7 @@ function fbStartPageSettings(){
 }
 function fbUpdateStartPage(){
  const tools=document.getElementById('fbStartPageTools');if(!tools)return;
- const raw=location.hash.replace(/^#\/?/,'')||'overview';
+ const raw=location.hash.replace(/^#\/?/,'')||document.body.dataset.page||'overview';
  const route=fbStartPages.has(raw)?raw:(fbStartPages.has(raw.split('/')[0])?raw.split('/')[0]:'overview');
  const preferred=readStartPage(fbStartPages),selected=route===preferred;
  tools.innerHTML='<button class="fb-start-button" type="button" id="fbStartMark"'+(selected?' disabled':'')+'><span aria-hidden="true">'+(selected?'★':'☆')+'</span> '+(selected?'Your start page':'Make this my start page')+'</button><a class="biglink" href="#settings">Change start page</a><span class="sr" id="fbStartPageStatus" role="status"></span>';
@@ -1683,7 +1683,7 @@ for(const message of history){
 requestAnimationFrame(()=>{if(target.isConnected)target.scrollTop=target.scrollHeight});
 }
 async function fbAiAsk(form){
-const page=decodeURIComponent(location.hash.replace(/^#\/?/,'')||'overview').split('/')[0];
+const page=decodeURIComponent(location.hash.replace(/^#\/?/,'')||document.body.dataset.page||'overview').split('/')[0];
 if(!Object.hasOwn(fbAiTopics,page)||!finbridgeAiEndpoint)return;
 const question=String(new FormData(form).get('question')||'').trim();
 if(question.length<3||question.length>700)return;
@@ -1826,7 +1826,7 @@ function fbInitNavigation(){
 }
 
 function render(){
-const hash=decodeURIComponent(location.hash.replace(/^#\/?/,'')||'overview');
+const hash=decodeURIComponent(location.hash.replace(/^#\/?/,'')||document.body.dataset.page||'overview');
 const [page,id]=hash.split('/');
 let content='';
 switch(page){
@@ -1939,12 +1939,12 @@ const rm=e.target.closest('[data-delete-expense]');if(rm){state.expenses.splice(
 if(e.target.dataset.saveinsight!==undefined){const i=Number(e.target.dataset.saveinsight);state.savedInsights=state.savedInsights||[];state.savedInsights=state.savedInsights.includes(i)?state.savedInsights.filter(x=>x!==i):[...state.savedInsights,i];save();render()}
 if(e.target.dataset.dismissinsight!==undefined){const i=Number(e.target.dataset.dismissinsight);state.dismissedInsights=[...(state.dismissedInsights||[]),i];save();render()}
 if(e.target.dataset.unsaveinsight!==undefined){state.savedInsights=(state.savedInsights||[]).filter(x=>x!==Number(e.target.dataset.unsaveinsight));save();render()}
-if(e.target.id==='fbAiClear'){const topic=location.hash.replace(/^#\/?/,'').split('/')[0];fbAiThreads.delete(topic);fbAiRender(topic);return}
+if(e.target.id==='fbAiClear'){const topic=location.hash.replace(/^#\/?/,'').split('/')[0]||document.body.dataset.page;fbAiThreads.delete(topic);fbAiRender(topic);return}
 if(e.target.id==='fbDiscoverClear'){fbDiscoverQuery='';render();document.getElementById('fbDiscoverSearch')?.focus();return}
 if(e.target.id==='financeCsv'){fbFinanceCsv();return}
 if(e.target.id==='financeUseSalary'){if(!Number.isFinite(state.salaryEstimatedNet))return;state.budget.income=state.salaryEstimatedNet;save();render();return}
 if(e.target.dataset.financeDelete!==undefined){const id=e.target.dataset.financeDelete;state.financeTransactions=fbFinanceRecords().filter(x=>x.id!==id);save();render();return}
-if(e.target.id==='salaryToBudget'){if(!Number.isFinite(state.salaryEstimatedNet))return;state.budget.income=state.salaryEstimatedNet;save();location.hash='#budget';return}
+if(e.target.id==='salaryToBudget'){if(!Number.isFinite(state.salaryEstimatedNet))return;state.budget.income=state.salaryEstimatedNet;save();location.assign(new URL('#budget',document.baseURI));return}
 if(e.target.id==='recalculateExpense'){updateExpensePreview()}
 if(e.target.id==='resetInsights'){state.dismissedInsights=[];save();render()}
 if(e.target.id==='pensionCheck'){const m=Number($('#pensionMonths').value);$('#pensionResult').textContent=m>=60?'60 or more German contribution months: pension rights and voluntary insurance eligibility may affect refund possibilities. Obtain an individual DRV assessment.':'Fewer than 60 months: a refund may be possible in some circumstances after waiting periods, but nationality, residence, insurance rights and agreements must be assessed by DRV.'}
@@ -1998,6 +1998,6 @@ if(evidence){
 }
 });
 const fbInitialHash=startPageHash(location.hash,fbStartPages);
-if(location.hash!==fbInitialHash)history.replaceState(null,'',location.pathname+location.search+fbInitialHash);
+if(!document.body.dataset.page && location.hash!==fbInitialHash)history.replaceState(null,'',location.pathname+location.search+fbInitialHash);
 window.addEventListener('storage',e=>{if(e.key===START_PAGE_KEY||e.key===null)fbUpdateStartPage()});
 nav();render();setupNoticeRotation();fbUpdateLocationHeader();fbInitNavigation();fbRequestLocationOnLoad();

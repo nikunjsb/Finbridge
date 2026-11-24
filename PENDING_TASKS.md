@@ -55,7 +55,7 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 ## Scheduled for Sunday, 15 November 2026
 
 - [ ] **15. Cloudflare verification:** deployed versions/bindings, logging, cron executions and retention. Authenticated owner evidence is still required; local tests do not complete this task.
-- [ ] **14. Wider accessibility and performance checks:** partially tested 17 November: 17 routes × four widths, actual 200%/400% zoom and representative forms. Mobile drawer focus, navigation bypass and route focus were fixed and [browser-tested on 18 November](REVIEWS/2026-11-18-mobile-navigation.md); startup layout stability needs controlled production measurement. Screen-reader, contrast, device and error-state coverage remains incomplete. [Browser evidence and BQA-01–04](REVIEWS/2026-11-17-browser-qa.md).
+- [ ] **14. Wider accessibility and performance checks:** partially tested 17 November: 17 routes × four widths, actual 200%/400% zoom and representative forms. Mobile drawer focus, navigation bypass and route focus were fixed and [browser-tested on 18 November](REVIEWS/2026-11-18-mobile-navigation.md); the 24 November production Lighthouse run traced mobile startup movement to the footer. See [24 November review](REVIEWS/2026-11-24-privacy-accessibility.md) for the contrast, layout and missing-state fixes. Screen-reader, contrast, device and error-state coverage remains incomplete. [Browser evidence and BQA-01–04](REVIEWS/2026-11-17-browser-qa.md).
 
 ## Scheduled for Friday, 20 November 2026
 
@@ -66,7 +66,7 @@ Local and live verification evidence: [self-filing companion review](REVIEWS/202
 - [ ] **3. Full desktop/mobile regression:** 17 November browser pass covers 17 routes at 320/390/768/1280 px and representative forms; [evidence and limits](REVIEWS/2026-11-17-browser-qa.md). Full route/edge-case/device regression remains incomplete.
 - [ ] **6b. Further relocation cases:** same-year unused housing-limit pooling, meal-clock restarts, older assets, foreign accommodation, additional tax years and detailed moving-cost BUKG/AUV limits. These remain explicit review cases in the first extension; no numerical claim is made for them.
 - [ ] **16. Private owner dashboard:** authentication and protected reporting; final endpoint undecided.
-- [ ] **17. Operator/contact and legal notices:** awaiting chosen public operator details and review.
+- [ ] **17. Operator/contact and legal notices:** operator name, postal address and tested email published. Owner confirmed final editorial responsibility for Expat updates. Privacy notice now identifies the controller, Gmail, and the purposes/bases for hosting, abuse protection, statutory requests and optional precise-location/topic reporting. Outstanding: substantiate the remaining bases, especially regional counts after denial, optional device storage, retention for email/feedback and provider-specific transfer safeguards. See [24 November review](REVIEWS/2026-11-24-privacy-accessibility.md).
 - [ ] **18. Hosting/domain review:** **22 November 2026**, preserving the existing tester link. This is a review date, not a migration commitment.
 
 Release destinations and dependencies: [RELEASE_PLAN.md](RELEASE_PLAN.md). Detailed tax criteria: [TAX_SAVINGS_ROADMAP.md](TAX_SAVINGS_ROADMAP.md). Validation: [13 November review](REVIEWS/2026-11-13-tax-planning.md).

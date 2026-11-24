@@ -22,3 +22,15 @@ A production PageSpeed Insights run on build afbf326ea991 reported mobile CLS 0.
 The shared shell reserves space while the route is empty, and the footer and build stamp use darker text. The live location form previously left focus on Submit after a missing-state error. The fix focuses the state selector, associates it with an inline error, exposes the invalid state, and clears the error when corrected or when a different country is chosen. Privacy and location sections now use level-two headings below the page heading.
 
 Browser accessibility-tree inspection checks exposed names, roles, order and states. It cannot verify spoken announcements on VoiceOver, TalkBack or another installed screen reader. Real-device screen-reader testing and wider route/error coverage remain open.
+
+## Production retest on build c839bcd54d48
+
+| Homepage lab measure | Before | After |
+|---|---:|---:|
+| Mobile layout shift (CLS) | 0.149 | 0 |
+| Desktop layout shift (CLS, rounded) | 0.09 | 0 |
+| Mobile automated accessibility | 96/100 | 100/100 |
+
+Desktop automated accessibility scored 96/100 after the release. The lab measurements cover the homepage and represent one report per build. [Post-release PageSpeed report](https://pagespeed.web.dev/analysis/https-atlas-everyday-com/okbaop80yv1ot6d6bx6h7h?form_factor=mobile).
+
+On the published location form, pressing Enter with Germany selected and the state empty focused the state selector, marked it invalid and exposed the associated error. Selecting Berlin or switching to India cleared the error. Navigation to the privacy notice focused its top-level heading. All 243 repository tests passed before publication. Spoken output on a real device remains unverified.

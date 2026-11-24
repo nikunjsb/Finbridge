@@ -240,6 +240,7 @@ function newsPage(){return title('GERMANY / EXPAT NEWS','Germany Expat Updates',
 // Browser-side, permission-gated geolocation. Never save/share raw coordinates.
 const fbGeoKey='finbridge-coarse-location-v1';
 const fbGeoChoiceKey='atlas-location-permission-choice';
+const fbGeoDayKey='atlas-location-check-day';
 const fbGeoSessionKey='finbridge-geolocation-prompted';
 let fbGeoState={country:'',state:'',source:''};
 try{const stored=JSON.parse(localStorage.getItem(fbGeoKey)||'{}');if(['Germany','India','Other'].includes(stored.country)){fbGeoState={country:stored.country,state:String(stored.state||''),source:String(stored.source||'manual')}}}catch{}
@@ -249,7 +250,17 @@ const fbStateCode={'DE-BW':'Baden-Württemberg','DE-BY':'Bavaria (Bayern)','DE-B
 let fbGeoRequestActive=false;
 let fbGeoCheckStatus=fbGeoState.country?'resolved':'unavailable';
 function fbLocationLabel(){return fbGeoState.country==='Germany'?(fbGeoState.state||'Germany'):fbGeoState.country||'Choose location'}
+function fbLocalDay(){
+ const now=new Date();
+ return [now.getFullYear(),now.getMonth()+1,now.getDate()].join('-');
+}
+function fbMarkLocationDay(){
+ const day=fbLocalDay();
+ try{localStorage.setItem(fbGeoDayKey,day)}catch{}
+ try{sessionStorage.setItem(fbGeoSessionKey,day)}catch{}
+}
 function fbSaveLocation(country,state,source){
+fbMarkLocationDay();
 fbGeoState={country,state:country==='Germany'?state:'',source};
 try{localStorage.setItem(fbGeoKey,JSON.stringify(fbGeoState))}catch{}
 }
@@ -312,15 +323,17 @@ async function fbRecordApproximateLocation(){
 if(!locationTrialEndpoint||fbApproxRequestActive)return;
 fbApproxRequestActive=true;
 try{
-  if(sessionStorage.getItem('finbridge-approx-reported'))return;
+  const day=fbLocalDay();
+  if(sessionStorage.getItem('finbridge-approx-reported')===day)return;
   const response=await fetch(locationTrialEndpoint,{method:'POST',headers:{'content-type':'application/json'},credentials:'omit',body:JSON.stringify({action:'approx'})});
-  if(response.ok&&(await response.json()).recorded===true)sessionStorage.setItem('finbridge-approx-reported','1');
+  if(response.ok&&(await response.json()).recorded===true)sessionStorage.setItem('finbridge-approx-reported',day);
 }catch{/* Approximate analytics must never block browsing. */}
 finally{fbApproxRequestActive=false}
 }
 function fbUseDeviceLocation({navigate=false}={}){
 if(fbGeoRequestActive)return;
 if(!navigator.geolocation){fbGeoCheckStatus='unavailable';fbLocationStatus('Your browser does not support device location. Select a country and state manually.');render();return}
+fbMarkLocationDay();
 const previousSelection=fbGeoState;
 fbGeoRequestActive=true;fbGeoCheckStatus='pending';fbLocationStatus('Waiting for your browser location permission…');
 navigator.geolocation.getCurrentPosition(async position=>{
@@ -370,6 +383,7 @@ notice.textContent=message;
 async function fbRecordTrialCoordinates(){
 if(!locationTrialEndpoint){fbTrialMessage('Location sharing is temporarily unavailable. No coordinates were sent.');return}
 if(!navigator.geolocation){fbTrialMessage('Device geolocation is not supported.');return}
+fbMarkLocationDay();
 fbTrialMessage('Waiting for browser location permission…');
 navigator.geolocation.getCurrentPosition(async position=>{
 const payload={action:'record',explicitConsent:true,visitorId:fbTrialVisitorId(),
@@ -396,7 +410,7 @@ return true;
 
 function fbLocationPage(){
 return title('LOCATION & TAX GUIDANCE','Guidance based on your location','Detect your current German federal state with browser permission, or choose your location manually. Your current location is not necessarily your tax residence.')+
-'<div class="card"><h3>Use device location</h3><p>AtlasEveryday asks automatically on your first visit and remembers your choice in this browser. If permitted, it uses the position only in your browser to identify your German federal state; it does not upload precise coordinates for this check. You can retry here or choose manually. The separate Share my location action below is a distinct 14-day location trial.</p><button class="button" type="button" id="fbLocateNow">Allow device location</button><div class="note" role="status" id="fbLocationStatus">Current setting: '+escapeHTML(fbLocationLabel())+'.</div></div>'+
+'<div class="card"><h3>Use device location</h3><p>AtlasEveryday checks location on your first visit each local calendar day. Your browser may apply a saved permission automatically. If permitted, it uses the position only in your browser to identify your German federal state; it does not upload precise coordinates for this check. You can retry here or choose manually. The separate Share my location action below is a distinct 14-day location trial.</p><button class="button" type="button" id="fbLocateNow">Allow device location</button><div class="note" role="status" id="fbLocationStatus">Current setting: '+escapeHTML(fbLocationLabel())+'.</div></div>'+
 '<div class="card"><h3>Share your location with AtlasEveryday</h3><p>Clicking <b>Share my location</b> asks for browser location permission. If allowed, coordinates, accuracy, selected country/state, approximate network region and a random browser ID are stored privately for up to <b>14 days</b>, then automatically deleted. No additional confirmation popup is shown. Only one precise record per browser is accepted within 24 hours. If GPS is denied, approximate city/region/country may still be counted for temporary audience statistics without storing GPS, IP address or a browser identifier. This is explained further under <a href="#privacy">Privacy</a>.</p><button type="button" class="button secondary" id="fbTrialShare" '+(!locationTrialEndpoint?'disabled title="Location sharing unavailable"':'')+'>Share my location</button><p id="fbTrialStatus" class="muted" role="status">Precise GPS is only uploaded with your agreement. Temporary approximate regional visit counts may be recorded without GPS permission.</p></div>'+'<div class="card"><h3>Choose or correct manually</h3><form id="fbLocationForm"><div class="formgrid"><label class="field">Country<select name="country"><option value="Germany" '+(fbGeoState.country==='Germany'?'selected':'')+'>Germany</option><option value="India" '+(fbGeoState.country==='India'?'selected':'')+'>India</option><option value="Other" '+(fbGeoState.country==='Other'?'selected':'')+'>Other / visiting another country</option></select></label>'+
 '<label class="field">German federal state<select name="state"><option value="">Choose federal state…</option>'+fbStates.map(([name])=>'<option value="'+escapeHTML(name)+'" '+(name===fbGeoState.state?'selected':'')+'>'+escapeHTML(name)+'</option>').join('')+'</select></label></div>'+
 '<p class="muted">When you save a manual location, we count the selected country/state and your approximate network area for temporary statistics, deleted after 14 days. The selection may not be your physical location.</p><button type="submit" class="button secondary">Save and open relevant guides →</button></form></div>'+
@@ -404,19 +418,29 @@ return title('LOCATION & TAX GUIDANCE','Guidance based on your location','Detect
 '<div class="grid two"><div class="card"><h3>Germany</h3><p>Preselect a state for salary calculations and explain state-specific church tax and, where relevant, care-insurance contributions.</p><a href="#taxclasses" class="biglink">Tax classes & salary →</a></div><div class="card"><h3>India / cross-border</h3><p>Explore Indian tax residency, NRE/NRO banking and German–Indian income and pension questions separately.</p><a href="#cross" class="biglink">Cross-border guides →</a></div></div>';
 }
 // Request native browser permission when the page opens; never transmit GPS in this check.
-function fbRequestLocationOnLoad(){
-if(fbGeoState.country||!navigator.geolocation)return;
-try{
- const choice=localStorage.getItem(fbGeoChoiceKey);
- if(choice==='denied'){fbGeoCheckStatus='denied';fbRecordApproximateLocation();render();return}
- if(choice==='allowed')return;
-}catch{}
-try{
- if(sessionStorage.getItem(fbGeoSessionKey))return;
- sessionStorage.setItem(fbGeoSessionKey,'1');
-}catch{return}
-fbUseDeviceLocation();
+function fbCheckDailyLocation(){
+ const today=fbLocalDay();
+ let lastDay,sessionDay,choice;
+ try{lastDay=localStorage.getItem(fbGeoDayKey);choice=localStorage.getItem(fbGeoChoiceKey)}catch{}
+ try{sessionDay=sessionStorage.getItem(fbGeoSessionKey)}catch{}
+ if(lastDay===undefined&&sessionDay===undefined)return;
+ // Older visits have no date. Honor the existing choice for the transition day.
+ if(!lastDay&&((!sessionDay&&(choice||fbGeoState.country))||sessionDay==='1')){
+  fbMarkLocationDay();
+  lastDay=today;
+ }
+ if(lastDay===today||sessionDay===today){
+  if(choice==='denied'&&!fbGeoState.country){fbGeoCheckStatus='denied';fbRecordApproximateLocation();render()}
+  return;
+ }
+ fbUseDeviceLocation();
 }
+function fbRequestLocationOnLoad(){
+ if(!navigator.geolocation||document.hidden)return;
+ if(navigator.locks){navigator.locks.request(fbGeoDayKey,fbCheckDailyLocation);return}
+ fbCheckDailyLocation();
+}
+document.addEventListener('visibilitychange',fbRequestLocationOnLoad);
 
 function fbOverviewQuestionTarget(question){
 const q=normalizeTerm(question);
@@ -1598,7 +1622,7 @@ return title('YOUR PRIVACY','How AtlasEveryday handles information','A transpare
 '<div class="note">You can browse guides and search on your device. Submitting an AI question, sharing your location or sending feedback uses separate online services. GitHub Pages delivers the site and the Cloudflare Web Analytics beacon loads when you visit. <a href="impressum.html">Website operator and privacy contact (Impressum)</a>.</div>'+
 '<div class="grid two">'+
 '<div class="card"><h3>Information saved on your device</h3><p>Budget amounts, recorded tax-expense candidates, private receipt references, checklist selections, saved insights and questions you explicitly choose to record use your browser’s localStorage. Tax preparation answers, check results, work-expense/parent-support/household-service/relocation worksheets and tariff illustrations are saved only when you choose their save buttons. Saved worksheets include self-reported dates, amounts and private references; they are included in local backup and adviser TXT/print exports, without automatically adding an expense. Property-purchase inputs and up to three property comparisons are saved only on request and included in the general JSON backup; property TXT/CSV plans are downloaded separately. Investment planner inputs and up to three comparisons are also saved only when you choose Save inputs or Add to comparison; they are included in your local JSON backup. They are not automatically shared between devices or uploaded to a AtlasEveryday database.</p><p>Browser storage is not an encrypted vault: other people using the same browser profile may see these entries. Avoid storing bank credentials, tax identifiers or highly sensitive documents.</p></div>'+
-'<div class="card"><h3>How location is used</h3><p>On your first visit, your browser may ask for location permission. We remember your response or saved location so opening another section or returning does not trigger another automatic request. You can retry in My location &amp; guidance or reset your choice in Privacy &amp; backup. The site uses the coordinates on your device to look up your German state. If it finds one, it saves the country and state in this browser. Declining this automatic check lets you continue browsing.</p><p>On the location page, choosing <b>Share my location</b> and granting permission sends coordinates, accuracy, your selected country and state, and a random browser identifier to a dedicated Cloudflare Worker. It records the time and approximate network city, region and country in a private D1 database. The identifier limits precise records to one per browser in 24 hours.</p><p>If your browser denies location, or you return with a remembered denial and no saved location, the site may count the approximate network city, region and country once per browser tab session. Saving a manual selection also counts the chosen country and state alongside the approximate network area. These daily counts omit coordinates, browser identifiers and IP addresses. The network area may be inaccurate.</p><p>The location service sets a 14-day expiry and schedules daily cleanup. To request earlier deletion of precise records, use Clear data in the same browser before deleting its site storage. This action also clears your saved local entries. <a href="#settings">Privacy &amp; backup</a></p></div>'+
+'<div class="card"><h3>How location is used</h3><p>On the first visit each local calendar day, AtlasEveryday requests device location. Your browser decides whether to show a prompt or apply a saved permission. We remember the check date in this browser so revisiting the site the same day skips the automatic request. You can retry in My location &amp; guidance or reset your choice in Privacy &amp; backup. The site uses the coordinates on your device to look up your German state. If it finds one, it saves the country and state in this browser. Declining this automatic check lets you continue browsing.</p><p>On the location page, choosing <b>Share my location</b> and granting permission sends coordinates, accuracy, your selected country and state, and a random browser identifier to a dedicated Cloudflare Worker. It records the time and approximate network city, region and country in a private D1 database. The identifier limits precise records to one per browser in 24 hours.</p><p>If your browser denies location, or you return with a remembered denial and no saved location, the site may count the approximate network city, region and country at most once per tab per local calendar day. Saving a manual selection also counts the chosen country and state alongside the approximate network area. These daily counts omit coordinates, browser identifiers and IP addresses. The network area may be inaccurate.</p><p>The location service sets a 14-day expiry and schedules daily cleanup. To request earlier deletion of precise records, use Clear data in the same browser before deleting its site storage. This action also clears your saved local entries. <a href="#settings">Privacy &amp; backup</a></p></div>'+
 '<div class="card"><h3>Search, AI and salary calculations</h3><p>Searches and the letter explainer run in your browser. Submitting a question to the AI assistant sends the question, guide topic and up to four previous messages to Cloudflare Workers AI to generate a reply. Reloading clears the on-screen chat. The Worker does not write conversations to D1. Cloudflare may process inference requests and technical logs. Please leave personal details out of questions.</p><p>The tax-class comparison may download payroll code from jsDelivr. The provider receives connection information such as your IP address. Your salary inputs stay in the browser.</p></div>'+
 '<div class="card"><h3>Optional topic-level insights</h3><p>AtlasEveryday offers an off-by-default, optional feature for aggregate topic statistics. If you explicitly enable it in Privacy &amp; backup, the browser sends only a predefined source (homepage search, library search or AI question), broad category (for example immigration or salary), and result (matched/unmatched or success/error) to the separate Cloudflare Insights Worker. It does not send the search wording, AI questions, AI responses, histories, financial amounts, location, or a visitor identifier. Technical connection metadata, including an IP address, is necessarily processed by Cloudflare for delivery and abuse protection, but is not saved in the Insights D1 table. The service is configured to retain the most recent 30 UTC dates and run cleanup daily. You can turn the option off to stop future reports. Individual deletion of previously aggregated counts is impossible without visitor identifiers. Counts represent only visitors who opt in and may include automated or repeated events.</p><a class="biglink" href="#settings">Manage optional topic statistics →</a></div>'+'<div class="card"><h3>Website traffic and performance</h3><p>AtlasEveryday loads the Cloudflare Web Analytics beacon from static.cloudflareinsights.com. Cloudflare provides aggregated statistics about visits, page views, approximate countries, device types, referrers and performance. No advertising analytics or cross-site identifiers are intentionally added by AtlasEveryday. Cloudflare says this service does not require cookies or track individual visitors across different websites.</p><p>Technical request data (including connection information such as IP address) is processed by Cloudflare to deliver and protect the service, even though it does not provide AtlasEveryday with your exact address or an individual visitor profile. AtlasEveryday’s financial inputs and local saved records are not sent to Cloudflare Web Analytics. We do not attempt to identify individual visitors. Due to AtlasEveryday’s hash-based navigation, analytics for individual internal sections may be incomplete; visit counts are not a precise census of people.</p><p>Source: <a class="biglink" href="https://developers.cloudflare.com/web-analytics/about/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics information ↗</a>.</p></div>'+'<div class="card"><h3>Private feedback: how submissions work</h3><p>After you click Send feedback and complete the Turnstile check, the message and chosen categories are sent to a Cloudflare Worker. Cloudflare verifies the anti-spam token, and the Worker requests creation of an Issue in AtlasEveryday’s private GitHub feedback repository. Only authorized repository collaborators should be able to read it. This submission is not stored in your local browser history or posted to public GitHub Issues.</p><p>The form does not ask for your email address. Cloudflare processes technical request data for security, and GitHub stores the submitted issue text until it is deleted. Do not send names, bank details, tax identifiers, addresses or confidential documents. We cannot promise automatic deletion after a fixed number of days.</p><a class="biglink" href="#feedback">Open feedback form →</a></div>'+
 '<div class="card"><h3>Hosting and links to outside sites</h3><p>GitHub Pages serves AtlasEveryday. As with other hosted sites, GitHub may process access data such as IP address, request information and technical logs according to its policies. Opening third-party sites transfers you to their respective privacy practices.</p><a class="biglink" href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub privacy statement ↗</a></div>'+
@@ -1975,7 +1999,7 @@ if(e.target.id==='resetInsights'){state.dismissedInsights=[];save();render()}
 if(e.target.id==='pensionCheck'){const m=Number($('#pensionMonths').value);$('#pensionResult').textContent=m>=60?'60 or more German contribution months: pension rights and voluntary insurance eligibility may affect refund possibilities. Obtain an individual DRV assessment.':'Fewer than 60 months: a refund may be possible in some circumstances after waiting periods, but nationality, residence, insurance rights and agreements must be assessed by DRV.'}
 if(e.target.id==='copyFeedback'&&window.__feedbackDraft){navigator.clipboard?.writeText(window.__feedbackDraft).then(()=>{e.target.textContent='Copied';}).catch(()=>{alert('Select and copy your feedback manually if clipboard permission is blocked.');})}
 if(e.target.id==='exportData'){const b=new Blob([JSON.stringify({version:1,data:state},null,2)],{type:'application/json'});const url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download='atlaseveryday-local-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-if(e.target.id==='clearData'&&confirm('Delete all local AtlasEveryday data and request deletion of saved location records associated with this browser?')){const removed=await fbWithdrawTrialData();if(!removed){alert('Saved location records could not be deleted from Cloudflare. Nothing has been cleared locally; please retry.');return}try{await clearEvidence();}catch(error){alert(error.message+' Local records have not been cleared.');return;}localStorage.removeItem(storageKey);localStorage.removeItem(START_PAGE_KEY);localStorage.removeItem(fbGeoKey);localStorage.removeItem(fbGeoChoiceKey);localStorage.removeItem(fbInsightsConsentKey);sessionStorage.removeItem(fbGeoSessionKey);location.reload()}
+if(e.target.id==='clearData'&&confirm('Delete all local AtlasEveryday data and request deletion of saved location records associated with this browser?')){const removed=await fbWithdrawTrialData();if(!removed){alert('Saved location records could not be deleted from Cloudflare. Nothing has been cleared locally; please retry.');return}try{await clearEvidence();}catch(error){alert(error.message+' Local records have not been cleared.');return;}localStorage.removeItem(storageKey);localStorage.removeItem(START_PAGE_KEY);localStorage.removeItem(fbGeoKey);localStorage.removeItem(fbGeoChoiceKey);localStorage.removeItem(fbGeoDayKey);localStorage.removeItem(fbInsightsConsentKey);sessionStorage.removeItem(fbGeoSessionKey);location.reload()}
 });
 document.addEventListener('change',async e=>{
 if(e.target.id==='fbTaxFallbackState'){

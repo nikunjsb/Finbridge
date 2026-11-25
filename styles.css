@@ -909,5 +909,7 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 #fbManualStateError:empty { margin: 0; }
 #fbLocationForm [aria-invalid="true"] { border: 2px solid #932323; }
 
-.atlas-instagram-follow{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:12px;padding:6px 16px;border-radius:24px;background:#284b38;color:#fff;font-weight:600;text-decoration:none}
-.atlas-instagram-follow:hover,.atlas-instagram-follow:focus-visible{background:#183425;color:#fff;text-decoration:underline}
+.atlas-instagram-follow{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:12px;padding:6px 16px;border-radius:24px;border:1px solid #c9b8be;background:#fffafc;color:#322b31;font-weight:600;text-decoration:none}
+.atlas-instagram-follow svg{color:#b62b69}
+.atlas-instagram-follow:hover,.atlas-instagram-follow:focus-visible{background:#f9eaf0;border-color:#b62b69;text-decoration:underline}
+.atlas-instagram-follow:focus-visible{outline:2px solid #962358;outline-offset:3px}

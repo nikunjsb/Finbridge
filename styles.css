@@ -908,3 +908,6 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 #content:empty { min-height: 100vh; }
 #fbManualStateError:empty { margin: 0; }
 #fbLocationForm [aria-invalid="true"] { border: 2px solid #932323; }
+
+.atlas-instagram-follow{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:12px;padding:6px 16px;border-radius:24px;background:#284b38;color:#fff;font-weight:600;text-decoration:none}
+.atlas-instagram-follow:hover,.atlas-instagram-follow:focus-visible{background:#183425;color:#fff;text-decoration:underline}

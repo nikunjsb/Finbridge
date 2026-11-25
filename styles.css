@@ -909,6 +909,8 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 #fbManualStateError:empty { margin: 0; }
 #fbLocationForm [aria-invalid="true"] { border: 2px solid #932323; }
 
-.atlas-instagram-follow{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;margin-top:8px;color:#b62b69;border-radius:8px}
+.atlas-instagram-follow{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;flex:none;color:#b62b69;border-radius:8px}
 .atlas-instagram-follow:hover{color:#912254}
 .atlas-instagram-follow:focus-visible{outline:2px solid #962358;outline-offset:3px}
+
+@media(max-width:700px){.top .tools{gap:4px}}

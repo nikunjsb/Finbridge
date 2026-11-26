@@ -914,3 +914,9 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 .atlas-instagram-follow:focus-visible{outline:2px solid #962358;outline-offset:3px}
 
 @media(max-width:700px){.top .tools{gap:4px}}
+
+/* Keep text entry at a readable size on touch devices, including landscape phones. */
+@media (max-width: 700px), (pointer: coarse) {
+  #fbOverviewQuestion, #fbDiscoverSearch, #fbNavFilter, #courseSearch, #languageQuery,
+  input[type="search"] { font-size: 16px; }
+}

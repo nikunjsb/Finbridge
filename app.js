@@ -163,10 +163,10 @@ return '<div class="grid two">'+found.map(glossaryCard).join('')+'</div>';
 }
 function languagePage(){
 return title('DEUTSCH ↔ ENGLISH','Understand German financial language','Search German or English terms, common misspellings, and similar expressions. Each entry explains the concept and what to do next.')+privacyNote('temporary')+courseFinder()+
-'<div class="card"><form id="languageSearchForm" class="language-search"><label class="field" style="flex:1">Search terms in German or English<input id="languageQuery" name="query" placeholder="Try: Unterhaltserklärung, Werbungskosten, tax assessment" maxlength="160" autocomplete="off"></label><button class="button" type="submit">Find explanation →</button></form><div id="languageResults" style="margin-top:19px">'+glossaryMatches('')+'</div></div>'+
-"<div class=\"card\"><h3>Take a German exam</h3><p>Enter your city or postcode in the <a href=\"https://www.telc.net/en/language-examinations/find-a-telc-examination-centre/\">telc exam-centre finder</a>, or choose your city and level from the <a href=\"https://www.goethe.de/ins/de/en/m/prf/ort.html\">Goethe exam locations</a>.</p><p>In Mannheim, check <a href=\"https://www.goethe.de/ins/de/en/prf/ort/man.html\">Goethe exam dates and booking</a>. Confirm the certificate you need before booking and check fees and available places with the centre.</p></div>"+
-'<div class="sectionhead"><h2>India ↔ Germany concept bridge</h2></div><div class="grid two">'+conceptBridge.map(([india,germany,note])=>'<div class="card" style="padding:20px"><div class="tag">INDIA</div><h3 style="margin:8px 0">'+escapeHTML(india)+'</h3><div class="tag" style="margin:10px 0">GERMANY</div><b>'+escapeHTML(germany)+'</b><p style="margin:10px 0 0">'+escapeHTML(note)+'</p></div>').join('')+'</div>'+
-'<div class="sectionhead"><h2>Explain a German letter</h2></div><div class="card"><p>Paste a short sentence from an official letter. AtlasEveryday recognizes a few common administrative phrases and explains them in plain English. <b>This is not a general AI translator.</b></p><div class="note">Protect your privacy: remove your name, tax ID, address, reference numbers and any financial or health details before pasting. This tool processes the text in your browser only.</div><form id="letterExplainForm"><label class="field">German sentence<textarea name="letter" rows="4" maxlength="1600" required placeholder="Bitte reichen Sie die entsprechenden Nachweise innerhalb eines Monats ein."></textarea></label><button type="submit" class="button" style="margin-top:14px">Explain sentence</button></form><div class="result" id="letterExplanation" aria-live="polite">Enter a short German sentence to see whether a reviewed phrase matches.</div></div>'+
+'<div class="card" id="languageGlossary"><form id="languageSearchForm" class="language-search"><label class="field" style="flex:1">Search terms in German or English<input id="languageQuery" name="query" placeholder="Try: Unterhaltserklärung, Werbungskosten, tax assessment" maxlength="160" autocomplete="off"></label><button class="button" type="submit">Find explanation →</button></form><div id="languageResults" style="margin-top:19px">'+glossaryMatches('')+'</div></div>'+
+"<div class=\"card\"><h3 id=\"languageExams\">Take a German exam</h3><p>Enter your city or postcode in the <a href=\"https://www.telc.net/en/language-examinations/find-a-telc-examination-centre/\">telc exam-centre finder</a>, or choose your city and level from the <a href=\"https://www.goethe.de/ins/de/en/m/prf/ort.html\">Goethe exam locations</a>.</p><p>In Mannheim, check <a href=\"https://www.goethe.de/ins/de/en/prf/ort/man.html\">Goethe exam dates and booking</a>. Confirm the certificate you need before booking and check fees and available places with the centre.</p></div>"+
+'<div class="sectionhead"><h2 id="languageConcepts">India ↔ Germany concept bridge</h2></div><div class="grid two">'+conceptBridge.map(([india,germany,note])=>'<div class="card" style="padding:20px"><div class="tag">INDIA</div><h3 style="margin:8px 0">'+escapeHTML(india)+'</h3><div class="tag" style="margin:10px 0">GERMANY</div><b>'+escapeHTML(germany)+'</b><p style="margin:10px 0 0">'+escapeHTML(note)+'</p></div>').join('')+'</div>'+
+'<div class="sectionhead"><h2 id="languageLetters">Explain a German letter</h2></div><div class="card"><p>Paste a short sentence from an official letter. AtlasEveryday recognizes a few common administrative phrases and explains them in plain English. <b>This is not a general AI translator.</b></p><div class="note">Protect your privacy: remove your name, tax ID, address, reference numbers and any financial or health details before pasting. This tool processes the text in your browser only.</div><form id="letterExplainForm"><label class="field">German sentence<textarea name="letter" rows="4" maxlength="1600" required placeholder="Bitte reichen Sie die entsprechenden Nachweise innerhalb eines Monats ein."></textarea></label><button type="submit" class="button" style="margin-top:14px">Explain sentence</button></form><div class="result" id="letterExplanation" aria-live="polite">Enter a short German sentence to see whether a reviewed phrase matches.</div></div>'+
 '<div class="sectionhead"><h2>What comes next?</h2></div><div class="card"><p>Full paragraph translation, OCR for uploaded letters and AI explanations would require additional capabilities and privacy safeguards. For now, use the built-in definitions or ask for a new term in the feedback form.</p><a href="#feedback" class="button secondary">Request another German term →</a></div>';
 }
 function termPage(token){
@@ -448,10 +448,7 @@ function fbRequestLocationOnLoad(){
 }
 document.addEventListener('visibilitychange',fbRequestLocationOnLoad);
 
-function fbOverviewQuestionTarget(question){
-const q=normalizeTerm(question);
-if(!q)return null;
-const rules=[
+const searchShortcuts=[
  {pattern:/money check|money basics|financial check|paperwork check|self check/,route:'moneycheck',label:'Money and paperwork self-check'},
  {pattern:/invest|compound interest|savings? goal|savings? plan|\bsip\b|\betf\b|portfolio|lump sum|retirement savings|retirement planning/,route:'invest',label:'Investment and savings planner'},
  {pattern:/understand.*payslip|explain.*payslip|payslip.*explain|payroll deductions/,route:'guide/salary',label:'German payslip explainer'},
@@ -475,8 +472,6 @@ const rules=[
  {pattern:/pension|retirement/,route:'residency',label:'Residency and pension checker'},
  {pattern:/commut|home office|deduct|tax return/,route:'tax',label:'Tax workspace'}
 ];
-return rules.find(item=>item.pattern.test(q))||null;
-}
 function fbJumpToImmigrationSection(id){
 const section=document.getElementById('fbImmigration-'+id);
 if(section){section.scrollIntoView({behavior:'smooth',block:'start'});section.setAttribute('tabindex','-1');section.focus({preventScroll:true})}
@@ -502,7 +497,11 @@ const searchableTools=[
 {id:'journey/newcomer',title:'Newcomer checklist',summary:'Registration, housing, bank, mobile and insurance after moving to Germany.',keywords:'anmeldung arrival germany visa residence'},
 {id:'journey/return',title:'Return to India checklist',summary:'Departure, banking, taxation, pension, insurance and contracts.',keywords:'return india abmeldung ausland pension bank'},
 {id:'residency',title:'German and Indian residency screening',summary:'Indian day-count tests, German tax residence and pension guidance.',keywords:'residency rnornr ror tax residence fema'},
-{id:'language',title:'Language Bridge',summary:'German financial terms, taxes, insurance, letters and explanations.',keywords:'german classes courses VHS online Berlin Munich language school translation glossary steuerklasse lohnabrechnung'},
+{id:'language/courses',title:'German language classes near you and online',summary:'Find classroom providers by city or browse online German courses.',keywords:'learn learning school lessons VHS Volkshochschule Berlin Munich München Heidelberg Mannheim Kalyan Languages Cube A1 A2 B1'},
+{id:'language/exams',title:'German language exams and test centres',summary:'Find Goethe and telc exam centres, dates and booking information.',keywords:'certificate certification tests examination A1 A2 B1 B2 C1'},
+{id:'language/glossary',title:'German–English language glossary',summary:'Look up German financial terms and their English meanings.',keywords:'Language Bridge vocabulary dictionary translation taxes insurance steuerklasse lohnabrechnung'},
+{id:'language/letters',title:'Understand the language in a German letter',summary:'Look up common phrases from official letters in plain English.',keywords:'language bridge translation translate official paperwork correspondence'},
+{id:'language/concepts',title:'Financial language in India and Germany',summary:'Compare Indian financial terms with their German equivalents.',keywords:'language bridge concept comparison banking translation'},
 {id:'guide/driving-licence',title:'Driving licence exchange in Germany',summary:'Use or exchange an Indian car licence and find the local office.',keywords:'drivers license driving licence Führerschein Fuehrerschein Umschreibung Indian car theory practical test'},
 {id:'guide/housing',title:'Rent your first flat or WG room',summary:'Find housing, arrange a viewing and budget for moving in.',keywords:'rent flat apartment Wohnung WG Kaution Warmmiete landlord viewing'}
 ];
@@ -511,12 +510,23 @@ function searchToolMatches(term){
 const stop=new Set(['how','do','does','my','me','i','we','you','what','which','is','the','a','an','of','in','to','for','with','if','or','and','on','get','can','should','would','about','please','tell','much','help','want']);
 const words=normalizeTerm(term).split(' ').filter(w=>w.length>=2&&!stop.has(w)&&! /^\d+$/.test(w));
 if(!words.length)return [];
-return searchableTools.map(x=>{
+const ranked = searchableTools.map(x=>{
 const title=normalizeTerm(x.title),hay=normalizeTerm(x.title+' '+x.summary+' '+x.keywords);
 let score=0;
-for(const w of words){if(title.includes(w))score+=4;else if(hay.includes(w))score+=2;}
+for(const w of words){
+ const matches = text => w.length <= 2 ? text.split(' ').includes(w) : text.includes(w);
+ if(matches(title))score+=4;else if(matches(hay))score+=2;
+}
 return {x,score};
-}).filter(o=>o.score>0).sort((a,b)=>b.score-a.score).map(o=>o.x).slice(0,8);
+}).filter(o=>o.score>0).sort((a,b)=>b.score-a.score).map(o=>o.x);
+const routes = new Set(ranked.map(x=>x.id));
+for(const {pattern,route,label} of searchShortcuts){
+ if(!routes.has(route) && pattern.test(normalizeTerm(term))){
+  ranked.push({id:route,title:label,summary:''});
+  routes.add(route);
+ }
+}
+return ranked;
 }
 let fbDiscoverQuery='';
 function discover(filter=''){
@@ -1803,6 +1813,12 @@ function fbInitNavigation(){
   status.textContent='';
   if(!searching)return;
   const found=new Set();
+  for(const match of searchToolMatches(filter.value)){
+   found.add(match.id);
+   const result=document.createElement('a');
+   result.className='navitem';result.href='#'+match.id;result.textContent=match.title;
+   results.append(result);
+  }
   for(const link of navigation.querySelectorAll('a')){
    const route=link.hash.slice(1);
    const group=link.closest('.fb-page-branch')?.querySelector('[data-nav]')?.textContent||sections.find(section=>section[0]===route)?.[3]||'';
@@ -1916,7 +1932,16 @@ if(page==='healthcare'){
  const stateField=document.getElementById('fbHealthState');
  if(stateField&&fbGeoState.country==='Germany'&&fbGeoState.state&&[...stateField.options].some(option=>option.value===fbGeoState.state))stateField.value=fbGeoState.state;
 }
-if(page==='language')mountCourseFinder();
+if(page==='language'){
+ mountCourseFinder();
+ const sections={courses:'germanCourses',exams:'languageExams',glossary:'languageGlossary',letters:'languageLetters',concepts:'languageConcepts'};
+ const section=document.getElementById(sections[id]);
+ if(section)requestAnimationFrame(()=>{
+  section.setAttribute('tabindex','-1');
+  section.focus({preventScroll:true});
+  section.scrollIntoView({block:'start'});
+ });
+}
 if(page==='feedback')setupFeedbackWidget();
 if(page==='taxplan'||page==='residency')mountTaxPlanning({state,save});
 if(page==='invest')mountInvestmentPlanner({state,save});if(page==='propertyplan')mountPropertyPlanner({state,save});
@@ -1950,17 +1975,16 @@ document.addEventListener('input',e=>{if(e.target.closest('#expenseForm'))update
 document.addEventListener('submit',async e=>{
 if(e.target.id==='fbStartPageForm'){e.preventDefault();fbSaveStartPage(new FormData(e.target).get('startPage'));return}
 if(e.target.id==='fbAiForm'){e.preventDefault();await fbAiAsk(e.target);return}
-if(e.target.id==='fbDiscoverSearchForm'){
-e.preventDefault();fbDiscoverQuery=String(new FormData(e.target).get('query')||'').trim().slice(0,200);const found=searchToolMatches(fbDiscoverQuery).length>0||articles.some(x=>normalizeTerm(x.name+' '+x.cat+' '+x.summary+' '+x.overview).includes(normalizeTerm(fbDiscoverQuery)))||glossaryResults(fbDiscoverQuery,1).length>0;fbInsightsSend('library_search',fbInsightsTopicForSearch(fbDiscoverQuery),found?'matched':'unmatched');render();return;
-}
-if(e.target.id==='fbOverviewQuestionForm'){
-e.preventDefault();
-const question=String(new FormData(e.target).get('question')||'').trim();
-const matched=fbOverviewQuestionTarget(question);
-fbInsightsSend('overview_search',matched?fbInsightsTopicForRoute(matched.route):fbInsightsTopicForSearch(question),matched?'matched':'unmatched');
-if(matched)location.hash='#'+matched.route;
-else{fbDiscoverQuery=question.slice(0,200);location.hash='#discover';if(location.hash==='#discover')render();}
-return;
+if(['fbDiscoverSearchForm','fbOverviewQuestionForm'].includes(e.target.id)){
+ e.preventDefault();
+ const home=e.target.id==='fbOverviewQuestionForm';
+ fbDiscoverQuery=String(new FormData(e.target).get(home?'question':'query')||'').trim().slice(0,200);
+ if(!fbDiscoverQuery)return;
+ const found=searchToolMatches(fbDiscoverQuery).length>0||articles.some(x=>normalizeTerm(x.name+' '+x.cat+' '+x.summary+' '+x.overview).includes(normalizeTerm(fbDiscoverQuery)))||glossaryResults(fbDiscoverQuery,1).length>0;
+ fbInsightsSend(home?'overview_search':'library_search',fbInsightsTopicForSearch(fbDiscoverQuery),found?'matched':'unmatched');
+ if(location.hash==='#discover'){render();fbFocusContent(true);}
+ else location.hash='#discover';
+ return;
 }
 if(e.target.id==='fbLocationForm'){e.preventDefault();const values=new FormData(e.target),country=String(values.get('country')),state=String(values.get('state'));if(country==='Germany'&&!state){const field=e.target.elements.state;document.getElementById('fbManualStateError').textContent='Choose a federal state before saving.';field.setAttribute('aria-invalid','true');field.focus();return}fbSaveLocation(country,state,'manual');fbGeoCheckStatus='resolved';fbUpdateLocationHeader();const recorded=await fbRecordManualLocation(country,state);if(!recorded)console.warn('Manual place selected locally; server analytics did not confirm save.');fbGoToLocationGuide();return}
 if(e.target.id==='taxClassForm'){e.preventDefault();renderTaxClassResults();return;}if(e.target.id==='healthCompareForm'){e.preventDefault();renderHealthCompare();return;}

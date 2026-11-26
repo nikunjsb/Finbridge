@@ -1,3 +1,4 @@
+import { courseFinder, mountCourseFinder } from './german-courses.js?v=99a70635ed3c';
 import { taxAdviserHelp, translatorHelp, rentingSteps } from './practical-guides.js?v=fb2cb8ec3d25';
 import { START_PAGE_KEY, readStartPage, writeStartPage, startPageHash } from './start-page.js?v=1fd85d52cdca';
 import { propertyPage, mountPropertyPlanner } from './property-planner.js?v=d21228904f47';
@@ -161,11 +162,9 @@ const found=glossaryResults(q,10);if(!found.length)return '<p class="muted">No c
 return '<div class="grid two">'+found.map(glossaryCard).join('')+'</div>';
 }
 function languagePage(){
-return title('DEUTSCH ↔ ENGLISH','Understand German financial language','Search German or English terms, common misspellings, and similar expressions. Each entry explains the concept and what to do next.')+privacyNote('temporary')+
+return title('DEUTSCH ↔ ENGLISH','Understand German financial language','Search German or English terms, common misspellings, and similar expressions. Each entry explains the concept and what to do next.')+privacyNote('temporary')+courseFinder()+
 '<div class="card"><form id="languageSearchForm" class="language-search"><label class="field" style="flex:1">Search terms in German or English<input id="languageQuery" name="query" placeholder="Try: Unterhaltserklärung, Werbungskosten, tax assessment" maxlength="160" autocomplete="off"></label><button class="button" type="submit">Find explanation →</button></form><div id="languageResults" style="margin-top:19px">'+glossaryMatches('')+'</div></div>'+
-"<div class=\"sectionhead\"><h2>Find German courses and exams near you</h2></div><div class=\"grid two\">"+
-"<div class=\"card\"><h3>Learn German</h3><p>Search for <b>Deutsch</b> and your town in the <a href=\"https://www.volkshochschule.de/kursfinder.php\">vhs course finder</a>. For integration courses, use the <a href=\"https://bamf-navi.bamf.de/en/Themen/Integrationskurse/\">BAMF local course finder</a>.</p><p>Local course pages: <a href=\"https://www.goethe.de/ins/de/en/ort/man.html\">Goethe-Institut Mannheim</a> and <a href=\"https://www.vhs-hd.de/fachbereich/gesamtprogramm/deutsch\">vhs Heidelberg</a>.</p></div>"+
-"<div class=\"card\"><h3>Take a German exam</h3><p>Enter your city or postcode in the <a href=\"https://www.telc.net/en/language-examinations/find-a-telc-examination-centre/\">telc exam-centre finder</a>, or choose your city and level from the <a href=\"https://www.goethe.de/ins/de/en/m/prf/ort.html\">Goethe exam locations</a>.</p><p>In Mannheim, check <a href=\"https://www.goethe.de/ins/de/en/prf/ort/man.html\">Goethe exam dates and booking</a>. Confirm the certificate you need before booking and check fees and available places with the centre.</p></div></div>"+
+"<div class=\"card\"><h3>Take a German exam</h3><p>Enter your city or postcode in the <a href=\"https://www.telc.net/en/language-examinations/find-a-telc-examination-centre/\">telc exam-centre finder</a>, or choose your city and level from the <a href=\"https://www.goethe.de/ins/de/en/m/prf/ort.html\">Goethe exam locations</a>.</p><p>In Mannheim, check <a href=\"https://www.goethe.de/ins/de/en/prf/ort/man.html\">Goethe exam dates and booking</a>. Confirm the certificate you need before booking and check fees and available places with the centre.</p></div>"+
 '<div class="sectionhead"><h2>India ↔ Germany concept bridge</h2></div><div class="grid two">'+conceptBridge.map(([india,germany,note])=>'<div class="card" style="padding:20px"><div class="tag">INDIA</div><h3 style="margin:8px 0">'+escapeHTML(india)+'</h3><div class="tag" style="margin:10px 0">GERMANY</div><b>'+escapeHTML(germany)+'</b><p style="margin:10px 0 0">'+escapeHTML(note)+'</p></div>').join('')+'</div>'+
 '<div class="sectionhead"><h2>Explain a German letter</h2></div><div class="card"><p>Paste a short sentence from an official letter. AtlasEveryday recognizes a few common administrative phrases and explains them in plain English. <b>This is not a general AI translator.</b></p><div class="note">Protect your privacy: remove your name, tax ID, address, reference numbers and any financial or health details before pasting. This tool processes the text in your browser only.</div><form id="letterExplainForm"><label class="field">German sentence<textarea name="letter" rows="4" maxlength="1600" required placeholder="Bitte reichen Sie die entsprechenden Nachweise innerhalb eines Monats ein."></textarea></label><button type="submit" class="button" style="margin-top:14px">Explain sentence</button></form><div class="result" id="letterExplanation" aria-live="polite">Enter a short German sentence to see whether a reviewed phrase matches.</div></div>'+
 '<div class="sectionhead"><h2>What comes next?</h2></div><div class="card"><p>Full paragraph translation, OCR for uploaded letters and AI explanations would require additional capabilities and privacy safeguards. For now, use the built-in definitions or ask for a new term in the feedback form.</p><a href="#feedback" class="button secondary">Request another German term →</a></div>';
@@ -503,7 +502,7 @@ const searchableTools=[
 {id:'journey/newcomer',title:'Newcomer checklist',summary:'Registration, housing, bank, mobile and insurance after moving to Germany.',keywords:'anmeldung arrival germany visa residence'},
 {id:'journey/return',title:'Return to India checklist',summary:'Departure, banking, taxation, pension, insurance and contracts.',keywords:'return india abmeldung ausland pension bank'},
 {id:'residency',title:'German and Indian residency screening',summary:'Indian day-count tests, German tax residence and pension guidance.',keywords:'residency rnornr ror tax residence fema'},
-{id:'language',title:'Language Bridge',summary:'German financial terms, taxes, insurance, letters and explanations.',keywords:'german translation glossary steuerklasse lohnabrechnung'},
+{id:'language',title:'Language Bridge',summary:'German financial terms, taxes, insurance, letters and explanations.',keywords:'german classes courses VHS online Berlin Munich language school translation glossary steuerklasse lohnabrechnung'},
 {id:'guide/driving-licence',title:'Driving licence exchange in Germany',summary:'Use or exchange an Indian car licence and find the local office.',keywords:'drivers license driving licence Führerschein Fuehrerschein Umschreibung Indian car theory practical test'},
 {id:'guide/housing',title:'Rent your first flat or WG room',summary:'Find housing, arrange a viewing and budget for moving in.',keywords:'rent flat apartment Wohnung WG Kaution Warmmiete landlord viewing'}
 ];
@@ -1917,6 +1916,7 @@ if(page==='healthcare'){
  const stateField=document.getElementById('fbHealthState');
  if(stateField&&fbGeoState.country==='Germany'&&fbGeoState.state&&[...stateField.options].some(option=>option.value===fbGeoState.state))stateField.value=fbGeoState.state;
 }
+if(page==='language')mountCourseFinder();
 if(page==='feedback')setupFeedbackWidget();
 if(page==='taxplan'||page==='residency')mountTaxPlanning({state,save});
 if(page==='invest')mountInvestmentPlanner({state,save});if(page==='propertyplan')mountPropertyPlanner({state,save});

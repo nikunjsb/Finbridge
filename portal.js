@@ -1,4 +1,4 @@
-import { newsArt } from './news-reader.js?v=71aed6694f48';
+import { newsArt } from './news-reader.js?v=476aa710be06';
 // Editorial navigation over the existing guides and tools. No additional tracking or services.
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 
@@ -114,7 +114,7 @@ function guideCards(ids, articles, icons) {
 const neighbourhood = '<svg class="atlas-neighbourhood" viewBox="0 0 360 190" fill="none" aria-hidden="true" focusable="false"><circle class="atlas-morning-sun" cx="276" cy="48" r="29" fill="#d6bfa2"/><path d="M22 166h318" stroke="#426457" stroke-width="2"/><path d="M48 166V81l46-35 46 35v85" fill="#f8f4eb" stroke="#426457" stroke-width="2"/><path d="M39 85l55-42 55 42M70 104h17v22H70zm32 0h17v22h-17zM86 166v-27h21v27" stroke="#426457" stroke-width="2"/><path d="M152 166V65h76v101" fill="#acc1ae" stroke="#426457" stroke-width="2"/><path d="M168 82h14v18h-14zm29 0h14v18h-14zm-29 34h14v18h-14zm29 0h14v18h-14zM181 166v-20h18v20" stroke="#426457" stroke-width="2"/><path d="M255 166V97l36-26 35 26v69" fill="#e3d7be" stroke="#426457" stroke-width="2"/><path d="m248 101 43-32 43 32M269 118h15v20h-15zm27 0h15v20h-15zM283 166v-15h17v15" stroke="#426457" stroke-width="2"/><path d="M30 166v-34m-12-4c0-18 25-18 25 0 0 17-25 17-25 0Z" fill="#8fa58d" stroke="#426457" stroke-width="2"/><path d="M74 27h29M192 31h20" stroke="#f8f4eb" stroke-width="5" stroke-linecap="round"/></svg>';
 
 export function portalHome({ articles, news, reviewed, icons }) {
-  const updates = news.slice(0, 3);
+  const updates = news.filter(item => !item.supersededBy).slice(0, 3);
   const stages = [
     ['topic/moving', '01', 'Planning the move', 'Permits, documents and your first practical decisions.'],
     ['journey/newcomer', '02', 'Just arrived', 'A checklist for your first weeks and months.'],

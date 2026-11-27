@@ -1,4 +1,4 @@
-import { renderNews, relatedNews } from './news-reader.js?v=71aed6694f48';
+import { renderNews, mountNewsFilters, relatedNews, guideFlow } from './news-reader.js?v=476aa710be06';
 import { courseFinder, mountCourseFinder } from './german-courses.js?v=99a70635ed3c';
 import { taxAdviserHelp, translatorHelp, rentingSteps } from './practical-guides.js?v=fb2cb8ec3d25';
 import { START_PAGE_KEY, readStartPage, writeStartPage, startPageHash } from './start-page.js?v=1fd85d52cdca';
@@ -11,7 +11,7 @@ import { spendingLabel } from './expense-workspace-core.js?v=964417265e14';
 import { clearEvidence } from './tax-evidence.js?v=7d5a4951cf0a';
 import { applyPageAccents } from './page-accents.js?v=9c3c67f9012e';
 import { investmentPage, mountInvestmentPlanner } from './investment-planner.js?v=9c281cc28ea2';
-import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=9d406f641cf4';
+import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=a5709b647a75';
 import { taxPlanningPage, mountTaxPlanning, residenceScreenHTML } from './tax-planning.js?v=7a2ae264b924';
 import { calculateExpenseCore } from './expense-rules.js?v=b677e9eb8ff9';
 import { tariff2026 as taxClassESt2026 } from './tax-rules.js?v=f05ad518f34c';
@@ -223,6 +223,70 @@ return title('DISCOVER OPPORTUNITIES','Did you know?','Practical tax, investment
 const expatNewsReviewed='27 November 2026';
 const expatNews=[
   {
+    "id": "labourmarket2026nov",
+    "category": "Employment",
+    "status": "Official statistics",
+    "effective": "November 2026 reporting period",
+    "title": "Germany’s November unemployment figures, explained",
+    "summary": "Germany recorded 2.936 million registered unemployed people in November, or 6.2%. That was 19,000 fewer than in October and 51,000 more than a year earlier.",
+    "detail": "Autumn usually brings extra hiring. Once the Federal Employment Agency accounted for the usual seasonal pattern, unemployment rose by 9,000 from October. The two monthly figures answer different questions. The first shows the change in the actual headcount. The second helps you compare months with different seasonal hiring patterns.",
+    "who": "Jobseekers, recent graduates and people comparing employment prospects in Germany.",
+    "action": "For a job search, compare vacancies for your occupation and region. The national rate describes Germany as a whole and cannot predict how long an individual search will take.",
+    "url": "https://www.arbeitsagentur.de/presse/2026-47-arbeitsmarkt-im-november-2026",
+    "sourceName": "Federal Employment Agency · November labour-market report",
+    "sourceLanguage": "de",
+    "sourcePublished": "2026-11-27",
+    "route": "#topic/money",
+    "metrics": [
+      [
+        "Monthly change",
+        "−19,000"
+      ],
+      [
+        "After seasonal adjustment",
+        "+9,000"
+      ],
+      [
+        "Change from a year earlier",
+        "+51,000"
+      ]
+    ],
+    "published": "2026-11-27",
+    "verified": "2026-11-27"
+  },
+  {
+    "id": "pensionceiling2027",
+    "category": "Pensions",
+    "status": "Approved",
+    "effective": "1 January 2027",
+    "title": "Germany raises the earnings ceiling for pension contributions in 2027",
+    "summary": "The general statutory pension insurance ceiling rises from €8,450 to €8,850 per month. Across a full year, the ceiling rises from €101,400 to €106,200.",
+    "detail": "The ceiling limits the earnings used to calculate contributions. For example, with regular monthly pensionable earnings of €8,700, up to €8,450 counts in 2026 and the full €8,700 falls within the 2027 ceiling. A separate figure, €53,452, is the provisional average earnings level used to calculate pension points for 2027.",
+    "who": "Employees paying into Germany’s general statutory pension scheme, especially those earning above the 2026 ceiling.",
+    "action": "On your January payslip, look for RV-Brutto, the earnings used for pension insurance. The example assumes regular monthly earnings in one job. Ask payroll about one-off payments or months with partial employment.",
+    "url": "https://www.bundesregierung.de/breg-de/aktuelles/beitragsbemessungsgrenzen-2027-2454638",
+    "sourceName": "Federal government · 2027 social insurance figures",
+    "sourceLanguage": "de",
+    "sourcePublished": "2026-11-20",
+    "route": "#salary",
+    "comparison": {
+      "caption": "Annual earnings counted for general pension contributions",
+      "unit": "EUR",
+      "values": [
+        [
+          "2026",
+          101400
+        ],
+        [
+          "2027",
+          106200
+        ]
+      ]
+    },
+    "published": "2026-11-27",
+    "verified": "2026-11-27"
+  },
+  {
     "id": "digitallicence2026",
     "category": "Transport",
     "status": "Launch planned",
@@ -246,7 +310,10 @@ const expatNews=[
     "report": "https://www.newsworm.de/news/germanys-digital-driving-licence-is-coming-who-can-use-it",
     "reportLabel": "Newsworm · rollout coverage (English)",
     "reportLanguage": "en",
-    "route": "#guide/driving-licence"
+    "route": "#guide/driving-licence",
+    "published": "2026-11-27",
+    "verified": "2026-11-27",
+    "sourcePublished": "2026-11-25"
   },
   {
     "id": "heatingmeters2026",
@@ -272,7 +339,9 @@ const expatNews=[
     "report": "https://www.newsworm.de/news/heating-meter-deadline-2026-when-tenants-in-germany-pay-3-less",
     "reportLabel": "Newsworm · tenant coverage (English)",
     "reportLanguage": "en",
-    "route": "#guide/housing"
+    "route": "#guide/housing",
+    "published": "2026-11-27",
+    "verified": "2026-11-27"
   },
   {
     "id": "digitalproduct2026",
@@ -288,7 +357,10 @@ const expatNews=[
     "url": "https://www.bundesregierung.de/breg-de/aktuelles/neuregelungen-dezember-2026-2462734",
     "sourceName": "Federal government · December rule changes",
     "sourceLanguage": "de",
-    "route": "#everyday"
+    "route": "#everyday",
+    "published": "2026-11-27",
+    "verified": "2026-11-27",
+    "sourcePublished": "2026-11-26"
   },
   {
     "id": "broadcast2026",
@@ -303,7 +375,9 @@ const expatNews=[
     "route": "#guide/housing",
     "sourceName": "ARD ZDF Deutschlandradio Beitragsservice",
     "sourceLanguage": "de",
-    "detail": "A shared flat can receive a letter even when one resident already pays. For example, a new flatmate may appear in the population register before the Beitragsservice can match them to the existing account. The contribution number of the person paying helps it match the address."
+    "detail": "A shared flat can receive a letter even when one resident already pays. For example, a new flatmate may appear in the population register before the Beitragsservice can match them to the existing account. The contribution number of the person paying helps it match the address.",
+    "published": "2026-11-24",
+    "verified": "2026-11-27"
   },
   {
     "id": "raildec2026",
@@ -318,7 +392,10 @@ const expatNews=[
     "route": "#everyday",
     "sourceName": "Deutsche Bahn · regional timetable announcement",
     "sourceLanguage": "de",
-    "detail": "The winter timetable starts before the calendar year changes. For a return trip that straddles 13 December, check each direction on its actual travel date. A departure or connection you use on the outward journey may change on the way back."
+    "detail": "The winter timetable starts before the calendar year changes. For a return trip that straddles 13 December, check each direction on its actual travel date. A departure or connection you use on the outward journey may change on the way back.",
+    "published": "2026-11-24",
+    "verified": "2026-11-27",
+    "sourcePublished": "2026-10-13"
   },
   {
     "id": "childcare2026vote",
@@ -333,13 +410,15 @@ const expatNews=[
     "route": "#journey/newcomer",
     "sourceName": "German Bundestag · mediation referral",
     "sourceLanguage": "de",
-    "detail": "The proposal includes checking children’s language and development by their fifth year and offering support afterwards. Mediation gives the federal and state sides an opportunity to agree on revisions. Parents can continue to use the timetable and contacts supplied by their local daycare provider."
+    "detail": "The proposal includes checking children’s language and development by their fifth year and offering support afterwards. Mediation gives the federal and state sides an opportunity to agree on revisions. Parents can continue to use the timetable and contacts supplied by their local daycare provider.",
+    "published": "2026-11-13",
+    "verified": "2026-11-27"
   },
   {
     "id": "drivingreform2026",
     "category": "Transport",
     "status": "Law published",
-    "effective": "Published 25 November 2026",
+    "effective": "Most provisions from 1 July 2027",
     "title": "Driving-school reform published with a July 2027 start for most provisions",
     "summary": "Germany has published the first part of its driving-school reform. Most provisions start on 1 July 2027. Learners booking lessons now should confirm which requirements apply to their course.",
     "who": "Learner drivers and newcomers comparing driving schools",
@@ -355,7 +434,10 @@ const expatNews=[
         "url": "https://www.bundesregierung.de/breg-de/aktuelles/kabinett-startet-reform-fahrschulausbildung-2431088",
         "lang": "de"
       }
-    ]
+    ],
+    "published": "2026-11-24",
+    "verified": "2026-11-27",
+    "sourcePublished": "2026-11-25"
   },
   {
     "id": "wallet2027",
@@ -370,7 +452,10 @@ const expatNews=[
     "route": "#everyday",
     "sourceName": "Federal government · d-you wallet",
     "sourceLanguage": "de",
-    "detail": "The government plans to start with participating organisations. Age checks and online identification are among the intended uses. Before an appointment, check whether that particular provider accepts the wallet and which document it needs."
+    "detail": "The government plans to start with participating organisations. Age checks and online identification are among the intended uses. Before an appointment, check whether that particular provider accepts the wallet and which document it needs.",
+    "published": "2026-11-24",
+    "verified": "2026-11-27",
+    "sourcePublished": "2026-11-20"
   },
   {
     "id": "healthlimits2027",
@@ -385,7 +470,10 @@ const expatNews=[
     "route": "#healthcompare",
     "sourceName": "Federal government · 2027 social insurance figures",
     "sourceLanguage": "de",
-    "detail": "Two figures matter. The general salary threshold for choosing private cover rises from €77,400 in 2026 to €84,150 in 2027. The €76,500 figure caps the earnings used for statutory contributions in 2027. For example, €80,000 in regular annual pay lies between the two new figures. Ask payroll how the rules apply to your existing membership."
+    "detail": "Two figures matter. The general salary threshold for choosing private cover rises from €77,400 in 2026 to €84,150 in 2027. The €76,500 figure caps the earnings used for statutory contributions in 2027. For example, €80,000 in regular annual pay lies between the two new figures. Ask payroll how the rules apply to your existing membership.",
+    "published": "2026-11-20",
+    "verified": "2026-11-27",
+    "sourcePublished": "2026-11-20"
   },
   {
     "id": "credit2026nov",
@@ -400,7 +488,10 @@ const expatNews=[
     "route": "#budget",
     "sourceName": "Federal government · November rule changes",
     "sourceLanguage": "de",
-    "detail": "A small purchase split into instalments can still be a credit agreement. For a checkout offer, write down the cash price, the sum of all instalments and the due dates. Save the actual terms you accepted so you can check what happens if a payment is late."
+    "detail": "A small purchase split into instalments can still be a credit agreement. For a checkout offer, write down the cash price, the sum of all instalments and the due dates. Save the actual terms you accepted so you can check what happens if a payment is late.",
+    "published": "2026-11-20",
+    "verified": "2026-11-27",
+    "sourcePublished": "2026-10-29"
   },
   {
     "id": "healthrecognition2026nov",
@@ -415,7 +506,11 @@ const expatNews=[
     "route": "#healthcare",
     "sourceName": "Federal government · November rule changes",
     "sourceLanguage": "de",
-    "detail": "If you already have an application open, include the file reference when you contact the authority. Ask whether the changes affect how it assesses your qualification and whether it still needs any outstanding documents. Keep its response with your application."
+    "detail": "If you already have an application open, include the file reference when you contact the authority. Ask whether the changes affect how it assesses your qualification and whether it still needs any outstanding documents. Keep its response with your application.",
+    "published": "2026-11-20",
+    "verified": "2026-11-27",
+    "sourcePublished": "2026-10-29",
+    "topic": "Healthcare & insurance"
   },
   {
     "id": "taxclasses2026discussion",
@@ -433,7 +528,9 @@ const expatNews=[
     "sourceLanguage": "de",
     "detail": "Tax classes affect how much wage tax an employer withholds during the year. A couple looking at two payslips can compare their combined monthly withholding separately from their eventual annual assessment. The reporting describes a policy discussion.",
     "reportLabel": "Tagesschau · reporting on the proposal (German)",
-    "reportLanguage": "de"
+    "reportLanguage": "de",
+    "published": "2026-11-20",
+    "verified": "2026-11-27"
   },
   {
     "id": "customs2026vote",
@@ -448,7 +545,9 @@ const expatNews=[
     "route": "#tax",
     "sourceName": "German Bundestag · customs enforcement vote",
     "sourceLanguage": "de",
-    "detail": "The bill concerns the powers of investigators. If you are sending money to family, your immediate practical questions remain the exchange rate, fees, transfer receipt and any documents your bank requests. The parliamentary vote does not give you a new transfer allowance."
+    "detail": "The bill concerns the powers of investigators. If you are sending money to family, your immediate practical questions remain the exchange rate, fees, transfer receipt and any documents your bank requests. The parliamentary vote does not give you a new transfer allowance.",
+    "published": "2026-11-13",
+    "verified": "2026-11-27"
   },
   {
     "id": "annualtax2026committee",
@@ -463,7 +562,9 @@ const expatNews=[
     "route": "#tax",
     "sourceName": "German Bundestag · Annual Tax Act vote",
     "sourceLanguage": "de",
-    "detail": "For a worker on a long assignment, the useful record is the employer’s written assignment, including its start date and expected duration. For a family with a child elsewhere in the EU or EEA, the relevant question is which tax year and residence conditions the final text covers."
+    "detail": "For a worker on a long assignment, the useful record is the employer’s written assignment, including its start date and expected duration. For a family with a child elsewhere in the EU or EEA, the relevant question is which tax year and residence conditions the final text covers.",
+    "published": "2026-11-11",
+    "verified": "2026-11-27"
   },
   {
     "id": "ticket2027",
@@ -478,7 +579,9 @@ const expatNews=[
     "route": "#journey/newcomer",
     "sourceName": "Federal government · Deutschlandticket questions and answers",
     "sourceLanguage": "de",
-    "detail": "At the announced standard prices, keeping one subscription for twelve months would cost €801.60 in 2027, compared with €756 in 2026. Your own cost can differ if your employer or university subsidises it. Check your provider’s notice for any response deadline."
+    "detail": "At the announced standard prices, keeping one subscription for twelve months would cost €801.60 in 2027, compared with €756 in 2026. Your own cost can differ if your employer or university subsidises it. Check your provider’s notice for any response deadline.",
+    "published": "2026-11-06",
+    "verified": "2026-11-27"
   },
   {
     "id": "commute2026",
@@ -493,7 +596,9 @@ const expatNews=[
     "route": "#tax",
     "sourceName": "Federal Ministry of Finance · 2026 tax changes",
     "sourceLanguage": "de",
-    "detail": "For example, 100 qualifying office days and a 20 km one-way distance give a candidate allowance of €760 at €0.38 per kilometre. The allowance enters the tax calculation as an expense. The tax saving depends on your other expenses and taxable income."
+    "detail": "For example, 100 qualifying office days and a 20 km one-way distance give a candidate allowance of €760 at €0.38 per kilometre. The allowance enters the tax calculation as an expense. The tax saving depends on your other expenses and taxable income.",
+    "published": "2026-11-06",
+    "verified": "2026-11-27"
   },
   {
     "id": "bluecard2026",
@@ -508,7 +613,57 @@ const expatNews=[
     "route": "#journey/newcomer",
     "sourceName": "Make it in Germany · EU Blue Card",
     "sourceLanguage": "en",
-    "detail": "When comparing a job offer with the threshold, use gross annual pay and the category that applies to you. The lower figure has specific eligibility conditions. The official portal explains the qualification and job-offer requirements alongside the salary figures."
+    "detail": "When comparing a job offer with the threshold, use gross annual pay and the category that applies to you. The lower figure has specific eligibility conditions. The official portal explains the qualification and job-offer requirements alongside the salary figures.",
+    "published": "2026-11-06",
+    "verified": "2026-11-27"
+  },
+  {
+    "id": "annualtax2026committee-vote",
+    "category": "Tax",
+    "status": "Committee approved — not law",
+    "effective": "11 November 2026 (committee vote)",
+    "title": "2026 Annual Tax Act advances in Bundestag committee",
+    "summary": "The Bundestag Finance Committee approved an amended 2026 Annual Tax Act draft. It drops a proposed reduction of the first-workplace assignment period from 48 to 24 months; proposes full child tax allowances for children living in another EU/EEA country; and proposes raising tax arrears/refund interest from 1.8% to 3.6% annually from 2027. These are not yet enacted rules.",
+    "who": "Employees on longer assignments, cross-border EU/EEA families and taxpayers with tax interest",
+    "action": "No immediate change to tax filings. Follow the final Bundestag and Bundesrat decisions before applying the proposed rules.",
+    "url": "https://www.bundestag.de/presse/hib/kurzmeldungen-1232894",
+    "route": "#tax",
+    "supersededBy": "annualtax2026committee",
+    "supersededOn": "2026-11-16",
+    "published": "2026-11-11",
+    "sourceLanguage": "de"
+  },
+  {
+    "id": "childcare2026-bundestag",
+    "category": "Families",
+    "status": "Bundestag approved — not yet in effect",
+    "effective": "12 November 2026 (Bundestag vote)",
+    "title": "Bundestag approves childcare quality and start-opportunity reform",
+    "summary": "The Bundestag approved the Startchancen- und Qualitätsentwicklungsgesetz, intended to improve childcare quality and early development support. The legislation is not yet confirmed in force; state-level implementation and remaining legislative steps matter.",
+    "who": "Families with young children using German childcare services, including international families",
+    "action": "No immediate new entitlement to claim. Follow Bundesrat proceedings and announcements from your state and local Kita.",
+    "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw46-de-startchancen-1231486",
+    "route": "#journey/newcomer",
+    "supersededBy": "childcare2026vote",
+    "supersededOn": "2026-11-24",
+    "published": "2026-11-13",
+    "sourceLanguage": "de"
+  },
+  {
+    "id": "drivingreform2026-vote",
+    "category": "Transport",
+    "status": "First stage approved",
+    "effective": "20 November 2026 vote",
+    "title": "Driving-school reform clears first legislative stage",
+    "summary": "The Bundesrat approved the first part of the reform. A separate regulation covers changes to training.",
+    "who": "Learner drivers and newcomers comparing driving schools",
+    "action": "Ask the school which requirements apply to your course and request an itemised quote before budgeting for savings.",
+    "url": "https://www.bundesregierung.de/breg-de/aktuelles/kabinett-startet-reform-fahrschulausbildung-2431088",
+    "route": "#guide/driving-licence",
+    "supersededBy": "drivingreform2026",
+    "supersededOn": "2026-11-27",
+    "published": "2026-11-24",
+    "sourceLanguage": "de"
   }
 ];
 
@@ -1218,7 +1373,7 @@ function salaryPage(){
 const p=state.salaryInputs||{};
 const num=(v,d)=>Number.isFinite(Number(v))?Number(v):d;
 const options=(items,value)=>items.map(([k,l])=>'<option value="'+escapeHTML(k)+'" '+(String(value)===String(k)?'selected':'')+'>'+escapeHTML(l)+'</option>').join('');
-return title('SALARY / GERMANY','Monthly take-home salary','Estimate a regular 2026 German employee payslip using AtlasEveryday’s existing wage-tax model.')+privacyNote('saved')+
+return title('SALARY / GERMANY','Monthly take-home salary','Estimate a regular 2026 German employee payslip using AtlasEveryday’s existing wage-tax model.')+privacyNote('saved')+guideFlow('salary')+
 '<div class="note">Supports regular employment with statutory public health insurance. Private insurance, special deductions, irregular bonuses, employer benefits and mini-jobs require separate calculation. Estimate only, not an official payslip.</div>'+
 '<div class="card" style="margin-bottom:18px"><h3>Reading an actual payslip?</h3><p>Understand the seven common tax and insurance lines, gross figures, employer contributions and the amount transferred to your bank.</p><a class="biglink" href="#guide/salary">Read the payslip explainer →</a></div>'+
 '<div class="grid two"><div class="card"><h3>Salary inputs</h3><form id="salaryForm" class="formgrid">'+
@@ -1822,7 +1977,7 @@ function newcomerJourney(){
  '<p><a class="biglink" href="#guide/housing">Rent your first flat or WG room →</a></p><p><a class="biglink" href="#guide/driving-licence">Using or exchanging an Indian driving licence →</a></p>'+
 "<p><a class=\"biglink\" href=\"#language\">Find German courses and exam centres near you →</a></p>"+
 "<div class=\"card\"><h3>Find second-hand essentials nearby</h3><p>On <a href=\"https://www.kleinanzeigen.de/\">Kleinanzeigen</a>, search for <i>Schreibtisch</i> (desk), <i>Esstisch</i> (dining table) or <i>Fahrrad</i> (bicycle). Enter your city or postcode and choose a <a href=\"https://hilfe.kleinanzeigen.de/hc/de/articles/17105421380764-Wie-funktioniert-die-Umkreissuche\">search radius</a> you can travel for pickup.</p><p><i>Zu verschenken</i> means free. <i>Nur Abholung</i> means pickup only. To ask about pickup: <span lang=\"de\">„Ist der Artikel noch da? Wann könnte ich ihn abholen?“</span></p></div>"+
- newcomerPhases.map(([phase,label])=>{const items=allTasks.filter(x=>newcomerPhaseFor(x[0])===phase);if(!items.length)return '';return '<div class="sectionhead"><h2>'+label+'</h2><span class="pill">'+items.filter(x=>state['newcomer:'+x[0]]).length+' / '+items.length+'</span></div><div class="card fb-journey-card">'+fbSteps(items,'newcomer',fbNewcomerIcons)+'</div>';}).join('')+
+ guideFlow('registration')+newcomerPhases.map(([phase,label])=>{const items=allTasks.filter(x=>newcomerPhaseFor(x[0])===phase);if(!items.length)return '';return '<div class="sectionhead"><h2>'+label+'</h2><span class="pill">'+items.filter(x=>state['newcomer:'+x[0]]).length+' / '+items.length+'</span></div><div class="card fb-journey-card">'+fbSteps(items,'newcomer',fbNewcomerIcons)+'</div>';}).join('')+
  '<div class="sectionhead"><h2>Moving from India to Germany: can moving costs reduce tax?</h2></div>'+
  '<div class="card guidebody"><p><b>Possibly, for a job-related move.</b> German 2026 income-tax guidance (LStR R 9.9) recognizes qualifying employee relocation expenses when a move is professionally motivated, including certain moves from abroad to Germany. The German rules draw on the Bundesumzugskostengesetz and Auslandsumzugskostenverordnung. This is not an automatic refund, and the applicable allowances and actual costs need careful review.</p>'+
  '<p><b>What to document:</b> offer/contract and starting date; flight and transport costs; moving company, luggage and shipment invoices; eligible travel and housing-related costs; relevant exchange rates; and each employer reimbursement. Personal shopping, furniture purchases and unrelated private expenses are not automatically eligible.</p>'+
@@ -2184,8 +2339,8 @@ case 'propertyplan':content=propertyPage();break;case 'invest':content=invest();
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }
-document.title=page==='news'?(expatNews.find(item=>item.id===id)?.title||'Germany Expat Updates')+' | AtlasEveryday':defaultPageTitle;
-if(['guide','healthcompare','everyday'].includes(page))content+=relatedNews(expatNews,'#'+hash);
+document.title=page==='news'?(expatNews.find(item=>item.id===id)?.title||(id==='archive'?'News archive':'Germany Expat Updates'))+' | AtlasEveryday':defaultPageTitle;
+if(['guide','healthcompare','everyday','salary','topic'].includes(page))content+=relatedNews(expatNews,'#'+hash);
 $('#content').innerHTML='<div class="fb-start-tools" id="fbStartPageTools" aria-label="Start page preference"></div>'+(['tax','salary','taxclasses','doublehousehold','healthcompare'].includes(page)?fbTaxLocationSuggestion():'')+content;
 if(Object.hasOwn(fbAiTopics,page)){
  const aiAnchor=$('#content .lead')||$('#content h1')||document.getElementById('fbStartPageTools');
@@ -2199,6 +2354,7 @@ if(page==='healthcare'){
  const stateField=document.getElementById('fbHealthState');
  if(stateField&&fbGeoState.country==='Germany'&&fbGeoState.state&&[...stateField.options].some(option=>option.value===fbGeoState.state))stateField.value=fbGeoState.state;
 }
+if(page==='news')mountNewsFilters(expatNews);
 if(page==='language'){
  mountCourseFinder();
  const sections={courses:'germanCourses',exams:'languageExams',glossary:'languageGlossary',letters:'languageLetters',concepts:'languageConcepts'};

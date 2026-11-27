@@ -1,3 +1,4 @@
+import { renderNews, relatedNews } from './news-reader.js?v=71aed6694f48';
 import { courseFinder, mountCourseFinder } from './german-courses.js?v=99a70635ed3c';
 import { taxAdviserHelp, translatorHelp, rentingSteps } from './practical-guides.js?v=fb2cb8ec3d25';
 import { START_PAGE_KEY, readStartPage, writeStartPage, startPageHash } from './start-page.js?v=1fd85d52cdca';
@@ -10,7 +11,7 @@ import { spendingLabel } from './expense-workspace-core.js?v=964417265e14';
 import { clearEvidence } from './tax-evidence.js?v=7d5a4951cf0a';
 import { applyPageAccents } from './page-accents.js?v=9c3c67f9012e';
 import { investmentPage, mountInvestmentPlanner } from './investment-planner.js?v=9c281cc28ea2';
-import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=90228370e12c';
+import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=9d406f641cf4';
 import { taxPlanningPage, mountTaxPlanning, residenceScreenHTML } from './tax-planning.js?v=7a2ae264b924';
 import { calculateExpenseCore } from './expense-rules.js?v=b677e9eb8ff9';
 import { tariff2026 as taxClassESt2026 } from './tax-rules.js?v=f05ad518f34c';
@@ -23,6 +24,7 @@ import { locationTrialEndpoint } from './location-config.js?v=a4d8404b441d';
 import { finbridgeAiEndpoint } from './ai-config.js?v=83a1eae01790';
 import { finbridgeInsightsEndpoint } from './insights-config.js?v=24f7c5d71d75';
 
+const defaultPageTitle=document.title;
 const $=(s)=>document.querySelector(s);
 const money=(v)=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(Number(v)||0);
 const escapeHTML=(s)=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -218,30 +220,297 @@ return title('DISCOVER OPPORTUNITIES','Did you know?','Practical tax, investment
 }
 
 
-const expatNewsReviewed='24 November 2026';
+const expatNewsReviewed='27 November 2026';
 const expatNews=[
-{"id": "broadcast2026", "category": "Housing", "status": "Announced", "effective": "From mid-December 2026", "title": "Broadcasting fee letters after address checks", "summary": "The Beitragsservice will contact adults it cannot match to a registered household. Letters will go out in batches.", "who": "People who recently moved or share a flat", "action": "If someone already pays for your flat, ask for their contribution number and reply using the instructions in the letter.", "url": "https://www.rundfunkbeitrag.de/presse-und-aktuelles/presse/beitragsservice-startet-bundesweiten-meldedatenabgleich-2026", "route": "#guide/housing"},
-{"id": "raildec2026", "category": "Transport", "status": "Scheduled", "effective": "13 December 2026", "title": "New rail timetable for December journeys", "summary": "Deutsche Bahn schedules half-hourly Berlin–Hamburg services again and more Berlin–Stuttgart ICE Sprinters.", "who": "Commuters and holiday travellers", "action": "Look up your travel date and connections in the new timetable.", "url": "https://www.deutschebahn.com/de/presse/presse-regional/pr-berlin-de/aktuell/presseinformationen/Fahrplan-2027-stabile-Preise-neue-Sprinter-mehr-europaeische-Verbindungen--14065460", "route": "#everyday"},
-{"id": "childcare2026vote", "category": "Families", "status": "In mediation", "effective": "20 November 2026 referral", "title": "Childcare reform goes to mediation", "summary": "After the Bundestag vote, the Bundesrat requested substantial revisions. The proposed nationwide changes are still under negotiation.", "who": "Families with children in daycare", "action": "Follow your local Kita’s current guidance while federal and state representatives negotiate.", "url": "https://dserver.bundestag.de/btd/21/093/2109351.pdf", "route": "#journey/newcomer"},
-{"id": "drivingreform2026", "category": "Transport", "status": "First stage approved", "effective": "20 November 2026 vote", "title": "Driving-school reform clears first legislative stage", "summary": "The Bundesrat approved the first part of the reform. A separate regulation covers changes to training.", "who": "Learner drivers and newcomers comparing driving schools", "action": "Ask the school which requirements apply to your course and request an itemised quote before budgeting for savings.", "url": "https://www.bundesregierung.de/breg-de/aktuelles/kabinett-startet-reform-fahrschulausbildung-2431088", "route": "#guide/driving-licence"},
-{"id": "wallet2027", "category": "Everyday life", "status": "Launch planned", "effective": "Early January 2027", "title": "Germany plans voluntary digital ID wallet", "summary": "The Bundesrat approved the legal basis for d-you. The government plans a phased launch with participating services.", "who": "Residents using digital identification", "action": "Check which credentials and services are supported at launch. Physical identification remains available.", "url": "https://www.bundesregierung.de/breg-de/aktuelles/digitale-brieftasche-2431500", "route": "#everyday"},
-{id:'healthlimits2027',category:'Insurance',status:'Approved',effective:'1 January 2027',title:'Health insurance thresholds rise in January',summary:'The Bundesrat approved the 2027 general employee eligibility threshold of €84,150 and contribution ceiling of €76,500 on 20 November. An individual fund sets its own additional rate.',who:'Employees comparing statutory and private cover',action:'Check your regular annual pay and compare both years using your insurer’s notice.',url:'https://www.bundesregierung.de/breg-de/suche/beitragsbemessungsgrenzen-2027-2454638',route:'#healthcompare'},
-{id:'credit2026nov',category:'Consumer finance',status:'In force',effective:'20 November 2026',title:'Small loans gain consumer-credit protections',summary:'The expanded rules reach loans up to €200 and qualifying buy-now-pay-later arrangements. Digital confirmation can meet the text-form requirement.',who:'Residents financing small purchases or paying in instalments',action:'Check the total repayment amount and payment dates before accepting a checkout offer.',url:'https://www.bundesregierung.de/breg-de/aktuelles/gesetzliche-neuregelungen-november-2026-2459132',route:'#budget'},
-{id:'healthrecognition2026nov',category:'Employment',status:'In force in stages',effective:'November 2026 update',title:'Recognition procedures change for four healthcare professions',summary:'Germany is simplifying recognition of foreign qualifications for doctors, dentists, pharmacists and midwives. The process still depends on the profession, qualification and responsible state authority.',who:'Applicants with overseas healthcare qualifications',action:'Ask the state authority which procedure and transitional rules apply to your application.',url:'https://www.bundesregierung.de/breg-de/aktuelles/gesetzliche-neuregelungen-november-2026-2459132',route:'#healthcare'},
-{id:'taxclasses2026discussion',category:'Tax',status:'Under discussion',effective:'Reported 11 November 2026',title:'Replacing tax classes III/V with a factor system is under discussion',summary:'ARD reports talks about moving couples to an automated factor method for wage-tax withholding. Current law still provides for classes III and V. No switch date has been established in this review.',who:'Married employees comparing monthly take-home pay',action:'Use the tax class on your payslip for current calculations. A withholding proposal alone does not change joint annual taxation.',url:'https://www.gesetze-im-internet.de/estg/__38b.html',report:'https://www.tagesschau.de/inland/steuerklassen-klingbeil-100.html',route:'#taxclasses'},
-{id:'customs2026vote',category:'Banking',status:'Bundestag approved — not yet in effect',effective:'12 November 2026 (Bundestag vote)',title:'Bundestag approves customs and financial-crime enforcement reform',summary:'The Bundestag approved legislation strengthening customs enforcement and financial-crime investigations. This does not itself establish a new ordinary Germany–India bank transfer limit or an immediately applicable remittance rule.',who:'People and businesses with cross-border financial activity; ordinary remitters should not assume their transfer limits changed',action:'Continue existing bank verification and documentation practices; check final publication and commencement before treating proposed powers as active.',url:'https://www.bundestag.de/dokumente/textarchiv/2026/kw46-de-finanzkriminalitaet-1231490',route:'#tax'},
-
-{id:'annualtax2026committee',category:'Tax',status:'Bundestag approved — further steps pending',effective:'12 November 2026 (Bundestag vote)',title:'Bundestag approves the 2026 Annual Tax Act',summary:'The Bundestag approved the amended 2026 Annual Tax Act bill on 12 November. It drops a proposed reduction of the first-workplace assignment period from 48 to 24 months; proposes full child tax allowances for children living in another EU/EEA country; and proposes raising tax arrears/refund interest from 1.8% to 3.6% annually from 2027. The vote alone does not establish that these measures are in force.',who:'Employees on longer assignments, cross-border EU/EEA families and taxpayers with tax interest',action:'No immediate change to tax filings. Check remaining legislative steps, publication and the applicable effective dates before applying these measures.',url:'https://www.bundestag.de/dokumente/textarchiv/2026/kw46-de-jahressteuergesetz-1232588',route:'#tax'},
-{id:'ticket2027',category:'Transport',status:'Announced',effective:'1 January 2027',title:'Deutschlandticket price announced for 2027',summary:'The federal government says the Deutschlandticket is €63/month in 2026 and will rise to €66.80/month in 2027. Existing subscribers should check their provider’s consent and subscription rules.',who:'Commuters, students and local-transport subscribers',action:'Check your transport provider and compare any Jobticket or semester-ticket option.',url:'https://www.bundesregierung.de/breg-de/service/fragen-und-anworten/deutschlandticket-2134074',route:'#journey/newcomer'},
-{id:'commute2026',category:'Tax',status:'In effect',effective:'1 January 2026',title:'2026 commuting allowance: €0.38 from the first kilometer',summary:'For qualifying journeys to a first workplace in 2026, the distance allowance is generally €0.38 per full one-way kilometer. Other rules and limits still apply.',who:'Employees travelling to their first workplace',action:'Use the AtlasEveryday commuting calculator and keep your office-day records.',url:'https://www.bundesfinanzministerium.de/Content/DE/Standardartikel/Themen/Steuern/das-aendert-sich-2026.html',route:'#tax'},
-{id:'bluecard2026',category:'Immigration',status:'In effect',effective:'2026',title:'EU Blue Card salary thresholds for 2026',summary:'The official skilled-worker portal lists €50,700 gross annual salary as the general 2026 threshold, with €45,934.20 for certain eligible shortage occupations, new entrants and qualifying IT specialists, subject to further requirements.',who:'Prospective Blue Card applicants and skilled workers',action:'Check your occupational category and recognition requirements before applying.',url:'https://www.make-it-in-germany.com/en/visa-recognition/visa-types/eu-blue-card',route:'#journey/newcomer'}
+  {
+    "id": "digitallicence2026",
+    "category": "Transport",
+    "status": "Launch planned",
+    "effective": "Mid-December 2026",
+    "art": "licence",
+    "title": "Germany’s digital driving licence is coming to the i-Kfz app",
+    "summary": "The transport ministry expects the digital licence to launch in mid-December. Drivers who choose it will initially need to carry a passport or identity card when using it in Germany.",
+    "detail": "The app will let drivers present proof from the German driving-licence register at a roadside check. For example, on a trip from Munich to Salzburg, take the physical licence for the Austrian leg. If you hold a foreign licence, its validity and any exchange deadline are separate questions.",
+    "who": "Drivers with a German licence who want a digital option, and people who drive across borders.",
+    "action": "Keep using your existing licence until the feature opens. Before relying on the app, check that you can display your licence and have the required identity document with you.",
+    "url": "https://www.bmv.de/SharedDocs/DE/Anlage/Gesetze/Gesetze-21/gesetz-zur-aenderung-des-fahrlehrergesetzes-und-andere-strassenverkehrsrechtlicher-gesetze-bgbl.pdf?__blob=publicationFile",
+    "sourceName": "Federal Law Gazette · transitional identification rule (PDF)",
+    "sourceLanguage": "de",
+    "moreSources": [
+      {
+        "label": "Tagesschau · transport ministry’s launch timetable (German)",
+        "url": "https://www.tagesschau.de/wirtschaft/verbraucher/digitaler-fuehrerschein-verspaetung-start-mitte-dezember-100.html",
+        "lang": "de"
+      }
+    ],
+    "report": "https://www.newsworm.de/news/germanys-digital-driving-licence-is-coming-who-can-use-it",
+    "reportLabel": "Newsworm · rollout coverage (English)",
+    "reportLanguage": "en",
+    "route": "#guide/driving-licence"
+  },
+  {
+    "id": "heatingmeters2026",
+    "category": "Housing",
+    "status": "Upgrade deadline",
+    "effective": "31 December 2026",
+    "art": "meter",
+    "title": "Heating meters in rented homes face a year-end deadline",
+    "summary": "Many older heating and hot-water meters must be upgraded or replaced so they can be read remotely. The rules allow exceptions, including technical impossibility or unreasonable hardship.",
+    "detail": "If an owner fails to meet the requirement, section 12 of the Heating Costs Ordinance gives tenants a right to reduce their allocated share of the affected heating or hot-water costs by 3%. For an affected share of €800, that would be €24. The calculation uses the relevant bill, rather than the monthly rent.",
+    "who": "Tenants whose heating or hot water is billed through their building and whose meter may still need upgrading.",
+    "action": "Ask the property manager whether your meter is remotely readable, or whether an exception applies. Keep the answer with your annual heating statement before querying a charge.",
+    "url": "https://www.gesetze-im-internet.de/heizkostenv/__5.html",
+    "sourceName": "Heating Costs Ordinance · section 5, meter requirements",
+    "sourceLanguage": "de",
+    "moreSources": [
+      {
+        "label": "Heating Costs Ordinance · section 12, reduction rights (German)",
+        "url": "https://www.gesetze-im-internet.de/heizkostenv/__12.html",
+        "lang": "de"
+      }
+    ],
+    "report": "https://www.newsworm.de/news/heating-meter-deadline-2026-when-tenants-in-germany-pay-3-less",
+    "reportLabel": "Newsworm · tenant coverage (English)",
+    "reportLanguage": "en",
+    "route": "#guide/housing"
+  },
+  {
+    "id": "digitalproduct2026",
+    "category": "Consumer rights",
+    "status": "Scheduled",
+    "effective": "9 December 2026",
+    "art": "software",
+    "title": "Product liability expands to software and AI",
+    "summary": "Germany’s December rules bring software and AI within product liability. If a defective product causes damage, the manufacturer can be liable. In some circumstances an importer or supplier can also be responsible.",
+    "detail": "Think of a connected appliance whose software causes damage to other property. The questions include which product caused the damage, which version was in use and what was damaged. A routine request to return a purchase follows a different process.",
+    "who": "People using software or connected products in Germany who experience damage from a defect.",
+    "action": "Record what happened, photograph any damage and keep the purchase details and software version. These records can help a consumer adviser assess your situation.",
+    "url": "https://www.bundesregierung.de/breg-de/aktuelles/neuregelungen-dezember-2026-2462734",
+    "sourceName": "Federal government · December rule changes",
+    "sourceLanguage": "de",
+    "route": "#everyday"
+  },
+  {
+    "id": "broadcast2026",
+    "category": "Housing",
+    "status": "Announced",
+    "effective": "From mid-December 2026",
+    "title": "Broadcasting fee letters after address checks",
+    "summary": "The Beitragsservice will contact adults it cannot match to a registered household. Letters will go out in batches.",
+    "who": "People who recently moved or share a flat",
+    "action": "If someone already pays for your flat, ask for their contribution number and reply using the instructions in the letter.",
+    "url": "https://www.rundfunkbeitrag.de/presse-und-aktuelles/presse/beitragsservice-startet-bundesweiten-meldedatenabgleich-2026",
+    "route": "#guide/housing",
+    "sourceName": "ARD ZDF Deutschlandradio Beitragsservice",
+    "sourceLanguage": "de",
+    "detail": "A shared flat can receive a letter even when one resident already pays. For example, a new flatmate may appear in the population register before the Beitragsservice can match them to the existing account. The contribution number of the person paying helps it match the address."
+  },
+  {
+    "id": "raildec2026",
+    "category": "Transport",
+    "status": "Scheduled",
+    "effective": "13 December 2026",
+    "title": "New rail timetable for December journeys",
+    "summary": "Deutsche Bahn schedules half-hourly Berlin–Hamburg services again and more Berlin–Stuttgart ICE Sprinters.",
+    "who": "Commuters and holiday travellers",
+    "action": "Look up your travel date and connections in the new timetable.",
+    "url": "https://www.deutschebahn.com/de/presse/presse-regional/pr-berlin-de/aktuell/presseinformationen/Fahrplan-2027-stabile-Preise-neue-Sprinter-mehr-europaeische-Verbindungen--14065460",
+    "route": "#everyday",
+    "sourceName": "Deutsche Bahn · regional timetable announcement",
+    "sourceLanguage": "de",
+    "detail": "The winter timetable starts before the calendar year changes. For a return trip that straddles 13 December, check each direction on its actual travel date. A departure or connection you use on the outward journey may change on the way back."
+  },
+  {
+    "id": "childcare2026vote",
+    "category": "Families",
+    "status": "In mediation",
+    "effective": "20 November 2026 referral",
+    "title": "Childcare reform goes to mediation",
+    "summary": "After the Bundestag vote, the Bundesrat requested substantial revisions. The proposed nationwide changes are still under negotiation.",
+    "who": "Families with children in daycare",
+    "action": "Follow your local Kita’s current guidance while federal and state representatives negotiate.",
+    "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw47-vermittlungsausschuss-1237464",
+    "route": "#journey/newcomer",
+    "sourceName": "German Bundestag · mediation referral",
+    "sourceLanguage": "de",
+    "detail": "The proposal includes checking children’s language and development by their fifth year and offering support afterwards. Mediation gives the federal and state sides an opportunity to agree on revisions. Parents can continue to use the timetable and contacts supplied by their local daycare provider."
+  },
+  {
+    "id": "drivingreform2026",
+    "category": "Transport",
+    "status": "Law published",
+    "effective": "Published 25 November 2026",
+    "title": "Driving-school reform published with a July 2027 start for most provisions",
+    "summary": "Germany has published the first part of its driving-school reform. Most provisions start on 1 July 2027. Learners booking lessons now should confirm which requirements apply to their course.",
+    "who": "Learner drivers and newcomers comparing driving schools",
+    "action": "Ask the school which requirements apply to your course and request an itemised quote before budgeting for savings.",
+    "url": "https://www.bmv.de/SharedDocs/DE/Anlage/Gesetze/Gesetze-21/gesetz-zur-aenderung-des-fahrlehrergesetzes-und-andere-strassenverkehrsrechtlicher-gesetze-bgbl.pdf?__blob=publicationFile",
+    "route": "#guide/driving-licence",
+    "sourceName": "Federal Law Gazette · driving-instructor reform (PDF)",
+    "sourceLanguage": "de",
+    "detail": "The main provisions are scheduled for 1 July 2027. The law contains a separate earlier start for one provision. Changes to how learners train also depend on a separate regulation. If you are comparing schools now, request a quote based on the lessons and fees that will actually apply to you.",
+    "moreSources": [
+      {
+        "label": "Federal government · reform overview (German)",
+        "url": "https://www.bundesregierung.de/breg-de/aktuelles/kabinett-startet-reform-fahrschulausbildung-2431088",
+        "lang": "de"
+      }
+    ]
+  },
+  {
+    "id": "wallet2027",
+    "category": "Everyday life",
+    "status": "Launch planned",
+    "effective": "Early January 2027",
+    "title": "Germany plans voluntary digital ID wallet",
+    "summary": "The Bundesrat approved the legal basis for d-you. The government plans a phased launch with participating services.",
+    "who": "Residents using digital identification",
+    "action": "Check which credentials and services are supported at launch. Physical identification remains available.",
+    "url": "https://www.bundesregierung.de/breg-de/aktuelles/digitale-brieftasche-2431500",
+    "route": "#everyday",
+    "sourceName": "Federal government · d-you wallet",
+    "sourceLanguage": "de",
+    "detail": "The government plans to start with participating organisations. Age checks and online identification are among the intended uses. Before an appointment, check whether that particular provider accepts the wallet and which document it needs."
+  },
+  {
+    "id": "healthlimits2027",
+    "category": "Insurance",
+    "status": "Approved",
+    "effective": "1 January 2027",
+    "title": "Health insurance thresholds rise in January",
+    "summary": "The Bundesrat approved the 2027 general employee eligibility threshold of €84,150 and contribution ceiling of €76,500 on 20 November. An individual fund sets its own additional rate.",
+    "who": "Employees comparing statutory and private cover",
+    "action": "Check your regular annual pay and compare both years using your insurer’s notice.",
+    "url": "https://www.bundesregierung.de/breg-de/suche/beitragsbemessungsgrenzen-2027-2454638",
+    "route": "#healthcompare",
+    "sourceName": "Federal government · 2027 social insurance figures",
+    "sourceLanguage": "de",
+    "detail": "Two figures matter. The general salary threshold for choosing private cover rises from €77,400 in 2026 to €84,150 in 2027. The €76,500 figure caps the earnings used for statutory contributions in 2027. For example, €80,000 in regular annual pay lies between the two new figures. Ask payroll how the rules apply to your existing membership."
+  },
+  {
+    "id": "credit2026nov",
+    "category": "Consumer finance",
+    "status": "In force",
+    "effective": "20 November 2026",
+    "title": "Small loans gain consumer-credit protections",
+    "summary": "The expanded rules reach loans up to €200 and qualifying buy-now-pay-later arrangements. Digital confirmation can meet the text-form requirement.",
+    "who": "Residents financing small purchases or paying in instalments",
+    "action": "Check the total repayment amount and payment dates before accepting a checkout offer.",
+    "url": "https://www.bundesregierung.de/breg-de/aktuelles/gesetzliche-neuregelungen-november-2026-2459132",
+    "route": "#budget",
+    "sourceName": "Federal government · November rule changes",
+    "sourceLanguage": "de",
+    "detail": "A small purchase split into instalments can still be a credit agreement. For a checkout offer, write down the cash price, the sum of all instalments and the due dates. Save the actual terms you accepted so you can check what happens if a payment is late."
+  },
+  {
+    "id": "healthrecognition2026nov",
+    "category": "Employment",
+    "status": "In force in stages",
+    "effective": "November 2026 update",
+    "title": "Recognition procedures change for four healthcare professions",
+    "summary": "Germany is simplifying recognition of foreign qualifications for doctors, dentists, pharmacists and midwives. The process still depends on the profession, qualification and responsible state authority.",
+    "who": "Applicants with overseas healthcare qualifications",
+    "action": "Ask the state authority which procedure and transitional rules apply to your application.",
+    "url": "https://www.bundesregierung.de/breg-de/aktuelles/gesetzliche-neuregelungen-november-2026-2459132",
+    "route": "#healthcare",
+    "sourceName": "Federal government · November rule changes",
+    "sourceLanguage": "de",
+    "detail": "If you already have an application open, include the file reference when you contact the authority. Ask whether the changes affect how it assesses your qualification and whether it still needs any outstanding documents. Keep its response with your application."
+  },
+  {
+    "id": "taxclasses2026discussion",
+    "category": "Tax",
+    "status": "Under discussion",
+    "effective": "Reported 11 November 2026",
+    "title": "Replacing tax classes III/V with a factor system is under discussion",
+    "summary": "ARD reports talks about moving couples to an automated factor method for wage-tax withholding. Current law still provides for classes III and V. No switch date has been established in this review.",
+    "who": "Married employees comparing monthly take-home pay",
+    "action": "Use the tax class on your payslip for current calculations. A withholding proposal alone does not change joint annual taxation.",
+    "url": "https://www.gesetze-im-internet.de/estg/__38b.html",
+    "report": "https://www.tagesschau.de/inland/steuerklassen-klingbeil-100.html",
+    "route": "#taxclasses",
+    "sourceName": "Income Tax Act · section 38b",
+    "sourceLanguage": "de",
+    "detail": "Tax classes affect how much wage tax an employer withholds during the year. A couple looking at two payslips can compare their combined monthly withholding separately from their eventual annual assessment. The reporting describes a policy discussion.",
+    "reportLabel": "Tagesschau · reporting on the proposal (German)",
+    "reportLanguage": "de"
+  },
+  {
+    "id": "customs2026vote",
+    "category": "Banking",
+    "status": "Bundestag approved — not yet in effect",
+    "effective": "12 November 2026 (Bundestag vote)",
+    "title": "Bundestag approves customs and financial-crime enforcement reform",
+    "summary": "The Bundestag approved legislation strengthening customs enforcement and financial-crime investigations. This does not itself establish a new ordinary Germany–India bank transfer limit or an immediately applicable remittance rule.",
+    "who": "People and businesses with cross-border financial activity; ordinary remitters should not assume their transfer limits changed",
+    "action": "Continue existing bank verification and documentation practices; check final publication and commencement before treating proposed powers as active.",
+    "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw46-de-finanzkriminalitaet-1231490",
+    "route": "#tax",
+    "sourceName": "German Bundestag · customs enforcement vote",
+    "sourceLanguage": "de",
+    "detail": "The bill concerns the powers of investigators. If you are sending money to family, your immediate practical questions remain the exchange rate, fees, transfer receipt and any documents your bank requests. The parliamentary vote does not give you a new transfer allowance."
+  },
+  {
+    "id": "annualtax2026committee",
+    "category": "Tax",
+    "status": "Bundestag approved — further steps pending",
+    "effective": "12 November 2026 (Bundestag vote)",
+    "title": "Bundestag approves the 2026 Annual Tax Act",
+    "summary": "The Bundestag approved the amended 2026 Annual Tax Act bill on 12 November. It drops a proposed reduction of the first-workplace assignment period from 48 to 24 months; proposes full child tax allowances for children living in another EU/EEA country; and proposes raising tax arrears/refund interest from 1.8% to 3.6% annually from 2027. The vote alone does not establish that these measures are in force.",
+    "who": "Employees on longer assignments, cross-border EU/EEA families and taxpayers with tax interest",
+    "action": "No immediate change to tax filings. Check remaining legislative steps, publication and the applicable effective dates before applying these measures.",
+    "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw46-de-jahressteuergesetz-1232588",
+    "route": "#tax",
+    "sourceName": "German Bundestag · Annual Tax Act vote",
+    "sourceLanguage": "de",
+    "detail": "For a worker on a long assignment, the useful record is the employer’s written assignment, including its start date and expected duration. For a family with a child elsewhere in the EU or EEA, the relevant question is which tax year and residence conditions the final text covers."
+  },
+  {
+    "id": "ticket2027",
+    "category": "Transport",
+    "status": "Announced",
+    "effective": "1 January 2027",
+    "title": "Deutschlandticket price announced for 2027",
+    "summary": "The federal government says the Deutschlandticket is €63/month in 2026 and will rise to €66.80/month in 2027. Existing subscribers should check their provider’s consent and subscription rules.",
+    "who": "Commuters, students and local-transport subscribers",
+    "action": "Check your transport provider and compare any Jobticket or semester-ticket option.",
+    "url": "https://www.bundesregierung.de/breg-de/service/fragen-und-anworten/deutschlandticket-2134074",
+    "route": "#journey/newcomer",
+    "sourceName": "Federal government · Deutschlandticket questions and answers",
+    "sourceLanguage": "de",
+    "detail": "At the announced standard prices, keeping one subscription for twelve months would cost €801.60 in 2027, compared with €756 in 2026. Your own cost can differ if your employer or university subsidises it. Check your provider’s notice for any response deadline."
+  },
+  {
+    "id": "commute2026",
+    "category": "Tax",
+    "status": "In effect",
+    "effective": "1 January 2026",
+    "title": "2026 commuting allowance: €0.38 from the first kilometer",
+    "summary": "For qualifying journeys to a first workplace in 2026, the distance allowance is generally €0.38 per full one-way kilometer. Other rules and limits still apply.",
+    "who": "Employees travelling to their first workplace",
+    "action": "Use the AtlasEveryday commuting calculator and keep your office-day records.",
+    "url": "https://www.bundesfinanzministerium.de/Content/DE/Standardartikel/Themen/Steuern/das-aendert-sich-2026.html",
+    "route": "#tax",
+    "sourceName": "Federal Ministry of Finance · 2026 tax changes",
+    "sourceLanguage": "de",
+    "detail": "For example, 100 qualifying office days and a 20 km one-way distance give a candidate allowance of €760 at €0.38 per kilometre. The allowance enters the tax calculation as an expense. The tax saving depends on your other expenses and taxable income."
+  },
+  {
+    "id": "bluecard2026",
+    "category": "Immigration",
+    "status": "In effect",
+    "effective": "2026",
+    "title": "EU Blue Card salary thresholds for 2026",
+    "summary": "The official skilled-worker portal lists €50,700 gross annual salary as the general 2026 threshold, with €45,934.20 for certain eligible shortage occupations, new entrants and qualifying IT specialists, subject to further requirements.",
+    "who": "Prospective Blue Card applicants and skilled workers",
+    "action": "Check your occupational category and recognition requirements before applying.",
+    "url": "https://www.make-it-in-germany.com/en/visa-recognition/visa-types/eu-blue-card",
+    "route": "#journey/newcomer",
+    "sourceName": "Make it in Germany · EU Blue Card",
+    "sourceLanguage": "en",
+    "detail": "When comparing a job offer with the threshold, use gross annual pay and the category that applies to you. The lower figure has specific eligibility conditions. The official portal explains the qualification and job-offer requirements alongside the salary figures."
+  }
 ];
-function expatNewsCard(item,compact=false){
-return '<article id="fbNews-'+escapeHTML(item.id)+'" class="card expat-news-card"><div class="expat-news-meta"><span class="tag">'+escapeHTML(item.category)+'</span><span class="expat-news-status">'+escapeHTML(item.status)+'</span><span class="muted">'+escapeHTML(item.effective)+'</span></div><h3>'+escapeHTML(item.title)+'</h3><p>'+escapeHTML(item.summary)+'</p>'+(compact?'':'<p><b>Who it affects:</b> '+escapeHTML(item.who)+'</p><p><b>What to do:</b> '+escapeHTML(item.action)+'</p>')+'<div class="expat-news-links"><a class="biglink" href="'+escapeHTML(item.route)+'">Related AtlasEveryday guide →</a><a class="biglink" href="'+escapeHTML(item.url)+'" target="_blank" rel="noopener noreferrer">Official source ↗</a>'+(item.report?'<a class="biglink" href="'+escapeHTML(item.report)+'">Reporting on the discussion ↗</a>':'')+'</div></article>';
-}
-function expatNewsPreview(){return '<div class="sectionhead expat-news-heading"><h2>Germany Expat Updates</h2><a class="biglink" href="#news">View all updates →</a></div><p class="muted expat-news-caption">Latest editorial additions: '+expatNewsReviewed+'. Curated updates, not a live news feed.</p><div class="grid">'+expatNews.map(x=>expatNewsCard(x,true)).join('')+'</div>'}
-function newsPage(){return title('GERMANY / EXPAT NEWS','Germany Expat Updates','Practical rule changes and announcements that may matter for foreign residents, students, employees and families.')+'<div class="note"><b>Editorial status:</b> These are curated updates. Latest additions: '+expatNewsReviewed+'. This page does not pull live headlines or automatically detect new laws. Check the effective date and original official source before acting. “Announced” does not mean a rule is already in effect.</div><div class="grid">'+expatNews.map(x=>expatNewsCard(x)).join('')+'</div><div class="sectionhead"><h2>What we monitor</h2></div><div class="card"><p>Immigration and citizenship; income tax, salary and insurance; transport, rent and banking; student and family rules; and Germany–India cross-border developments. Only sufficiently sourced changes should be published as news.</p><a class="button secondary" href="#feedback">Suggest a news topic →</a></div>'}
-
 
 // Browser-side, permission-gated geolocation. Never save/share raw coordinates.
 const fbGeoKey='finbridge-coarse-location-v1';
@@ -1906,7 +2175,7 @@ const hash=decodeURIComponent(location.hash.replace(/^#\/?/,'')||document.body.d
 const [page,id]=hash.split('/');
 let content='';
 switch(page){
-case 'overview':content=overview();break;case 'location':content=fbLocationPage();break;case 'news':content=newsPage();break;case 'discover':content=discover(fbDiscoverQuery);break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
+case 'overview':content=overview();break;case 'location':content=fbLocationPage();break;case 'news':content=renderNews(expatNews,expatNewsReviewed,id);break;case 'discover':content=discover(fbDiscoverQuery);break;case 'language':content=languagePage();break;case 'insights':content=insightsPage();break;
 case 'topic':content=portalTopicPage(id,articles,fbIcon);break;
 case 'taxplan':content=taxPlanningPage(id,state,{title});break;
 case 'moneycheck':content=moneyCheckPage(state.moneyCheck,{title});break;
@@ -1915,6 +2184,8 @@ case 'propertyplan':content=propertyPage();break;case 'invest':content=invest();
 case 'journeys':content=journeys();break;case 'journey':content=journey(id);break;case 'ask':content=ask();break;case 'feedback':content=feedback();break;
 case 'sources':content=sources();break;case 'privacy':content=privacyPage();break;case 'settings':content=settings();break;default:content=overview();
 }
+document.title=page==='news'?(expatNews.find(item=>item.id===id)?.title||'Germany Expat Updates')+' | AtlasEveryday':defaultPageTitle;
+if(['guide','healthcompare','everyday'].includes(page))content+=relatedNews(expatNews,'#'+hash);
 $('#content').innerHTML='<div class="fb-start-tools" id="fbStartPageTools" aria-label="Start page preference"></div>'+(['tax','salary','taxclasses','doublehousehold','healthcompare'].includes(page)?fbTaxLocationSuggestion():'')+content;
 if(Object.hasOwn(fbAiTopics,page)){
  const aiAnchor=$('#content .lead')||$('#content h1')||document.getElementById('fbStartPageTools');
@@ -1922,10 +2193,6 @@ if(Object.hasOwn(fbAiTopics,page)){
  fbAiRender(page);
 }
 if(page==='immigration'&&id)requestAnimationFrame(()=>fbJumpToImmigrationSection(id));
-if(page==='news'&&id)requestAnimationFrame(()=>{
- const story=document.getElementById('fbNews-'+id);
- if(story){story.scrollIntoView({block:'start'});story.setAttribute('tabindex','-1');story.focus({preventScroll:true})}
-});
 fbUpdateLocationHeader();
 if(page==='taxclasses'&&fbGeoState.country==='Germany'&&fbGeoState.state){const field=document.querySelector('#taxClassForm [name=state]');if(field)field.value=fbGeoState.state;}
 if(page==='healthcare'){

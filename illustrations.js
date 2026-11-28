@@ -1,4 +1,15 @@
 const drawings = {
+  mortgage: `<path d="M9 40l25-22 25 22M15 37v31h38V37" fill="#c4d4c7"/><path d="M25 68V51h12v17" fill="#fffaf0"/>
+    <rect x="62" y="12" width="51" height="59" rx="4" fill="#fffaf0"/><path d="M70 23h34m-34 7h21"/>
+    <g class="news-art-detail"><rect x="70" y="39" width="35" height="10" rx="2" fill="#ddbc85"/><path d="M85 39h18q2 0 2 2v6q0 2-2 2H85z" fill="#9fbeae"/></g>
+    <path d="M70 56h12m5 0h17m-34 6h9m8 0h12"/>`,
+  twoHomes: `<path d="M9 39l20-18 20 18M14 36v23h30V36" fill="#b3cabb"/><path d="M26 59V46h8v13" fill="#fff9ec"/>
+    <path d="M80 38l20-16 19 16M85 35v24h29V35" fill="#dfc8a2"/><path d="M98 59V46h7v13" fill="#fff9ec"/>
+    <path d="M28 68h72" stroke-dasharray="3 5"/><g class="news-art-detail"><rect x="55" y="57" width="17" height="12" rx="2" fill="#bb9773"/><path d="M60 57v-3h7v3"/></g>`,
+  moveIn: `<path d="M11 42h47v28H11z" fill="#c6d5c4"/><path d="m11 42 23 16 24-16" />
+    <g class="news-art-detail"><path d="M27 18h26l6 6v16H27z" fill="#fffaf0"/><path d="M52 18v7h7M32 29h14m-14 5h19"/></g>
+    <path d="M65 39h49v31H65z" fill="#dec39a"/><path d="M65 45h49M83 39v12h12V39" fill="#f0e2c6"/>
+    <circle cx="87" cy="20" r="6" fill="#d7b775"/><path d="M91 24l12 9 4-4m-8 1 3-4" stroke-width="3"/>`,
   registration: `<path d="M18 49V30l8-6h25l8 9h37v36H18z" fill="#b1c6bb"/>
     <g class="news-art-detail"><path d="M42 10h36l10 10v39H42z" fill="#fffaf0"/><path d="M78 10v10h10M49 28h25m-25 7h29m-29 7h15"/></g>
     <path d="M16 45h35l6-5h46l-8 31H22z" fill="#d5bb91"/><rect x="31" y="51" width="23" height="8" rx="2" fill="#fffaf0"/>`,
@@ -30,6 +41,9 @@ export function newsArt(kind = 'paper') {
 }
 
 const flows = {
+  mortgage: ['Where a mortgage payment goes', 'For example, a €1,000 payment could include €400 in interest and €600 in principal.', 'The full €1,000 leaves your account. The €600 principal reduces your loan balance.', 'For a rental scenario, read the planner’s separate tax estimate alongside the cash result.'],
+  twoHomes: ['Which journey are you recording?', 'Identify your main household and the accommodation you use near work.', 'Enter trips back to your main household under home trips. Keep the dates and any employer payments.', 'Use the commuting tool for journeys from your accommodation near work to your workplace. Enter each trip once.'],
+  moveIn: ['What a first month can cost', '€700 cold rent plus €180 service charges gives €880 warm rent.', 'If electricity and internet cost another €70, your monthly housing budget is €950.', 'Add a €700 deposit instalment and €250 for moving. You need €1,900 in the first month. Track the refundable deposit separately.'],
   registration: ['How address registration works', 'Get the housing confirmation', 'Attend registration', 'Keep the registration certificate'],
   salary: ['How the salary estimate works', 'Gross salary', 'Subtract wage tax and social contributions', 'Estimated take-home pay'],
   transfer: ['Compare a transfer to India', 'Enter the same euro amount for both quotes', 'Compare fees and the exchange rate', 'Check the rupees the recipient would get'],

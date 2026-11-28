@@ -1002,13 +1002,17 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
  .news-story .atlas-art-panel .news-art{width:105px}
  .news-card-top .news-art{width:55px}
  .guide-flow{display:block}
- .guide-flow .atlas-art-panel{display:flex;justify-content:space-between;margin:.6rem 0;gap:.4rem}
+ .guide-flow .atlas-art-panel{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-evenly;margin:.6rem 0;gap:.4rem}
  .guide-flow .atlas-art-panel .news-art{width:90px}
 }
 @media(prefers-reduced-motion:no-preference){
  .art-replay{display:inline-block}
  .art-in-view .news-art-detail{animation:atlas-paper-settle 1.4s ease-out both}
- .art-in-view:is([data-art=salary],[data-art=expenses],[data-art=registration]) .news-art-detail{animation-name:atlas-deposit}
+ .art-in-view:is([data-art=moveIn],[data-art=salary],[data-art=expenses],[data-art=registration]) .news-art-detail{animation-name:atlas-deposit}
+ .art-in-view[data-art=twoHomes] .news-art-detail{animation-name:atlas-home-trip}
+ @keyframes atlas-home-trip{from{transform:translateX(34px)}to{transform:translateX(-34px)}}
+ .art-in-view[data-art=mortgage] .news-art-detail{animation-name:atlas-payment;transform-box:fill-box;transform-origin:left}
+ @keyframes atlas-payment{from{transform:scaleX(.15)}to{transform:scaleX(1)}}
  .art-in-view[data-art=transfer] .news-art-detail{animation-name:atlas-send}
  .art-in-view:is([data-art=jobs],[data-art=recognition]) .news-art-detail{animation-name:atlas-inspect}
  .art-in-view:is([data-art=meter],[data-art=calendar],[data-art=software]) .news-art-detail{animation-name:atlas-reveal;transform-box:fill-box;transform-origin:center}

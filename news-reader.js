@@ -1,4 +1,4 @@
-import { newsArt, illustratedPanel } from './illustrations.js?v=9dc779bf4eec';
+import { newsArt, illustratedPanel } from './illustrations.js?v=bda5255e7126';
 // Keep article URLs stable so a link in a guide opens the same story as the overview.
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'

@@ -1,5 +1,5 @@
-import { newsArt } from './illustrations.js?v=9dc779bf4eec';
-import { newsArtKind } from './news-reader.js?v=cb64323527ac';
+import { newsArt } from './illustrations.js?v=bda5255e7126';
+import { newsArtKind } from './news-reader.js?v=16a6b191925e';
 // Editorial navigation over the existing guides and tools. No additional tracking or services.
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 

@@ -224,6 +224,50 @@ return title('DISCOVER OPPORTUNITIES','Did you know?','Practical tax, investment
 const expatNewsReviewed='28 November 2026';
 const expatNews=[
   {
+    "id": "wohngeld2027budget",
+    "category": "Housing",
+    "topic": "Housing & utilities",
+    "status": "Announced — bill still pending",
+    "effective": "2027 plans",
+    "title": "Coalition steps back from planned Wohngeld cuts",
+    "summary": "During the Bundestag budget debate, Housing Minister Verena Hubertz said households currently entitled to Wohngeld would not receive less in 2027 under the coalition’s revised plans. The regular 2027 increase is still expected to be skipped.",
+    "detail": "The original draft proposed halving the heating-cost component and changing the calculation formula. The parliamentary register still lists the separate Wohngeld bill as referred to committee, so the revised plan remains subject to the legislative process.",
+    "who": "Households receiving or applying for Germany’s housing allowance (Wohngeld).",
+    "action": "Use your current award notice for budgeting, renew as usual, and check with your local Wohngeldstelle when the final rules are published.",
+    "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw48-de-wohnen-1232498",
+    "sourceName": "Bundestag · Housing budget debate",
+    "sourcePublished": "2026-11-27",
+    "moreSources": [
+      {
+        "url": "https://dip.bundestag.de/vorgang/gesetz-zur-vereinfachung-und-fortentwicklung-des-wohngeldgesetzes/338373",
+        "label": "Bundestag · Wohngeld bill and legislative status",
+        "lang": "de"
+      }
+    ],
+    "route": "#guide/housing",
+    "sourceLanguage": "de",
+    "published": "2026-11-28",
+    "verified": "2026-11-28"
+  },
+  {
+    "id": "childsupplements2027vote",
+    "category": "Family",
+    "status": "Bundestag approved — further steps pending",
+    "effective": "2027 under the Bundestag-approved bill",
+    "title": "Bundestag keeps one child supplement and votes to end another",
+    "summary": "On 27 November the Bundestag passed the budget accompanying bill. It keeps the Sofortzuschlag paid as part of the Kinderzuschlag. It would end the separate Sofortzuschlag paid under the Asylum Seekers’ Benefits Act at the end of 2026.",
+    "detail": "For the asylum-benefit supplement, awards already approved before the end of 2026 would be covered by a transition lasting at most through May 2027.",
+    "who": "Families receiving Kinderzuschlag or the Sofortzuschlag under the Asylum Seekers’ Benefits Act.",
+    "action": "Check the benefit name on your award notice. If you receive the asylum-benefit supplement, ask the office named on your notice whether the transition would apply to your award.",
+    "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw48-de-haushaltsgesetz-2027-dritte-lesung-1232350",
+    "sourceName": "Bundestag · 2027 budget and accompanying bill vote",
+    "sourcePublished": "2026-11-27",
+    "route": "#everyday",
+    "sourceLanguage": "de",
+    "published": "2026-11-28",
+    "verified": "2026-11-28"
+  },
+  {
     "id": "electricitytax2027vote",
     "category": "Tax",
     "topic": "Housing & utilities",

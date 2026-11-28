@@ -924,7 +924,7 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 /* News illustrations move once. The complete drawing is also the resting frame. */
 .news-art{width:112px;height:auto;display:block;flex:none}
 @keyframes news-detail-in{from{transform:translateY(4px)}to{transform:translateY(0)}}
-@media(prefers-reduced-motion:no-preference){.news-art-detail,.atlas-morning-sun{animation:news-detail-in .8s ease-out both}}
+@media(prefers-reduced-motion:no-preference){.atlas-morning-sun{animation:news-detail-in .8s ease-out both}}
 .news-masthead{display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,4vw,40px);margin:12px 0 24px}
 .news-masthead>div{min-width:0}
 .news-masthead .h1{margin:8px 0}
@@ -955,9 +955,7 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 @media(max-width:520px){
   .news-masthead{align-items:flex-start;gap:.6rem}
   .news-masthead>.news-art{width:58px}
-  .news-story .news-masthead{display:block;position:relative}
-  .news-story .expat-news-meta{padding-right:64px;min-height:46px}
-  .news-story .news-masthead>.news-art{position:absolute;top:0;right:0}
+  .news-story .news-masthead{flex-direction:column;align-items:stretch}
   .atlas-news-title .news-art{width:32px}
   .news-related{align-items:flex-start;gap:.65rem}
   .news-related .news-art{width:42px}
@@ -984,7 +982,39 @@ footer a{text-decoration:underline;text-underline-offset:3px;color:#656565}
 @media(prefers-reduced-motion:no-preference){
  @keyframes atlas-bar-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
  .news-bar{animation:atlas-bar-grow .55s ease-out}
- .guide-flow li{animation:news-detail-in .45s ease-out backwards}
- .guide-flow li:nth-child(2){animation-delay:.12s}
- .guide-flow li:nth-child(3){animation-delay:.24s}
+}
+
+/* Keep the illustration's resting frame visible, including in reduced-motion mode. */
+.news-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.news-card-top .expat-news-meta{min-width:0}
+.news-card-top .news-art{width:70px;background:#f3f5ed;border-radius:10px}
+.atlas-art-panel{flex:none;display:grid;justify-items:center;align-content:center;gap:4px;padding:.55rem .85rem;background:#edf2e9;border:1px solid #d4dfd3;border-radius:14px}
+.atlas-art-panel .news-art{width:clamp(110px,16vw,170px)}
+.art-replay{display:none;min-height:30px;padding:.2rem .6rem;border:0;border-radius:5px;background:transparent;color:#354f43;font-size:.82rem;text-decoration:underline;text-underline-offset:3px}
+.art-replay:focus-visible{outline:2px solid #345c58;outline-offset:2px}
+.guide-flow{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:1rem;align-items:center}
+.guide-flow figcaption{grid-column:1;grid-row:1;align-self:end}
+.guide-flow ol{grid-column:1;grid-row:2;display:block;align-self:start;list-style:decimal;padding-inline-start:1.4rem;margin:.45rem 0 0}
+.guide-flow li{list-style:decimal outside;padding:.1rem 0}
+.guide-flow .atlas-art-panel{grid-column:2;grid-row:1/span 2}
+@media(max-width:520px){
+ .news-story .atlas-art-panel{display:flex;justify-content:space-between;gap:1rem;padding:.25rem .75rem}
+ .news-story .atlas-art-panel .news-art{width:105px}
+ .news-card-top .news-art{width:55px}
+ .guide-flow{display:block}
+ .guide-flow .atlas-art-panel{display:flex;justify-content:space-between;margin:.6rem 0;gap:.4rem}
+ .guide-flow .atlas-art-panel .news-art{width:90px}
+}
+@media(prefers-reduced-motion:no-preference){
+ .art-replay{display:inline-block}
+ .art-in-view .news-art-detail{animation:atlas-paper-settle 1.4s ease-out both}
+ .art-in-view:is([data-art=salary],[data-art=expenses],[data-art=registration]) .news-art-detail{animation-name:atlas-deposit}
+ .art-in-view[data-art=transfer] .news-art-detail{animation-name:atlas-send}
+ .art-in-view:is([data-art=jobs],[data-art=recognition]) .news-art-detail{animation-name:atlas-inspect}
+ .art-in-view:is([data-art=meter],[data-art=calendar],[data-art=software]) .news-art-detail{animation-name:atlas-reveal;transform-box:fill-box;transform-origin:center}
+ @keyframes atlas-paper-settle{from{transform:translate(-6px,-11px) rotate(-4deg)}to{transform:none}}
+ @keyframes atlas-deposit{0%{transform:translate(6px,-12px)}70%{transform:translate(0,3px)}100%{transform:none}}
+ @keyframes atlas-send{0%{transform:translate(-30px,13px)}55%{transform:translate(25px,4px)}100%{transform:none}}
+ @keyframes atlas-inspect{0%{transform:translate(-16px,4px)}60%{transform:translate(4px,-3px)}100%{transform:none}}
+ @keyframes atlas-reveal{0%{opacity:.25;transform:scale(.72)}75%{opacity:1;transform:scale(1.09)}100%{transform:none}}
 }

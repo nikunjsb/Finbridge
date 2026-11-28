@@ -1,4 +1,5 @@
-import { renderNews, mountNewsFilters, relatedNews, guideFlow } from './news-reader.js?v=476aa710be06';
+import { guideFlow, mountIllustrations } from './illustrations.js?v=9dc779bf4eec';
+import { renderNews, mountNewsFilters, relatedNews } from './news-reader.js?v=cb64323527ac';
 import { courseFinder, mountCourseFinder } from './german-courses.js?v=99a70635ed3c';
 import { taxAdviserHelp, translatorHelp, rentingSteps } from './practical-guides.js?v=fb2cb8ec3d25';
 import { START_PAGE_KEY, readStartPage, writeStartPage, startPageHash } from './start-page.js?v=1fd85d52cdca';
@@ -11,7 +12,7 @@ import { spendingLabel } from './expense-workspace-core.js?v=964417265e14';
 import { clearEvidence } from './tax-evidence.js?v=7d5a4951cf0a';
 import { applyPageAccents } from './page-accents.js?v=9c3c67f9012e';
 import { investmentPage, mountInvestmentPlanner } from './investment-planner.js?v=9c281cc28ea2';
-import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=a5709b647a75';
+import { portalHome, portalTopics, portalTopicCards, portalTopicPage } from './portal.js?v=7ed489dc8a22';
 import { taxPlanningPage, mountTaxPlanning, residenceScreenHTML } from './tax-planning.js?v=7a2ae264b924';
 import { calculateExpenseCore } from './expense-rules.js?v=b677e9eb8ff9';
 import { tariff2026 as taxClassESt2026 } from './tax-rules.js?v=f05ad518f34c';
@@ -1043,7 +1044,7 @@ function tax(){
 prepareExpenseWorkspace(state,save);
 return '<div id="expenseWorkspace">'+title('GERMAN TAX RETURN','Guided tax expense workspace','Select a category, answer relevant questions, and compare what you actually spent with potential deductions.')+
 '<div class="note"><a class="biglink" href="#taxplan/work">Detailed work-expense worksheet — dated records and 2025/2026 preparation checks →</a></div>'+
-workspaceOverview(state)+
+workspaceOverview(state)+guideFlow('expenses')+
 '<div class="fb-tax-grid" role="group" aria-label="Choose a tax expense category">'+Object.entries(fbTaxIcons).map(([name,[icon,label,description]])=>'<button type="button" class="fb-tax-choice '+(name==='Commuting'?'selected':'')+'" data-tax-category="'+escapeHTML(name)+'" aria-pressed="'+(name==='Commuting'?'true':'false')+'"><span class="fb-card-symbol">'+fbIcon(icon)+'</span><span class="fb-tax-copy"><b>'+escapeHTML(label)+'</b><small>'+escapeHTML(description)+'</small></span></button>').join('')+'</div>'+'<div class="note"><b>Choose your category:</b> Select a year and category, enter verified days and costs, then check the preview and keep evidence. A deduction reduces taxable income; it is not a euro-for-euro refund. Older records without a tax year remain visible for review. Never record the same home-office or commuting days twice.</div>'+
 '<div class="card" style="margin:18px 0"><div class="fb-card-symbol">'+fbIcon('family')+'</div><h3>Married or changing family situation?</h3><p>Compare German tax-class choices and salary scenarios, including the IV/IV factor procedure.</p><a class="button secondary" href="#taxclasses">Compare tax classes →</a></div>'+'<div class="card" style="margin:18px 0"><div class="fb-card-symbol">'+fbIcon('home')+'</div><h3>Do you maintain a second home near work?</h3><p>Double-household expenses can involve second accommodation and trips to your main home. These have special eligibility rules and must not be mixed into ordinary daily commuting.</p><a class="button secondary" href="#doublehousehold">Check double-household expenses →</a></div>'+'<div class="sectionhead"><h2>Calculate and save an expense</h2></div>'+privacyNote('saved')+
 '<form id="expenseForm" class="card"><label class="field">Expense category<select id="fbExpenseCategory" name="category"><option>Commuting</option><option>Home office</option><option>Work equipment</option><option>Professional education</option><option>Business travel</option><option>Insurance</option><option>Support to family</option><option>Other</option></select></label>'+
@@ -1568,7 +1569,7 @@ privacyNote('saved')+'<div class="sectionhead"><h2>Travel and purchase document 
 '<div class="note">Gold rules differ for bars, coins, jewellery, previously owned items and temporary imports. The 20/40 g allowance, 1 kg conditional import route, €10,000 EU declaration threshold and German €430 traveller allowance relate to <b>different legal tests</b> and must not be substituted for one another.</div>'
 }
 
-function cross(){return title('BETWEEN TWO COUNTRIES','Germany ↔ India','Explore common situations involving families, money transfers, investments and overseas assets.')+'<div class="card"><h3>Which Germany–India situation are you planning?</h3><p>Review residence, account changes, income, gifts and return scenarios; compare two transfer quotes.</p><a class="button" href="#taxplan/cross">Open scenario guidance →</a></div>'+'<div class="card" style="margin-bottom:18px"><div class="tag">NEW / TRAVEL & CUSTOMS</div><h3 style="margin-top:10px">Gold between Germany and India</h3><p>Understand VAT, investment-gold sales, EU declaration rules and Indian arrival allowances before travelling.</p><a href="#gold" class="button">Read the gold guide →</a></div>'+'<div class="hero"><div><div class="eyebrow">STEP-BY-STEP GUIDE</div><h2>Sending money to your parents?</h2><p>See the documents to request in India and the steps for Anlage Unterhalt in your German tax return.</p></div><a href="#parentsguide" class="button invert">Open filing guide →</a></div>'+'<div class="grid">'+cardsFlat(['support','gift','accounts','property','residency','pension'])+'</div><div class="note">Moving funds is not the same as earning income or qualifying for a tax deduction. Keep transaction purpose, residency and documentation separate.</div>'}
+function cross(){return title('BETWEEN TWO COUNTRIES','Germany ↔ India','Explore common situations involving families, money transfers, investments and overseas assets.')+guideFlow('transfer')+'<div class="card"><h3>Which Germany–India situation are you planning?</h3><p>Review residence, account changes, income, gifts and return scenarios; compare two transfer quotes.</p><a class="button" href="#taxplan/cross">Open scenario guidance →</a></div>'+'<div class="card" style="margin-bottom:18px"><div class="tag">NEW / TRAVEL & CUSTOMS</div><h3 style="margin-top:10px">Gold between Germany and India</h3><p>Understand VAT, investment-gold sales, EU declaration rules and Indian arrival allowances before travelling.</p><a href="#gold" class="button">Read the gold guide →</a></div>'+'<div class="hero"><div><div class="eyebrow">STEP-BY-STEP GUIDE</div><h2>Sending money to your parents?</h2><p>See the documents to request in India and the steps for Anlage Unterhalt in your German tax return.</p></div><a href="#parentsguide" class="button invert">Open filing guide →</a></div>'+'<div class="grid">'+cardsFlat(['support','gift','accounts','property','residency','pension'])+'</div><div class="note">Moving funds is not the same as earning income or qualifying for a tax deduction. Keep transaction purpose, residency and documentation separate.</div>'}
 function cardsFlat(ids){return ids.map(id=>{const a=articles.find(x=>x.id===id);return '<a class="card link" href="#guide/'+id+'"><span class="icon">↗</span><h3>'+escapeHTML(a.name)+'</h3><p>'+escapeHTML(a.summary)+'</p><span class="arrow">Read guidance →</span></a>'}).join('')}
 
 const fbImmigrationProfiles={
@@ -1656,7 +1657,7 @@ function fbHealthcareGuide(){
 const profession=Object.entries(fbHealthcareRoles).map(([key,v])=>[key,v[0]]);
 const stateOpts=fbStates.map(([label,value])=>[value,label]);
 const official=(key)=>'<a href="'+escapeHTML(fbHealthcareLinks[key][1])+'" target="_blank" rel="noopener noreferrer" class="biglink">'+escapeHTML(fbHealthcareLinks[key][0])+' ↗</a>';
-return title('GERMANY / HEALTHCARE','Healthcare professions: recognition, licences and visas','Choose your exact healthcare role, location and current situation to see the proper sequence, document checklist and official recognition authority finder. Updated 11 November 2026.')+
+return title('GERMANY / HEALTHCARE','Healthcare professions: recognition, licences and visas','Choose your exact healthcare role, location and current situation to see the proper sequence, document checklist and official recognition authority finder. Updated 11 November 2026.')+guideFlow('recognition')+
 '<div class="note"><b>Important:</b> Recognition of the qualification, permission to practise, permission to use a protected title, recognition of specialist training, and permission to live/work in Germany are separate decisions. This tool gives an evidence-based route, not an individual eligibility or licensing decision.</div>'+
 '<div class="card fb-healthcare-tool"><h2>Your healthcare pathway</h2><p>Selections remain on your device during this visit. No identity or medical records are requested or sent to AtlasEveryday.</p>'+
 '<div class="formgrid">'+
@@ -2385,6 +2386,7 @@ for(const link of document.querySelectorAll('#navigation a')){
 }
 fbUpdateStartPage();
 applyPageAccents($('#content'),page,id,portalTopics,articles);
+mountIllustrations($('#content'));
 }
 document.addEventListener('change',e=>{
  if(e.target.form?.id!=='fbLocationForm')return;

@@ -1,20 +1,10 @@
+import { newsArt, illustratedPanel } from './illustrations.js?v=9dc779bf4eec';
 // Keep article URLs stable so a link in a guide opens the same story as the overview.
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 })[c]);
 const articleLink = item => '#news/' + encodeURIComponent(item.id);
 
-const drawings = {
-  calendar: '<g fill="#fffaf0"><rect x="35" y="16" width="58" height="52" rx="5"/><path d="M35 31h58M48 11v10m30-10v10"/></g><g class="news-art-detail" fill="#b4c9b8"><rect x="45" y="39" width="10" height="9" rx="2"/><rect x="62" y="39" width="10" height="9" rx="2"/><path d="m63 56 5 5 10-13" fill="none"/></g>',
-  paper: '<path d="M46 19h67v45q0 8-7 8H48q-6 0-6-6V32h4" fill="#e5d5b8"/><g class="news-art-detail"><path d="M33 11h69v54q0 7 5 7H40q-7 0-7-8z" fill="#fffaf0"/><path d="M42 21h49M42 27h31" stroke-width="3"/><path d="M42 37h19v14H42z" fill="#a8c5bd"/><path d="M68 38h23m-23 7h18m-18 7h23M42 60h49"/></g>',
-  licence: '<rect x="51" y="7" width="39" height="67" rx="7" fill="#455f62"/><rect x="55" y="14" width="31" height="51" rx="2" fill="#dbeae1"/><path d="M67 69h7" stroke="#faf6ec"/><g class="news-art-detail"><rect x="24" y="33" width="54" height="33" rx="4" fill="#fff9e9"/><circle cx="36" cy="43" r="4" fill="#d5ac82"/><path d="M30 55q6-12 12 0z" fill="#97b4a5"/><path d="M49 43h20m-20 7h15m-15 7h19"/></g>',
-  meter: '<path d="M25 56h-7V41h-5m84 1h18" fill="none"/><g fill="#e7d9bc"><rect x="24" y="29" width="12" height="38" rx="5"/><rect x="38" y="29" width="12" height="38" rx="5"/><rect x="52" y="29" width="12" height="38" rx="5"/><rect x="66" y="29" width="12" height="38" rx="5"/><rect x="80" y="29" width="12" height="38" rx="5"/></g><rect x="60" y="35" width="17" height="24" rx="3" fill="#fffdf4"/><path d="M64 41h9m-9 4h6"/><g class="news-art-detail" fill="none"><path d="M77 22q7-1 10 5m-11-12q14-2 18 10"/></g>',
-  software: '<rect x="25" y="16" width="76" height="48" rx="4" fill="#b7cbbc"/><path d="M30 22h66v35H30z" fill="#fff9e9"/><path d="M18 65h90l-7 5H25z" fill="#d8c9aa"/><g class="news-art-detail" fill="none"><path d="m48 31-8 8 8 8m31-16 8 8-8 8m-12-17-7 19" stroke-width="3"/></g>'
-};
-export function newsArt(kind = 'paper') {
-  const drawing = Object.hasOwn(drawings, kind) ? drawings[kind] : drawings.paper;
-  return '<svg class="news-art" viewBox="0 0 128 82" fill="none" aria-hidden="true" focusable="false"><g stroke="#385451" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + drawing + '</g></svg>';
-}
 
 function meta(item) {
   return '<div class="expat-news-meta"><span class="tag">' + escape(item.category) + '</span><span class="expat-news-status">' +
@@ -42,15 +32,9 @@ const statusGroups = {
   'Bundestag approved — not yet in effect':'Under discussion or in progress', 'Bundestag approved — further steps pending':'Under discussion or in progress'
 };
 const groupOf = item => item.supersededBy ? 'Superseded' : statusGroups[item.status] || item.status;
-const defaultArt = item => item.art || (groupOf(item) === 'Approved or scheduled' ? 'calendar' : 'paper');
-
-export function guideFlow(kind) {
-  const registration = kind === 'registration';
-  const steps = registration ? ['Get the housing confirmation','Attend registration','Keep the registration certificate'] :
-    ['Gross salary','Subtract wage tax and social contributions','Estimated take-home pay'];
-  return '<figure class="guide-flow"><figcaption>' + (registration ? 'How address registration works' : 'How the salary estimate works') +
-    '</figcaption><ol>' + steps.map(step => '<li>' + step + '</li>').join('') + '</ol></figure>';
-}
+const categoryArt = {Employment:'jobs', Insurance:'recognition', Pensions:'salary', Tax:'expenses', Banking:'transfer'};
+export const newsArtKind = item => item.art || (item.id === 'healthrecognition2026nov' ? 'recognition' : categoryArt[item.category]) ||
+  (groupOf(item) === 'Approved or scheduled' ? 'calendar' : 'paper');
 
 function comparison(item) {
   if (item.metrics) return '<figure class="news-comparison"><figcaption>Changes in registered unemployment</figcaption><dl>' +
@@ -65,7 +49,7 @@ function comparison(item) {
 }
 
 function card(item) {
-  return '<article class="card expat-news-card">' + (item.supersededBy ? '<strong>Superseded edition</strong>' : '') + meta(item) +
+  return '<article class="card expat-news-card">' + (item.supersededBy ? '<strong>Superseded edition</strong>' : '') + '<div class="news-card-top">' + meta(item) + newsArt(newsArtKind(item)) + '</div>' +
     '<h2><a href="' + articleLink(item) + '">' + escape(item.title) + '</a></h2><p>' + escape(item.summary) + '</p>' +
     '<small>' + (item.published ? 'Published ' + date(item.published) + ' · ' : '') + escape(item.sourceName || 'Official source') + '</small></article>';
 }
@@ -93,7 +77,7 @@ function article(item, reviewed, items) {
   const stamps = [['First published on AtlasEveryday',item.published],['Source published',item.sourcePublished],['Last verified',item.verified]];
   const dates = '<dl class="news-dates">' + stamps.filter(([,value])=>value).map(([label,value])=>'<div><dt>'+label+'</dt><dd>'+date(value)+'</dd></div>').join('')+'</dl>';
   return (newer ? '<a class="biglink news-back" href="#news/archive">← News archive</a>' : '<a class="biglink news-back" href="#news">← All updates</a>') + '<article class="news-story">' + changeNote +
-    '<header class="news-masthead"><div>' + meta(item) + '<h1 class="h1">' + escape(item.title) + '</h1></div>' + newsArt(defaultArt(item)) + '</header>' + dates +
+    '<header class="news-masthead"><div>' + meta(item) + '<h1 class="h1">' + escape(item.title) + '</h1></div>' + illustratedPanel(newsArtKind(item)) + '</header>' + dates +
     '<div class="news-prose"><p class="news-intro">' + escape(item.summary) + '</p>' +
     comparison(item) + (item.detail ? '<p>' + escape(item.detail) + '</p>' : '') + '<section><h2>Who this affects</h2><p>' + escape(item.who) +
     '</p></section><section><h2>What to do</h2><p>' + escape(item.action) + '</p><a class="biglink" href="' + escape(item.route) +
@@ -157,7 +141,7 @@ export function mountNewsFilters(items) {
 export function relatedNews(items, route) {
   const matches = items.filter(item => !item.supersededBy && item.route === route).slice(0, 2);
   if (!matches.length) return '';
-  return '<aside class="news-related" aria-label="Related news"><div>' + newsArt(matches[0].art) +
+  return '<aside class="news-related" aria-label="Related news"><div>' + newsArt(newsArtKind(matches[0])) +
     '</div><div><h2>Related updates</h2><ul>' + matches.map(item => '<li><a href="' + articleLink(item) + '">' +
       escape(item.title) + '</a></li>').join('') + '</ul></div></aside>';
 }

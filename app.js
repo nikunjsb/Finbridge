@@ -81,7 +81,7 @@ const articles=[
 {id:'scams',name:'Scams and financial sales pitches',cat:'Protection',summary:'Recognize fake tax refunds, investment scams and commission incentives.',overview:'Newcomers may face fake tax messages, fraudulent housing offers, high-fee insurance contracts and misleading investment pitches.',checks:['Verify senders through official websites, never links in unexpected messages.','Ask whether an adviser is paid by commission or an explicit fee.','Compare cancellation terms, product costs and downside risks.','Use BaFin, Verbraucherzentrale and official complaint channels.'],caution:'Do not send identity or banking details based on unsolicited messages.'}
 ];
 articles.push(...extraArticles);
-const sourceLinks=[['German Income Tax Act','https://www.gesetze-im-internet.de/estg/'],['ELSTER','https://www.elster.de/'],['Federal Ministry of Finance','https://www.bundesfinanzministerium.de/'],['German Pension Insurance','https://www.deutsche-rentenversicherung.de/'],['Indian Income Tax Department','https://www.incometax.gov.in/'],['Reserve Bank of India','https://www.rbi.org.in/'],['SEBI','https://www.sebi.gov.in/'],['BaFin','https://www.bafin.de/']];
+const sourceLinks=[['German Income Tax Act','https://www.gesetze-im-internet.de/estg/'],['ELSTER','https://www.elster.de/'],['Federal Ministry of Finance','https://www.bundesfinanzministerium.de/'],['German Pension Insurance','https://www.deutsche-rentenversicherung.de/'],['Indian Income Tax Department','https://www.incometax.gov.in/'],['Reserve Bank of India','https://www.rbi.org.in/'],['SEBI','https://www.sebi.gov.in/'],['BaFin','https://www.bafin.de/'],["German Bundestag · legislation and votes", "https://www.bundestag.de/"],["Federal Law Gazette · published laws", "https://www.recht.bund.de/"],["Make it in Germany · visa and residence", "https://www.make-it-in-germany.com/en/"],["Federal Employment Agency · jobs and labour market", "https://www.arbeitsagentur.de/"],["Recognition in Germany · foreign qualifications", "https://www.anerkennung-in-deutschland.de/html/en/index.php"],["Federal Ministry of Health", "https://www.bundesgesundheitsministerium.de/"],["Federal Network Agency · energy consumer information", "https://www.bundesnetzagentur.de/DE/Vportal/Energie/start.html"],["Federal Motor Transport Authority", "https://www.kba.de/"]];
 const title=(k,h,d)=>'<div class="eyebrow page-kicker">'+escapeHTML(k)+'</div><h1 class="h1">'+escapeHTML(h)+'</h1><p class="lead">'+escapeHTML(d)+'</p>';
 
 const fbIconShapes={
@@ -221,8 +221,73 @@ return title('DISCOVER OPPORTUNITIES','Did you know?','Practical tax, investment
 }
 
 
-const expatNewsReviewed='27 November 2026';
+const expatNewsReviewed='28 November 2026';
 const expatNews=[
+  {
+    "id": "electricitytax2027vote",
+    "category": "Tax",
+    "topic": "Housing & utilities",
+    "status": "Bundestag approved — further steps pending",
+    "effective": "2027 under the Bundestag-approved bill",
+    "title": "Bundestag votes for a one-year electricity tax cut",
+    "summary": "The Bundestag voted on 27 November to cut the regular electricity tax for 2027 from €20.50 to €1 per megawatt-hour. The bill would generally require suppliers to pass on the tax relief.",
+    "detail": "The Bundestag puts the household tax relief at about 2.3 cents per kilowatt-hour including VAT. At 2,500 kWh, that is about €58 for the year if the estimated relief is passed through. Your total bill can still rise or fall as tariff prices, network charges and other components change.",
+    "who": "Households with an electricity contract in Germany.",
+    "action": "When you receive your 2027 tariff notice, compare the price per kWh and the recurring base charge. Check the final legal status before budgeting for a saving.",
+    "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw48-de-haushaltsgesetz-2027-zweite-lesung-1232354",
+    "sourceName": "Bundestag · 2027 budget and accompanying bill",
+    "sourcePublished": "2026-11-27",
+    "route": "#guide/housing",
+    "report": "https://www.newsworm.de/news/electricity-tax-cut-german-households-still-face-higher-bills",
+    "reportLabel": "Newsworm · Earlier background on total household bills",
+    "reportLanguage": "en",
+    "sourceLanguage": "de",
+    "published": "2026-11-28",
+    "verified": "2026-11-28"
+  },
+  {
+    "id": "sugarydrinktax2028vote",
+    "category": "Tax",
+    "status": "Bundestag approved — further steps pending",
+    "effective": "Proposed start: 1 January 2028",
+    "title": "Bundestag votes for a tax on sugary drinks from 2028",
+    "summary": "The 2027 budget accompanying bill includes a new levy on qualifying sugary drinks from 1 January 2028. The rate in the Bundestag text is 25, 30 or 35 cents per litre, depending on sugar content.",
+    "detail": "The Bundestag summary puts the starting threshold at five grams of sugar per 100 ml and lists exceptions, including certain fruit and vegetable juices without added sugar. The levy rate gives the tax amount per litre. The final shelf price will depend on how producers and retailers respond.",
+    "who": "People buying packaged drinks in Germany and businesses that sell them.",
+    "action": "Use the final published rules to check which drinks qualify. The Bundestag vote gives no reason to expect a new charge on today’s receipt.",
+    "url": "https://www.bundestag.de/dokumente/textarchiv/2026/kw48-de-haushaltsgesetz-2027-zweite-lesung-1232354",
+    "sourceName": "Bundestag · 2027 budget and accompanying bill",
+    "sourcePublished": "2026-11-27",
+    "route": "#budget",
+    "sourceLanguage": "de",
+    "published": "2026-11-28",
+    "verified": "2026-11-28"
+  },
+  {
+    "id": "metalelectropay2026",
+    "category": "Employment",
+    "status": "Under discussion",
+    "effective": "Pilot agreement · first pay rise scheduled for May 2027",
+    "title": "IG Metall reaches a pilot pay deal for the metal and electrical industry",
+    "summary": "IG Metall announced a pilot deal in Baden-Württemberg and North Rhine-Westphalia. It calls for a 2.0% increase in collectively agreed pay from May 2027 and a further 2.3% from April 2028.",
+    "detail": "IG Metall recommended that other bargaining regions adopt the result. Takeover talks are listed separately by region, and coverage depends on the collective agreement that applies to your job.",
+    "who": "Employees covered by a relevant metal and electrical industry collective agreement in Germany.",
+    "action": "Ask your works council, union or payroll team which regional agreement applies before estimating changes to your gross or take-home pay.",
+    "url": "https://www.igmetall.de/berlin/aktuelles/2026/q4/pilotabschluss-erzielt-mehr-geld-und-sicherheit--neuer-tarif-fuer-investitionen",
+    "sourceName": "IG Metall · Pilot agreement announcement",
+    "sourcePublished": "2026-11-26",
+    "route": "#salary",
+    "moreSources": [
+      {
+        "url": "https://www.igmetall.de/presse/termine/2026/tarifrunde-metall-und-elektroindustrie-2026",
+        "label": "IG Metall · Regional bargaining calendar",
+        "lang": "de"
+      }
+    ],
+    "sourceLanguage": "de",
+    "published": "2026-11-28",
+    "verified": "2026-11-28"
+  },
   {
     "id": "labourmarket2026nov",
     "category": "Employment",
@@ -2046,7 +2111,18 @@ function setupFeedbackWidget(){
 }
 
 function ask(){return title('QUESTIONS & INSIGHTS','Ask better questions','Search published guides, or save a question locally for later research. This page searches guides locally. The optional AI assistant is available on supported topic pages, including Salary and Tax; only questions submitted to that assistant use the separate AI service.')+privacyNote('optional')+'<div class="split"><div class="card"><h3>Find guidance</h3><form id="questionForm"><label class="field">Your question<textarea name="question" maxlength="1000" required placeholder="Can I deduct the money I send to my parents in India?"></textarea></label><label class="field" style="margin:12px 0"><input type="checkbox" name="store" '+(state.consent?'checked':'')+'/> Also save this question to my local history</label><button class="button">Find matching guides</button></form><div id="questionResult" class="result">Enter a question to match related educational guides.</div></div><div class="card"><h3>Local question history</h3><p>Opt-in only. Questions remain on this device unless you explicitly export them.</p><div id="questionHistory">'+questionHistoryHTML(state.questions)+'</div></div></div>'}
-function sources(){return title('TRANSPARENCY','Official sources and update status','Use these primary sources to verify relevant rules. The prototype does not automatically search or check for changes.')+'<div class="note"><b>Latest focused data review: 16 November 2026.</b> Checked the six published Expat Updates against their official sources and the six listed 2026 statutory insurer rates against the GKV register. Updated the Annual Tax Act item to the Bundestag vote of 12 November. This is a focused review, not a new review date for every guide or calculator. <a class="biglink" href="#news">Read the updates →</a></div><div class="note"><b>Rule status:</b> guidance is draft educational content; no live compliance checks, tax adviser approvals or automatic updating are currently active. Check the effective year and official publications.</div><div class="card source-links">'+sourceLinks.map(([name,url])=>'<div class="listrow"><div><b>'+escapeHTML(name)+'</b><div class="muted">'+escapeHTML(new URL(url).host)+'</div></div><a class="button secondary" href="'+url+'" target="_blank" rel="noopener noreferrer">Open source ↗</a></div>').join('')+'</div><div class="sectionhead"><h2>Maintenance policy</h2></div><div class="card"><p>Future backend releases should store each verified claim with its official source, applicability, effective date, last checked date and human review status, retaining historical years separately.</p><p>Regulatory changes should enter a review queue, not directly overwrite published calculators.</p></div>'}
+function sources(){
+  return title('TRANSPARENCY','Official sources and update status','Find the primary sources for AtlasEveryday guides and see what changed in the latest release.')+
+  '<div class="card guidebody"><h2>Latest updates · 28 November 2026</h2><ul>'+
+  '<li><a class="biglink" href="#news/electricitytax2027vote">Housing and utilities</a> · Bundestag vote on the proposed 2027 electricity tax cut.</li>'+
+  '<li><a class="biglink" href="#news/sugarydrinktax2028vote">Household costs</a> · Bundestag vote on a proposed sugary drinks levy from 2028.</li>'+
+  '<li><a class="biglink" href="#news/metalelectropay2026">Work and pay</a> · IG Metall pilot agreement and regional adoption checks.</li>'+
+  '<li><a class="biglink" href="#taxplan/prepare">Income tax and ELSTER</a> · Walkthrough and official help for 2023, 2024 and 2025.</li></ul>'+
+  '<p>Article source dates and verification dates appear on each story. Individual guides show their own review dates where available.</p></div>'+
+  '<div class="sectionhead"><h2>Primary source directory</h2></div>'+
+  '<div class="card source-links">'+sourceLinks.map(([name,url])=>'<div class="listrow"><div><b>'+escapeHTML(name)+'</b><div class="muted">'+escapeHTML(new URL(url).host)+'</div></div><a class="button secondary" href="'+url+'" target="_blank" rel="noopener noreferrer">Open source ↗</a></div>').join('')+'</div>'+
+  '<div class="sectionhead"><h2>Maintenance policy</h2></div><div class="card"><p>AtlasEveryday checks official publications and distinguishes proposals, votes and effective rules. Each guide or calculation applies to the years and situations stated on its page.</p></div>';
+}
 
 function privacyNote(kind='temporary'){
 const config={

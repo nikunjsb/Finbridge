@@ -1,5 +1,5 @@
 import { taxAdviserHelp } from './practical-guides.js?v=aafa5224f198';
-import { companionPage, mountCompanion } from './tax-companion.js?v=a9197f7e3106';
+import { companionPage, mountCompanion } from './tax-companion.js?v=2c16e89e4ff4';
 import { taxSources, taxEffect, donationCheck, childcareCheck, insuranceCheck, indianResidency, transferQuote, adviserText, taxRecordsCSV, recordsForYear, preparationEvidence } from './tax-rules.js?v=f05ad518f34c';
 import { workbenchPage, mountWorkbench } from './tax-workbenches.js?v=80ca6ef16360';
 

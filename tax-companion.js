@@ -1,4 +1,4 @@
-import { elsterWalkthroughHTML, mountElsterWalkthrough } from './elster-walkthrough.js?v=36e14f5d432e';
+import { elsterWalkthroughHTML, mountElsterWalkthrough } from './elster-walkthrough.js?v=1175eaa0fc91';
 
 // Preparation guidance only: no ELSTER credentials, transmission or refund model.
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
